@@ -1,17 +1,32 @@
+@import url('https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,100..900;1,100..900&family=Chivo:ital,wght@0,100..900;1,100..900&display=swap');
+
 @import 'tailwindcss';
 @plugin 'daisyui';
 
 @theme {
-  --font-sans:
-    'Inter', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-    'Segoe UI Symbol', 'Noto Color Emoji';
+  --font-chivo: 'Chivo';
+  --font-archivo: 'Archivo';
 }
 
 html,
 body {
-  @apply bg-white dark:bg-gray-950;
+  @apply bg-white dark:bg-gray-900 font-chivo;
+  color-scheme: light dark;
+  width: 100%;
+  background-color: var(--color-gray-100);
 
   @media (prefers-color-scheme: dark) {
     color-scheme: dark;
   }
+}
+
+/* Custom font utility classes */
+.font-archivo {
+  font-family: 'Archivo', ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
+}
+
+.font-chivo {
+  font-family:
+    'Chivo', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    'Segoe UI Symbol', 'Noto Color Emoji';
 }
