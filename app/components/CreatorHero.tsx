@@ -6,7 +6,7 @@ interface CreatorHeroProps {
 
 export function CreatorHero({ creator }: CreatorHeroProps) {
   return (
-    <div className="flex flex-col justify-center items-center bg-gray-200 dark:bg-gray-800 mx-2 p-8 aspect-square text-center">
+    <div className="flex flex-col justify-center items-center bg-gray-200 dark:bg-gray-800 mx-2 p-8 text-center">
       <div className="flex justify-center items-center bg-gray-400 dark:bg-gray-600 mb-6 w-24 h-24">
         <div className="bg-gray-500 dark:bg-gray-700 w-16 h-16"></div>
       </div>

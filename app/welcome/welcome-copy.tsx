@@ -1,5 +1,5 @@
-import { Swiper, SwiperSlide } from 'swiper/react'
-import 'swiper/css'
+import Slider from 'react-slick'
+import 'slick-carousel/slick/slick.css'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { creators } from '../data/creators'
 import { CreatorCard } from '../components/CreatorCard'
@@ -28,6 +28,18 @@ function NextArrow({ onClick }: { onClick?: () => void }) {
 }
 
 export default function Welcome() {
+  const sliderSettings = {
+    infinite: true,
+    autoplay: false,
+    autoplaySpeed: 4000,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    arrows: true,
+    dots: false,
+    prevArrow: <PrevArrow />,
+    nextArrow: <NextArrow />
+  }
+
   return (
     <main className="flex flex-col bg-gray-100 dark:bg-gray-900 p-4 min-w-[360px] max-w-[960px] min-h-screen font-archivo uppercase">
       <header className="flex items-center gap-4">
@@ -37,7 +49,7 @@ export default function Welcome() {
         </p>
       </header>
 
-      <div className="divider divider-neutral"></div>
+      <div className="bg-gray-300 dark:bg-gray-700 my-6 w-full h-px"></div>
 
       <div className="gap-2 grid grid-flow-col auto-cols-auto mb-8 text-2xl">
         <div>Streaming & Gaming</div>
@@ -48,20 +60,17 @@ export default function Welcome() {
       </div>
 
       <div className="relative mt-8 mb-8">
-        <Swiper
-          spaceBetween={50}
-          slidesPerView={1}
-          navigation={{
-            prevEl: '.swiper-button-prev',
-            nextEl: '.swiper-button-next'
-          }}
-        >
+        <Slider {...sliderSettings}>
           {creators.map(creator => (
-            <SwiperSlide key={creator.id}>
-              <CreatorHero creator={creator} />
-            </SwiperSlide>
+            <CreatorHero key={creator.id} creator={creator} />
           ))}
-        </Swiper>
+        </Slider>
+      </div>
+
+      <div className="gap-3 grid grid-cols-3">
+        {creators.map(creator => (
+          <CreatorCard key={creator.id} creator={creator} />
+        ))}
       </div>
     </main>
   )
