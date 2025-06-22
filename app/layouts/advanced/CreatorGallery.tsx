@@ -55,7 +55,7 @@ function CardType2({ creator }: { creator: Creator }) {
           </h2>
 
           <p className="font-light text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
-            {creator.description.substring(0, 100)}...
+            {creator.description}
           </p>
         </div>
 
@@ -124,7 +124,7 @@ function CardImage1({ creator }: { creator: Creator }) {
       {/* Image as compositional element */}
       <div className="relative h-3/5">
         <div
-          className="absolute inset-0 bg-cover bg-center"
+          className="absolute inset-0 bg-cover bg-center grayscale"
           style={{ backgroundImage: `url(${creator.imageURL})` }}
         />
         {/* Subtle overlay */}
@@ -207,7 +207,7 @@ function CardImage3({ creator }: { creator: Creator }) {
     <div className="relative bg-white dark:bg-gray-950 border border-gray-200 dark:border-gray-800 aspect-[5/3] overflow-hidden">
       {/* Large compositional image */}
       <div
-        className="absolute inset-0 bg-cover bg-center opacity-60 dark:opacity-40"
+        className="absolute inset-0 bg-cover bg-center opacity-60 dark:opacity-40 grayscale"
         style={{ backgroundImage: `url(${creator.imageURL})` }}
       />
 
