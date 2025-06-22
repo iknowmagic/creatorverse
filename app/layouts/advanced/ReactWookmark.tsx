@@ -32,7 +32,7 @@ export function ReactWookmark({
   creators,
   renderCard,
   className = '',
-  itemWidth = 280,
+  itemWidth = 296,
   offset = 12
 }: ReactWookmarkProps) {
   const [visibleItems, setVisibleItems] = useState<Creator[]>([])
@@ -303,10 +303,10 @@ export function ReactWookmark({
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="mt-8 flex justify-center"
+          className="flex justify-center mt-8"
         >
-          <div className="flex items-center gap-2 text-sm text-gray-500 uppercase dark:text-gray-400">
-            <div className="h-4 w-4 animate-spin rounded-full border-2 border-gray-500 border-t-transparent" />
+          <div className="flex items-center gap-2 text-gray-500 dark:text-gray-400 text-sm uppercase">
+            <div className="border-2 border-gray-500 border-t-transparent rounded-full w-4 h-4 animate-spin" />
             Loading More Creators
           </div>
         </motion.div>
@@ -322,7 +322,7 @@ export function ReactWookmark({
           animate={{ opacity: 1, y: 0 }}
           className="mt-12 mb-8 text-center"
         >
-          <div className="inline-block border border-gray-400 px-4 py-2 text-sm text-gray-700 uppercase dark:border-gray-600 dark:text-gray-300">
+          <div className="inline-block px-4 py-2 border border-gray-400 dark:border-gray-600 text-gray-700 dark:text-gray-300 text-sm uppercase">
             End of Gallery — {creators.length} Total Creators
           </div>
         </motion.div>
