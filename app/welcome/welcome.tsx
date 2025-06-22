@@ -4,8 +4,8 @@ import 'swiper/css'
 import 'swiper/css/navigation'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { categories, orderedCreators, selectedCreators } from '../data/creators'
-import { CreatorCard } from '../components/CreatorCard'
 import { CreatorHero } from '../components/CreatorHero'
+import { CreatorGallery } from '../components/CreatorGallery'
 
 export default function Welcome() {
   return (
@@ -52,11 +52,8 @@ export default function Welcome() {
         </Swiper>
       </div>
 
-      <div className="gap-3 grid md:grid-cols-2 lg:grid-cols-3">
-        {orderedCreators().map(creator => (
-          <CreatorCard key={creator.id} creator={creator} />
-        ))}
-      </div>
+      {/* 🎯 REPLACED: Static grid with dynamic CreatorGallery */}
+      <CreatorGallery creators={orderedCreators()} className="mt-8" />
     </main>
   )
 }
