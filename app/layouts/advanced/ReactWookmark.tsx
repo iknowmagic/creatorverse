@@ -4,6 +4,7 @@ import type { Creator } from '~/data/creators'
 
 interface ReactWookmarkProps {
   creators: Creator[]
+  // eslint-disable-next-line no-unused-vars
   renderCard: (creator: Creator, index: number) => React.ReactNode
   className?: string
   itemWidth?: number
@@ -40,6 +41,7 @@ export function ReactWookmark({
   const [hasMore, setHasMore] = useState<boolean>(true)
   const [currentIndex, setCurrentIndex] = useState<number>(0)
   const [containerHeight, setContainerHeight] = useState<number>(0)
+  // eslint-disable-next-line no-unused-vars
   const [layoutReady, setLayoutReady] = useState<boolean>(false)
 
   const containerRef = useRef<HTMLDivElement>(null)
@@ -49,6 +51,7 @@ export function ReactWookmark({
   const itemRefs = useRef<(HTMLDivElement | null)[]>([])
 
   // Wookmark configuration - fixed item width approach
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const options: WookmarkOptions = {
     align: 'center',
     autoResize: true,
@@ -96,6 +99,7 @@ export function ReactWookmark({
 
   // Main layout function (adapted from Wookmark's layoutFull)
   const performLayout = useCallback(
+    // eslint-disable-next-line no-unused-vars
     (force = false) => {
       if (!containerRef.current || visibleItems.length === 0) return
 
@@ -200,6 +204,7 @@ export function ReactWookmark({
       setCurrentIndex(INITIAL_LOAD)
       setHasMore(creators.length > INITIAL_LOAD)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [creators])
 
   // Perform layout when items change
