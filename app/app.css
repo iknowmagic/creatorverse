@@ -18,10 +18,11 @@
 
 html,
 body {
-  @apply bg-white dark:bg-gray-900 font-chivo;
+  @apply font-chivo bg-white dark:bg-gray-900;
   color-scheme: light dark;
   width: 100%;
   background-color: var(--color-gray-100);
+  font-family: 'Archivo';
 
   @media (prefers-color-scheme: dark) {
     color-scheme: dark;
