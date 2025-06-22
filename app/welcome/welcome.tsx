@@ -3,7 +3,7 @@ import { Navigation } from 'swiper/modules'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
-import { creators } from '../data/creators'
+import { creators, categories } from '../data/creators'
 import { CreatorCard } from '../components/CreatorCard'
 import { CreatorHero } from '../components/CreatorHero'
 
@@ -19,12 +19,10 @@ export default function Welcome() {
 
       <div className="divider divider-neutral"></div>
 
-      <div className="gap-2 grid grid-flow-col auto-cols-auto mb-8 text-2xl">
-        <div>Streaming & Gaming</div>
-        <div>Educational Content</div>
-        <div>Art & Design</div>
-        <div>Tech & Coding</div>
-        <div>Lifestyle & Entertainment</div>
+      <div className="grid grid-cols-4 text-2xl">
+        {categories.map(category => (
+          <div key={category}>{category}</div>
+        ))}
       </div>
 
       <div className="relative mt-8 mb-8">

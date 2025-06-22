@@ -1141,3 +1141,21 @@ export const creators: Creator[] = [
     followers: '2.1M'
   }
 ]
+
+// Dynamically extract unique categories using Set
+export const categories = Array.from(new Set(creators.map(creator => creator.category)))
+
+// Helper functions
+export function getCreatorsByCategory(category: string): Creator[] {
+  return creators.filter(creator => creator.category === category)
+}
+
+export function getCategoryCounts(): Record<string, number> {
+  return creators.reduce(
+    (acc, creator) => {
+      acc[creator.category] = (acc[creator.category] || 0) + 1
+      return acc
+    },
+    {} as Record<string, number>
+  )
+}
