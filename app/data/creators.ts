@@ -1,10 +1,37 @@
+// Type definitions for categories and tags
+export type ContainerCategory =
+  | 'Streaming & Gaming'
+  | 'Educational Content'
+  | 'Tech & Coding'
+  | 'Art & Design'
+  | 'Lifestyle & Entertainment'
+
+export type CreatorTag =
+  | 'Streaming & Gaming'
+  | 'Educational Content'
+  | 'Tech & Coding'
+  | 'Art & Design'
+  | 'Lifestyle & Entertainment'
+  | 'Music & Entertainment'
+  | 'Fitness & Health'
+  | 'Food & Cooking'
+  | 'Travel & Adventure'
+  | 'Business & Finance'
+  | 'Comedy & Entertainment'
+  | 'DIY & Crafts'
+  | 'Sports & Fitness'
+  | 'News & Politics'
+  | 'Science & Nature'
+  | 'Beauty & Fashion'
+
 export interface Creator {
   id: number
   name: string
   description: string
   imageURL: string
   url: string
-  category: string
+  category: ContainerCategory // Container category (5 main ones)
+  tag: CreatorTag // Specific tag (original categories)
   followers?: string
 }
 
@@ -18,6 +45,7 @@ export const creators: Creator[] = [
       'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@pewdiepie',
     category: 'Streaming & Gaming',
+    tag: 'Streaming & Gaming',
     followers: '111M'
   },
   {
@@ -28,6 +56,7 @@ export const creators: Creator[] = [
       'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400&h=400&fit=crop&crop=face',
     url: 'https://twitch.tv/pokimane',
     category: 'Streaming & Gaming',
+    tag: 'Streaming & Gaming',
     followers: '9.3M'
   },
   {
@@ -38,6 +67,7 @@ export const creators: Creator[] = [
       'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face',
     url: 'https://twitch.tv/ninja',
     category: 'Streaming & Gaming',
+    tag: 'Streaming & Gaming',
     followers: '18.5M'
   },
   {
@@ -48,6 +78,7 @@ export const creators: Creator[] = [
       'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@markiplier',
     category: 'Streaming & Gaming',
+    tag: 'Streaming & Gaming',
     followers: '35.7M'
   },
   {
@@ -58,6 +89,7 @@ export const creators: Creator[] = [
       'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop&crop=face',
     url: 'https://twitch.tv/shroud',
     category: 'Streaming & Gaming',
+    tag: 'Streaming & Gaming',
     followers: '10.2M'
   },
   {
@@ -68,6 +100,7 @@ export const creators: Creator[] = [
       'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@jacksepticeye',
     category: 'Streaming & Gaming',
+    tag: 'Streaming & Gaming',
     followers: '29.8M'
   },
   {
@@ -78,6 +111,7 @@ export const creators: Creator[] = [
       'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&h=400&fit=crop&crop=face',
     url: 'https://twitch.tv/xqc',
     category: 'Streaming & Gaming',
+    tag: 'Streaming & Gaming',
     followers: '12.1M'
   },
   {
@@ -88,6 +122,7 @@ export const creators: Creator[] = [
       'https://images.unsplash.com/photo-1547425260-76bcadfb4f2c?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@valkyrae',
     category: 'Streaming & Gaming',
+    tag: 'Streaming & Gaming',
     followers: '4.1M'
   },
   {
@@ -98,6 +133,7 @@ export const creators: Creator[] = [
       'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@dream',
     category: 'Streaming & Gaming',
+    tag: 'Streaming & Gaming',
     followers: '30.9M'
   },
   {
@@ -108,6 +144,7 @@ export const creators: Creator[] = [
       'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@tommyinnit',
     category: 'Streaming & Gaming',
+    tag: 'Streaming & Gaming',
     followers: '14.9M'
   },
 
@@ -120,6 +157,7 @@ export const creators: Creator[] = [
       'https://images.unsplash.com/photo-1507101105822-7472b28e22ac?w=400&h=400&fit=crop&crop=face',
     url: 'https://khanacademy.org',
     category: 'Educational Content',
+    tag: 'Educational Content',
     followers: '7.2M'
   },
   {
@@ -130,6 +168,7 @@ export const creators: Creator[] = [
       'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@kurzgesagt',
     category: 'Educational Content',
+    tag: 'Educational Content',
     followers: '20.1M'
   },
   {
@@ -140,6 +179,7 @@ export const creators: Creator[] = [
       'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@crashcourse',
     category: 'Educational Content',
+    tag: 'Educational Content',
     followers: '14.8M'
   },
   {
@@ -150,6 +190,7 @@ export const creators: Creator[] = [
       'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@veritasium',
     category: 'Educational Content',
+    tag: 'Science & Nature',
     followers: '13.4M'
   },
   {
@@ -160,6 +201,7 @@ export const creators: Creator[] = [
       'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@teded',
     category: 'Educational Content',
+    tag: 'Educational Content',
     followers: '18.7M'
   },
   {
@@ -170,6 +212,7 @@ export const creators: Creator[] = [
       'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@scishow',
     category: 'Educational Content',
+    tag: 'Science & Nature',
     followers: '7.2M'
   },
   {
@@ -180,6 +223,7 @@ export const creators: Creator[] = [
       'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@minutephysics',
     category: 'Educational Content',
+    tag: 'Science & Nature',
     followers: '5.1M'
   },
   {
@@ -190,6 +234,7 @@ export const creators: Creator[] = [
       'https://images.unsplash.com/photo-1547425260-76bcadfb4f2c?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@cgpgrey',
     category: 'Educational Content',
+    tag: 'Educational Content',
     followers: '5.3M'
   },
   {
@@ -200,6 +245,7 @@ export const creators: Creator[] = [
       'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@asapscience',
     category: 'Educational Content',
+    tag: 'Science & Nature',
     followers: '10.1M'
   },
   {
@@ -210,6 +256,7 @@ export const creators: Creator[] = [
       'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@3blue1brown',
     category: 'Educational Content',
+    tag: 'Science & Nature',
     followers: '5.8M'
   },
 
@@ -222,6 +269,7 @@ export const creators: Creator[] = [
       'https://images.unsplash.com/photo-1507101105822-7472b28e22ac?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@fireship',
     category: 'Tech & Coding',
+    tag: 'Tech & Coding',
     followers: '2.9M'
   },
   {
@@ -232,6 +280,7 @@ export const creators: Creator[] = [
       'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@programmingwithmosh',
     category: 'Tech & Coding',
+    tag: 'Tech & Coding',
     followers: '3.1M'
   },
   {
@@ -242,6 +291,7 @@ export const creators: Creator[] = [
       'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@netninja',
     category: 'Tech & Coding',
+    tag: 'Tech & Coding',
     followers: '1.2M'
   },
   {
@@ -252,6 +302,7 @@ export const creators: Creator[] = [
       'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@traversymedia',
     category: 'Tech & Coding',
+    tag: 'Tech & Coding',
     followers: '2.1M'
   },
   {
@@ -262,6 +313,7 @@ export const creators: Creator[] = [
       'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@freecodecamp',
     category: 'Tech & Coding',
+    tag: 'Tech & Coding',
     followers: '8.7M'
   },
   {
@@ -272,6 +324,7 @@ export const creators: Creator[] = [
       'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@linustechtips',
     category: 'Tech & Coding',
+    tag: 'Tech & Coding',
     followers: '15.4M'
   },
   {
@@ -282,6 +335,7 @@ export const creators: Creator[] = [
       'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@csdojo',
     category: 'Tech & Coding',
+    tag: 'Tech & Coding',
     followers: '1.9M'
   },
   {
@@ -292,6 +346,7 @@ export const creators: Creator[] = [
       'https://images.unsplash.com/photo-1547425260-76bcadfb4f2c?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@techlead',
     category: 'Tech & Coding',
+    tag: 'Tech & Coding',
     followers: '1.1M'
   },
   {
@@ -302,6 +357,7 @@ export const creators: Creator[] = [
       'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@mkbhd',
     category: 'Tech & Coding',
+    tag: 'Tech & Coding',
     followers: '17.8M'
   },
   {
@@ -312,6 +368,7 @@ export const creators: Creator[] = [
       'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@benawad',
     category: 'Tech & Coding',
+    tag: 'Tech & Coding',
     followers: '450K'
   },
 
@@ -324,6 +381,7 @@ export const creators: Creator[] = [
       'https://images.unsplash.com/photo-1507101105822-7472b28e22ac?w=400&h=400&fit=crop&crop=face',
     url: 'https://dribbble.com',
     category: 'Art & Design',
+    tag: 'Art & Design',
     followers: '2.8M'
   },
   {
@@ -334,6 +392,7 @@ export const creators: Creator[] = [
       'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@petermckinnon',
     category: 'Art & Design',
+    tag: 'Art & Design',
     followers: '5.2M'
   },
   {
@@ -344,6 +403,7 @@ export const creators: Creator[] = [
       'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@proko',
     category: 'Art & Design',
+    tag: 'Art & Design',
     followers: '2.7M'
   },
   {
@@ -354,6 +414,7 @@ export const creators: Creator[] = [
       'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@adobecreativecloud',
     category: 'Art & Design',
+    tag: 'Art & Design',
     followers: '1.8M'
   },
   {
@@ -364,6 +425,7 @@ export const creators: Creator[] = [
       'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@theartassignment',
     category: 'Art & Design',
+    tag: 'Art & Design',
     followers: '650K'
   },
   {
@@ -374,6 +436,7 @@ export const creators: Creator[] = [
       'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@drawwithjazza',
     category: 'Art & Design',
+    tag: 'Art & Design',
     followers: '5.8M'
   },
   {
@@ -384,6 +447,7 @@ export const creators: Creator[] = [
       'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@fengzhudesign',
     category: 'Art & Design',
+    tag: 'Art & Design',
     followers: '890K'
   },
   {
@@ -394,6 +458,7 @@ export const creators: Creator[] = [
       'https://images.unsplash.com/photo-1547425260-76bcadfb4f2c?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@thefutur',
     category: 'Art & Design',
+    tag: 'Art & Design',
     followers: '1.4M'
   },
   {
@@ -404,6 +469,7 @@ export const creators: Creator[] = [
       'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@blenderguru',
     category: 'Art & Design',
+    tag: 'Art & Design',
     followers: '2.1M'
   },
   {
@@ -414,6 +480,7 @@ export const creators: Creator[] = [
       'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@aaronblaise',
     category: 'Art & Design',
+    tag: 'Art & Design',
     followers: '1.3M'
   },
 
@@ -426,6 +493,7 @@ export const creators: Creator[] = [
       'https://images.unsplash.com/photo-1507101105822-7472b28e22ac?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@mrbeast',
     category: 'Lifestyle & Entertainment',
+    tag: 'Comedy & Entertainment',
     followers: '212M'
   },
   {
@@ -436,6 +504,7 @@ export const creators: Creator[] = [
       'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@tryguys',
     category: 'Lifestyle & Entertainment',
+    tag: 'Comedy & Entertainment',
     followers: '7.8M'
   },
   {
@@ -446,6 +515,7 @@ export const creators: Creator[] = [
       'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@emmachamberlain',
     category: 'Lifestyle & Entertainment',
+    tag: 'Lifestyle & Entertainment',
     followers: '11.9M'
   },
   {
@@ -456,6 +526,7 @@ export const creators: Creator[] = [
       'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@daviddobrik',
     category: 'Lifestyle & Entertainment',
+    tag: 'Comedy & Entertainment',
     followers: '18.2M'
   },
   {
@@ -466,6 +537,7 @@ export const creators: Creator[] = [
       'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@jamescharles',
     category: 'Lifestyle & Entertainment',
+    tag: 'Beauty & Fashion',
     followers: '23.5M'
   },
   {
@@ -476,6 +548,7 @@ export const creators: Creator[] = [
       'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@goodmythicalmorning',
     category: 'Lifestyle & Entertainment',
+    tag: 'Comedy & Entertainment',
     followers: '17.9M'
   },
   {
@@ -486,6 +559,7 @@ export const creators: Creator[] = [
       'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@dudeperfect',
     category: 'Lifestyle & Entertainment',
+    tag: 'Sports & Fitness',
     followers: '59.3M'
   },
   {
@@ -495,7 +569,8 @@ export const creators: Creator[] = [
     imageURL:
       'https://images.unsplash.com/photo-1547425260-76bcadfb4f2c?w=400&h=400&fit=crop&crop=face',
     url: 'https://makingsenseofcents.com',
-    category: 'Lifestyle & Entertainment',
+    category: 'Educational Content',
+    tag: 'Business & Finance',
     followers: '1.2M'
   },
   {
@@ -506,6 +581,7 @@ export const creators: Creator[] = [
       'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@safiya',
     category: 'Lifestyle & Entertainment',
+    tag: 'Beauty & Fashion',
     followers: '9.7M'
   },
   {
@@ -516,10 +592,11 @@ export const creators: Creator[] = [
       'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@shanedawson',
     category: 'Lifestyle & Entertainment',
+    tag: 'Comedy & Entertainment',
     followers: '19.6M'
   },
 
-  // Music & Entertainment
+  // Music & Entertainment (maps to Lifestyle & Entertainment)
   {
     id: 51,
     name: 'T-Series',
@@ -527,7 +604,8 @@ export const creators: Creator[] = [
     imageURL:
       'https://images.unsplash.com/photo-1507101105822-7472b28e22ac?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@tseries',
-    category: 'Music & Entertainment',
+    category: 'Lifestyle & Entertainment',
+    tag: 'Music & Entertainment',
     followers: '245M'
   },
   {
@@ -537,7 +615,8 @@ export const creators: Creator[] = [
     imageURL:
       'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@justinbieber',
-    category: 'Music & Entertainment',
+    category: 'Lifestyle & Entertainment',
+    tag: 'Music & Entertainment',
     followers: '71.6M'
   },
   {
@@ -547,7 +626,8 @@ export const creators: Creator[] = [
     imageURL:
       'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@taylorswift',
-    category: 'Music & Entertainment',
+    category: 'Lifestyle & Entertainment',
+    tag: 'Music & Entertainment',
     followers: '51.2M'
   },
   {
@@ -557,7 +637,8 @@ export const creators: Creator[] = [
     imageURL:
       'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@bts',
-    category: 'Music & Entertainment',
+    category: 'Lifestyle & Entertainment',
+    tag: 'Music & Entertainment',
     followers: '73.8M'
   },
   {
@@ -567,11 +648,12 @@ export const creators: Creator[] = [
     imageURL:
       'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@arianagrande',
-    category: 'Music & Entertainment',
+    category: 'Lifestyle & Entertainment',
+    tag: 'Music & Entertainment',
     followers: '52.1M'
   },
 
-  // Fitness & Health
+  // Fitness & Health (maps to Lifestyle & Entertainment)
   {
     id: 56,
     name: 'Yoga with Adriene',
@@ -579,7 +661,8 @@ export const creators: Creator[] = [
     imageURL:
       'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@yogawithadriene',
-    category: 'Fitness & Health',
+    category: 'Lifestyle & Entertainment',
+    tag: 'Fitness & Health',
     followers: '12.1M'
   },
   {
@@ -589,7 +672,8 @@ export const creators: Creator[] = [
     imageURL:
       'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@athleanx',
-    category: 'Fitness & Health',
+    category: 'Lifestyle & Entertainment',
+    tag: 'Fitness & Health',
     followers: '13.6M'
   },
   {
@@ -599,7 +683,8 @@ export const creators: Creator[] = [
     imageURL:
       'https://images.unsplash.com/photo-1547425260-76bcadfb4f2c?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@calisthenicmovement',
-    category: 'Fitness & Health',
+    category: 'Lifestyle & Entertainment',
+    tag: 'Fitness & Health',
     followers: '1.8M'
   },
   {
@@ -609,7 +694,8 @@ export const creators: Creator[] = [
     imageURL:
       'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@fitnessblender',
-    category: 'Fitness & Health',
+    category: 'Lifestyle & Entertainment',
+    tag: 'Fitness & Health',
     followers: '6.8M'
   },
   {
@@ -619,11 +705,12 @@ export const creators: Creator[] = [
     imageURL:
       'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@blogilates',
-    category: 'Fitness & Health',
+    category: 'Lifestyle & Entertainment',
+    tag: 'Fitness & Health',
     followers: '5.6M'
   },
 
-  // Food & Cooking
+  // Food & Cooking (maps to Lifestyle & Entertainment)
   {
     id: 61,
     name: 'Bon Appétit',
@@ -631,7 +718,8 @@ export const creators: Creator[] = [
     imageURL:
       'https://images.unsplash.com/photo-1507101105822-7472b28e22ac?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@bonappetit',
-    category: 'Food & Cooking',
+    category: 'Lifestyle & Entertainment',
+    tag: 'Food & Cooking',
     followers: '6.2M'
   },
   {
@@ -641,7 +729,8 @@ export const creators: Creator[] = [
     imageURL:
       'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@bingingwithbabish',
-    category: 'Food & Cooking',
+    category: 'Lifestyle & Entertainment',
+    tag: 'Food & Cooking',
     followers: '10.8M'
   },
   {
@@ -651,7 +740,8 @@ export const creators: Creator[] = [
     imageURL:
       'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@gordonramsay',
-    category: 'Food & Cooking',
+    category: 'Lifestyle & Entertainment',
+    tag: 'Food & Cooking',
     followers: '20.3M'
   },
   {
@@ -661,7 +751,8 @@ export const creators: Creator[] = [
     imageURL:
       'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@buzzfeedtasty',
-    category: 'Food & Cooking',
+    category: 'Lifestyle & Entertainment',
+    tag: 'Food & Cooking',
     followers: '21.4M'
   },
   {
@@ -671,11 +762,12 @@ export const creators: Creator[] = [
     imageURL:
       'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@clairesaffitz',
-    category: 'Food & Cooking',
+    category: 'Lifestyle & Entertainment',
+    tag: 'Food & Cooking',
     followers: '1.2M'
   },
 
-  // Travel & Adventure
+  // Travel & Adventure (maps to Lifestyle & Entertainment)
   {
     id: 66,
     name: 'Mark Wiens',
@@ -683,7 +775,8 @@ export const creators: Creator[] = [
     imageURL:
       'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@markwiens',
-    category: 'Travel & Adventure',
+    category: 'Lifestyle & Entertainment',
+    tag: 'Travel & Adventure',
     followers: '9.1M'
   },
   {
@@ -693,7 +786,8 @@ export const creators: Creator[] = [
     imageURL:
       'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@drewbinsky',
-    category: 'Travel & Adventure',
+    category: 'Lifestyle & Entertainment',
+    tag: 'Travel & Adventure',
     followers: '4.7M'
   },
   {
@@ -703,7 +797,8 @@ export const creators: Creator[] = [
     imageURL:
       'https://images.unsplash.com/photo-1547425260-76bcadfb4f2c?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@karaandnate',
-    category: 'Travel & Adventure',
+    category: 'Lifestyle & Entertainment',
+    tag: 'Travel & Adventure',
     followers: '3.2M'
   },
   {
@@ -713,7 +808,8 @@ export const creators: Creator[] = [
     imageURL:
       'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@funforlouis',
-    category: 'Travel & Adventure',
+    category: 'Lifestyle & Entertainment',
+    tag: 'Travel & Adventure',
     followers: '1.9M'
   },
   {
@@ -723,11 +819,12 @@ export const creators: Creator[] = [
     imageURL:
       'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@heynadine',
-    category: 'Travel & Adventure',
+    category: 'Lifestyle & Entertainment',
+    tag: 'Travel & Adventure',
     followers: '800K'
   },
 
-  // Business & Finance
+  // Business & Finance (maps to Educational Content)
   {
     id: 71,
     name: 'Graham Stephan',
@@ -735,7 +832,8 @@ export const creators: Creator[] = [
     imageURL:
       'https://images.unsplash.com/photo-1507101105822-7472b28e22ac?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@grahamstephan',
-    category: 'Business & Finance',
+    category: 'Educational Content',
+    tag: 'Business & Finance',
     followers: '4.1M'
   },
   {
@@ -745,7 +843,8 @@ export const creators: Creator[] = [
     imageURL:
       'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@daveramsey',
-    category: 'Business & Finance',
+    category: 'Educational Content',
+    tag: 'Business & Finance',
     followers: '2.8M'
   },
   {
@@ -755,7 +854,8 @@ export const creators: Creator[] = [
     imageURL:
       'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@garyvee',
-    category: 'Business & Finance',
+    category: 'Educational Content',
+    tag: 'Business & Finance',
     followers: '3.4M'
   },
   {
@@ -765,7 +865,8 @@ export const creators: Creator[] = [
     imageURL:
       'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@andreijikh',
-    category: 'Business & Finance',
+    category: 'Educational Content',
+    tag: 'Business & Finance',
     followers: '1.9M'
   },
   {
@@ -775,11 +876,12 @@ export const creators: Creator[] = [
     imageURL:
       'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@meetkevin',
-    category: 'Business & Finance',
+    category: 'Educational Content',
+    tag: 'Business & Finance',
     followers: '1.7M'
   },
 
-  // Comedy & Entertainment
+  // Comedy & Entertainment (maps to Lifestyle & Entertainment)
   {
     id: 76,
     name: 'Ryan Higa',
@@ -787,7 +889,8 @@ export const creators: Creator[] = [
     imageURL:
       'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@ryanhiga',
-    category: 'Comedy & Entertainment',
+    category: 'Lifestyle & Entertainment',
+    tag: 'Comedy & Entertainment',
     followers: '21.1M'
   },
   {
@@ -797,7 +900,8 @@ export const creators: Creator[] = [
     imageURL:
       'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@collegehumor',
-    category: 'Comedy & Entertainment',
+    category: 'Lifestyle & Entertainment',
+    tag: 'Comedy & Entertainment',
     followers: '14.7M'
   },
   {
@@ -807,7 +911,8 @@ export const creators: Creator[] = [
     imageURL:
       'https://images.unsplash.com/photo-1547425260-76bcadfb4f2c?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@keyandpeele',
-    category: 'Comedy & Entertainment',
+    category: 'Lifestyle & Entertainment',
+    tag: 'Comedy & Entertainment',
     followers: '9.8M'
   },
   {
@@ -817,7 +922,8 @@ export const creators: Creator[] = [
     imageURL:
       'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@snl',
-    category: 'Comedy & Entertainment',
+    category: 'Lifestyle & Entertainment',
+    tag: 'Comedy & Entertainment',
     followers: '13.2M'
   },
   {
@@ -827,11 +933,12 @@ export const creators: Creator[] = [
     imageURL:
       'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@smosh',
-    category: 'Comedy & Entertainment',
+    category: 'Lifestyle & Entertainment',
+    tag: 'Comedy & Entertainment',
     followers: '25.8M'
   },
 
-  // DIY & Crafts
+  // DIY & Crafts (maps to Art & Design)
   {
     id: 81,
     name: '5-Minute Crafts',
@@ -839,7 +946,8 @@ export const creators: Creator[] = [
     imageURL:
       'https://images.unsplash.com/photo-1507101105822-7472b28e22ac?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@5minutecrafts',
-    category: 'DIY & Crafts',
+    category: 'Art & Design',
+    tag: 'DIY & Crafts',
     followers: '80.1M'
   },
   {
@@ -849,7 +957,8 @@ export const creators: Creator[] = [
     imageURL:
       'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@steveandramsey',
-    category: 'DIY & Crafts',
+    category: 'Art & Design',
+    tag: 'DIY & Crafts',
     followers: '2.1M'
   },
   {
@@ -859,7 +968,8 @@ export const creators: Creator[] = [
     imageURL:
       'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@diyperks',
-    category: 'DIY & Crafts',
+    category: 'Art & Design',
+    tag: 'DIY & Crafts',
     followers: '4.2M'
   },
   {
@@ -869,7 +979,8 @@ export const creators: Creator[] = [
     imageURL:
       'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@moriahelizabeth',
-    category: 'DIY & Crafts',
+    category: 'Art & Design',
+    tag: 'DIY & Crafts',
     followers: '9.3M'
   },
   {
@@ -879,21 +990,12 @@ export const creators: Creator[] = [
     imageURL:
       'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@zhc',
-    category: 'DIY & Crafts',
+    category: 'Art & Design',
+    tag: 'DIY & Crafts',
     followers: '24.6M'
   },
 
-  // Sports & Fitness
-  {
-    id: 86,
-    name: 'Dude Perfect',
-    description: 'Sports trick shots and athletic challenges.',
-    imageURL:
-      'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&h=400&fit=crop&crop=face',
-    url: 'https://youtube.com/@dudeperfect',
-    category: 'Sports & Fitness',
-    followers: '59.3M'
-  },
+  // Sports & Fitness content
   {
     id: 87,
     name: 'Overtime',
@@ -901,7 +1003,8 @@ export const creators: Creator[] = [
     imageURL:
       'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@overtime',
-    category: 'Sports & Fitness',
+    category: 'Lifestyle & Entertainment',
+    tag: 'Sports & Fitness',
     followers: '7.8M'
   },
   {
@@ -911,7 +1014,8 @@ export const creators: Creator[] = [
     imageURL:
       'https://images.unsplash.com/photo-1547425260-76bcadfb4f2c?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@f2freestylers',
-    category: 'Sports & Fitness',
+    category: 'Lifestyle & Entertainment',
+    tag: 'Sports & Fitness',
     followers: '13.1M'
   },
   {
@@ -921,7 +1025,8 @@ export const creators: Creator[] = [
     imageURL:
       'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@allgasnobrakes',
-    category: 'Sports & Fitness',
+    category: 'Educational Content',
+    tag: 'News & Politics',
     followers: '1.2M'
   },
   {
@@ -931,11 +1036,12 @@ export const creators: Creator[] = [
     imageURL:
       'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@yestheory',
-    category: 'Sports & Fitness',
+    category: 'Lifestyle & Entertainment',
+    tag: 'Travel & Adventure',
     followers: '8.1M'
   },
 
-  // News & Politics
+  // News & Politics (maps to Educational Content)
   {
     id: 91,
     name: 'Philip DeFranco',
@@ -943,7 +1049,8 @@ export const creators: Creator[] = [
     imageURL:
       'https://images.unsplash.com/photo-1507101105822-7472b28e22ac?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@philipdefranco',
-    category: 'News & Politics',
+    category: 'Educational Content',
+    tag: 'News & Politics',
     followers: '6.4M'
   },
   {
@@ -953,7 +1060,8 @@ export const creators: Creator[] = [
     imageURL:
       'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@vox',
-    category: 'News & Politics',
+    category: 'Educational Content',
+    tag: 'News & Politics',
     followers: '10.8M'
   },
   {
@@ -963,7 +1071,8 @@ export const creators: Creator[] = [
     imageURL:
       'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@lastweektonight',
-    category: 'News & Politics',
+    category: 'Educational Content',
+    tag: 'News & Politics',
     followers: '9.2M'
   },
   {
@@ -973,7 +1082,8 @@ export const creators: Creator[] = [
     imageURL:
       'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@thedailyshow',
-    category: 'News & Politics',
+    category: 'Educational Content',
+    tag: 'News & Politics',
     followers: '8.7M'
   },
   {
@@ -983,11 +1093,12 @@ export const creators: Creator[] = [
     imageURL:
       'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@bbcnews',
-    category: 'News & Politics',
+    category: 'Educational Content',
+    tag: 'News & Politics',
     followers: '16.3M'
   },
 
-  // Science & Nature
+  // Science & Nature (maps to Educational Content)
   {
     id: 96,
     name: 'National Geographic',
@@ -995,7 +1106,8 @@ export const creators: Creator[] = [
     imageURL:
       'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@nationalgeographic',
-    category: 'Science & Nature',
+    category: 'Educational Content',
+    tag: 'Science & Nature',
     followers: '22.4M'
   },
   {
@@ -1005,7 +1117,8 @@ export const creators: Creator[] = [
     imageURL:
       'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@smartereveryday',
-    category: 'Science & Nature',
+    category: 'Educational Content',
+    tag: 'Science & Nature',
     followers: '11.1M'
   },
   {
@@ -1015,7 +1128,8 @@ export const creators: Creator[] = [
     imageURL:
       'https://images.unsplash.com/photo-1547425260-76bcadfb4f2c?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@thebrainscoop',
-    category: 'Science & Nature',
+    category: 'Educational Content',
+    tag: 'Science & Nature',
     followers: '650K'
   },
   {
@@ -1025,7 +1139,8 @@ export const creators: Creator[] = [
     imageURL:
       'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@deeplook',
-    category: 'Science & Nature',
+    category: 'Educational Content',
+    tag: 'Science & Nature',
     followers: '2.1M'
   },
   {
@@ -1035,11 +1150,12 @@ export const creators: Creator[] = [
     imageURL:
       'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@itsokaytobesmart',
-    category: 'Science & Nature',
+    category: 'Educational Content',
+    tag: 'Science & Nature',
     followers: '1.8M'
   },
 
-  // Bonus creators to reach 110+
+  // Additional creators
   {
     id: 101,
     name: 'Corridor Crew',
@@ -1048,6 +1164,7 @@ export const creators: Creator[] = [
       'https://images.unsplash.com/photo-1507101105822-7472b28e22ac?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@corridorcrew',
     category: 'Tech & Coding',
+    tag: 'Tech & Coding',
     followers: '6.8M'
   },
   {
@@ -1057,7 +1174,8 @@ export const creators: Creator[] = [
     imageURL:
       'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@primitivetechnology',
-    category: 'DIY & Crafts',
+    category: 'Art & Design',
+    tag: 'DIY & Crafts',
     followers: '10.4M'
   },
   {
@@ -1067,7 +1185,8 @@ export const creators: Creator[] = [
     imageURL:
       'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@codyko',
-    category: 'Comedy & Entertainment',
+    category: 'Lifestyle & Entertainment',
+    tag: 'Comedy & Entertainment',
     followers: '5.9M'
   },
   {
@@ -1077,7 +1196,8 @@ export const creators: Creator[] = [
     imageURL:
       'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@dannygonzalez',
-    category: 'Comedy & Entertainment',
+    category: 'Lifestyle & Entertainment',
+    tag: 'Comedy & Entertainment',
     followers: '6.2M'
   },
   {
@@ -1087,7 +1207,8 @@ export const creators: Creator[] = [
     imageURL:
       'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@casuallyexplained',
-    category: 'Comedy & Entertainment',
+    category: 'Lifestyle & Entertainment',
+    tag: 'Comedy & Entertainment',
     followers: '3.8M'
   },
   {
@@ -1098,6 +1219,7 @@ export const creators: Creator[] = [
       'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@tomscott',
     category: 'Educational Content',
+    tag: 'Educational Content',
     followers: '6.1M'
   },
   {
@@ -1108,6 +1230,7 @@ export const creators: Creator[] = [
       'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@halfasinteresting',
     category: 'Educational Content',
+    tag: 'Educational Content',
     followers: '3.2M'
   },
   {
@@ -1118,6 +1241,7 @@ export const creators: Creator[] = [
       'https://images.unsplash.com/photo-1547425260-76bcadfb4f2c?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@wendoverproductions',
     category: 'Educational Content',
+    tag: 'Educational Content',
     followers: '4.7M'
   },
   {
@@ -1128,6 +1252,7 @@ export const creators: Creator[] = [
       'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@numberphile',
     category: 'Educational Content',
+    tag: 'Educational Content',
     followers: '4.3M'
   },
   {
@@ -1138,22 +1263,77 @@ export const creators: Creator[] = [
       'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=400&h=400&fit=crop&crop=face',
     url: 'https://youtube.com/@computerphile',
     category: 'Tech & Coding',
+    tag: 'Tech & Coding',
     followers: '2.1M'
   }
 ]
 
-// Dynamically extract unique categories using Set
-export const categories = Array.from(new Set(creators.map(creator => creator.category)))
+// Container categories (5 main ones)
+export const categories: ContainerCategory[] = [
+  'Streaming & Gaming',
+  'Educational Content',
+  'Tech & Coding',
+  'Art & Design',
+  'Lifestyle & Entertainment'
+]
+
+// All unique tags
+export const tags: CreatorTag[] = [
+  'Streaming & Gaming',
+  'Educational Content',
+  'Tech & Coding',
+  'Art & Design',
+  'Lifestyle & Entertainment',
+  'Music & Entertainment',
+  'Fitness & Health',
+  'Food & Cooking',
+  'Travel & Adventure',
+  'Business & Finance',
+  'Comedy & Entertainment',
+  'DIY & Crafts',
+  'Sports & Fitness',
+  'News & Politics',
+  'Science & Nature',
+  'Beauty & Fashion'
+]
+
+// Randomization functions
+export function randomizeArray<T>(array: T[]): T[] {
+  const shuffled = [...array]
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
+  }
+  return shuffled
+}
+
+export const randomCreators = (): Creator[] => randomizeArray(creators)
+
+export const selectedCreators = (): Creator[] => randomCreators().slice(0, 20)
 
 // Helper functions
 export function getCreatorsByCategory(category: string): Creator[] {
   return creators.filter(creator => creator.category === category)
 }
 
+export function getCreatorsByTag(tag: string): Creator[] {
+  return creators.filter(creator => creator.tag === tag)
+}
+
 export function getCategoryCounts(): Record<string, number> {
   return creators.reduce(
     (acc, creator) => {
       acc[creator.category] = (acc[creator.category] || 0) + 1
+      return acc
+    },
+    {} as Record<string, number>
+  )
+}
+
+export function getTagCounts(): Record<string, number> {
+  return creators.reduce(
+    (acc, creator) => {
+      acc[creator.tag] = (acc[creator.tag] || 0) + 1
       return acc
     },
     {} as Record<string, number>
