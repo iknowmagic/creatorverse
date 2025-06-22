@@ -33,9 +33,11 @@ export default [
       // Standard JS style base rules
       ...js.configs.recommended.rules,
 
+      'no-unused-vars': 'warn',
+
       // TypeScript rules
       '@typescript-eslint/no-unused-vars': [
-        'warn',
+        'off',
         {
           argsIgnorePattern: '^_',
           varsIgnorePattern: '^_',
