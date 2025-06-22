@@ -1,7 +1,8 @@
 import { Swiper, SwiperSlide } from 'swiper/react'
-import { Navigation } from 'swiper/modules'
+import { Navigation, Autoplay } from 'swiper/modules'
 import 'swiper/css'
 import 'swiper/css/navigation'
+import 'swiper/css/autoplay'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { categories, orderedCreators, selectedCreators } from '../data/creators'
 import { CreatorHero } from '../components/CreatorHero'
@@ -35,12 +36,17 @@ export default function Welcome() {
         </button>
 
         <Swiper
-          modules={[Navigation]}
+          modules={[Navigation, Autoplay]}
           spaceBetween={50}
           slidesPerView={1}
           navigation={{
             prevEl: '.swiper-button-prev-custom',
             nextEl: '.swiper-button-next-custom'
+          }}
+          autoplay={{
+            delay: 4000,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: true
           }}
           loop={true}
         >
