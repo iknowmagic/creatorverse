@@ -1311,6 +1311,29 @@ export const randomCreators = (): Creator[] => randomizeArray(creators)
 
 export const selectedCreators = (): Creator[] => randomCreators().slice(0, 20)
 
+export const orderedCreators = (): Creator[] => {
+  const categoryOrder: ContainerCategory[] = [
+    'Streaming & Gaming',
+    'Educational Content',
+    'Tech & Coding',
+    'Art & Design',
+    'Lifestyle & Entertainment'
+  ]
+
+  return [...creators].sort((a, b) => {
+    // First sort by category order
+    const categoryIndexA = categoryOrder.indexOf(a.category)
+    const categoryIndexB = categoryOrder.indexOf(b.category)
+
+    if (categoryIndexA !== categoryIndexB) {
+      return categoryIndexA - categoryIndexB
+    }
+
+    // Then sort by name alphabetically within the same category
+    return a.name.localeCompare(b.name)
+  })
+}
+
 // Helper functions
 export function getCreatorsByCategory(category: string): Creator[] {
   return creators.filter(creator => creator.category === category)

@@ -3,7 +3,7 @@ import { Navigation } from 'swiper/modules'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
-import { categories, randomCreators, selectedCreators } from '../data/creators'
+import { categories, orderedCreators, selectedCreators } from '../data/creators'
 import { CreatorCard } from '../components/CreatorCard'
 import { CreatorHero } from '../components/CreatorHero'
 
@@ -53,7 +53,7 @@ export default function Welcome() {
       </div>
 
       <div className="gap-3 grid md:grid-cols-2 lg:grid-cols-3">
-        {randomCreators().map(creator => (
+        {orderedCreators().map(creator => (
           <CreatorCard key={creator.id} creator={creator} />
         ))}
       </div>
