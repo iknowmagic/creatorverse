@@ -1,4 +1,4 @@
-import type { Creator } from '../data/creators'
+import type { Creator } from '../../data/creators'
 
 interface CreatorHeroProps {
   creator: Creator

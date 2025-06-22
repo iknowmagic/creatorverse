@@ -4,9 +4,9 @@ import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/autoplay'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
-import { categories, orderedCreators, selectedCreators } from '../data/creators'
-import { CreatorHero } from '../components/CreatorHero'
-import { CreatorGallery } from '../components/CreatorGallery'
+import { categories, orderedCreators, selectedCreators } from '~/data/creators'
+import { CreatorHero } from '~/layouts/advanced/CreatorHero'
+import { CreatorGallery } from './CreatorGallery'
 
 export default function Welcome() {
   return (

@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { CreatorCard } from './CreatorCard'
-import type { Creator } from '../data/creators'
+import type { Creator } from '~/data/creators'
 
 interface CreatorGalleryProps {
   creators: Creator[]

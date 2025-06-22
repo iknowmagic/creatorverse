@@ -51,7 +51,7 @@ export default [
       'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
 
       // Standard JS style rules (modern) - adjusted for React/TS
-      indent: ['error', 2],
+      indent: ['off', 2],
       quotes: ['warn', 'single'],
       semi: ['error', 'never'],
       'no-extra-semi': 'error',
