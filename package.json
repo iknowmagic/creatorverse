@@ -15,7 +15,9 @@
     "branch": "zsh scripts/newbranch.zsh",
     "snap": "zsh scripts/snapshot.zsh",
     "minor": "npm version minor",
-    "major": "npm version major"
+    "major": "npm version major",
+    "cosmos": "cosmos",
+    "cosmos-export": "cosmos-export"
   },
   "dependencies": {
     "@react-router/node": "^7.6.2",
@@ -46,6 +48,8 @@
     "globals": "^15.15.0",
     "prettier": "^3.5.3",
     "prettier-plugin-tailwindcss": "^0.6.13",
+    "react-cosmos": "^7.0.0",
+    "react-cosmos-plugin-vite": "^7.0.0",
     "tailwindcss": "^4.1.10",
     "typescript": "^5.8.3",
     "vite": "^6.3.5",
