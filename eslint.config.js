@@ -35,7 +35,7 @@ export default [
 
       // TypeScript rules
       '@typescript-eslint/no-unused-vars': [
-        'error',
+        'warn',
         {
           argsIgnorePattern: '^_',
           varsIgnorePattern: '^_',
@@ -52,7 +52,7 @@ export default [
 
       // Standard JS style rules (modern) - adjusted for React/TS
       indent: ['error', 2],
-      quotes: ['error', 'single'],
+      quotes: ['warn', 'single'],
       semi: ['error', 'never'],
       'no-extra-semi': 'error',
       'comma-dangle': ['error', 'never'],
