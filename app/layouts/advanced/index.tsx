@@ -52,7 +52,6 @@ export default function Welcome() {
         </Swiper>
       </div>
 
-      {/* 🎯 REPLACED: Static grid with dynamic CreatorGallery */}
       <CreatorGallery creators={randomCreators()} className="mt-8" />
     </main>
   )
