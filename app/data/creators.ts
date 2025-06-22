@@ -1105,7 +1105,7 @@ export const creators: Creator[] = [
     description: 'Nature documentaries and wildlife content.',
     imageURL:
       'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&h=400&fit=crop&crop=face',
-    url: 'https://youtube.com/@nationalgeographic',
+    url: 'https://youtube.com/@natgeo',
     category: 'Educational Content',
     tag: 'Science & Nature',
     followers: '22.4M'
