@@ -3,7 +3,7 @@ import { Navigation } from 'swiper/modules'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
-import { categories, orderedCreators, selectedCreators } from '~/data/creators'
+import { categories, orderedCreators, randomCreators, selectedCreators } from '~/data/creators'
 import { CreatorHero } from '~/layouts/advanced/CreatorHero'
 import { CreatorGallery } from './CreatorGallery'
 
@@ -27,10 +27,10 @@ export default function Welcome() {
 
       <div className="relative mt-8 mb-8">
         {/* Custom Navigation Buttons */}
-        <button className="top-1/2 left-2 z-10 absolute bg-gray-900 hover:bg-gray-800 dark:bg-gray-100 dark:hover:bg-gray-200 p-2 transition-colors -translate-y-1/2 swiper-button-prev-custom">
+        <button className="top-1/2 left-2 z-10 absolute bg-gray-900 hover:bg-gray-800 dark:bg-gray-100 dark:hover:bg-gray-200 p-2 transition-colors -translate-y-1/2 cursor-pointer swiper-button-prev-custom">
           <ChevronLeft className="w-5 h-5 text-gray-100 dark:text-gray-900" />
         </button>
-        <button className="top-1/2 right-2 z-10 absolute bg-gray-900 hover:bg-gray-800 dark:bg-gray-100 dark:hover:bg-gray-200 p-2 transition-colors -translate-y-1/2 swiper-button-next-custom">
+        <button className="top-1/2 right-2 z-10 absolute bg-gray-900 hover:bg-gray-800 dark:bg-gray-100 dark:hover:bg-gray-200 p-2 transition-colors -translate-y-1/2 cursor-pointer swiper-button-next-custom">
           <ChevronRight className="w-5 h-5 text-gray-100 dark:text-gray-900" />
         </button>
 
@@ -53,7 +53,7 @@ export default function Welcome() {
       </div>
 
       {/* 🎯 REPLACED: Static grid with dynamic CreatorGallery */}
-      <CreatorGallery creators={orderedCreators()} className="mt-8" />
+      <CreatorGallery creators={randomCreators()} className="mt-8" />
     </main>
   )
 }

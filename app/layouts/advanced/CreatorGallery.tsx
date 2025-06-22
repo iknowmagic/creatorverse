@@ -18,7 +18,7 @@ function CardType1({ creator }: { creator: Creator }) {
       </div>
       <button
         onClick={() => window.open(creator.url, '_blank')}
-        className="bg-gray-900 hover:bg-gray-800 dark:bg-gray-100 dark:hover:bg-gray-200 py-2 w-full font-medium text-gray-100 dark:text-gray-900 text-sm transition-colors"
+        className="btn-block bg-gray-900 btn btn-neutral"
       >
         Visit
       </button>
@@ -44,7 +44,7 @@ function CardType2({ creator }: { creator: Creator }) {
         )}
         <button
           onClick={() => window.open(creator.url, '_blank')}
-          className="bg-gray-900 hover:bg-gray-700 dark:bg-gray-100 dark:hover:bg-gray-300 px-4 py-2 font-medium text-gray-100 dark:text-gray-900 text-xs uppercase transition-colors"
+          className="bg-gray-900 btn btn-neutral"
         >
           Visit
         </button>
@@ -67,13 +67,13 @@ function CardType3({ creator }: { creator: Creator }) {
       </p>
       <div className="mb-4 text-gray-600 dark:text-gray-400 text-xs">Tag: {creator.tag}</div>
       {creator.followers && (
-        <div className="bg-gray-300 dark:bg-gray-700 mb-4 px-3 py-2 font-medium text-gray-900 dark:text-gray-100 text-sm text-center">
+        <div className="mb-4 font-medium text-gray-900 dark:text-gray-100 text-xs">
           {creator.followers} Followers
         </div>
       )}
       <button
         onClick={() => window.open(creator.url, '_blank')}
-        className="bg-gray-900 hover:bg-gray-800 dark:bg-gray-100 dark:hover:bg-gray-200 py-3 w-full font-bold text-gray-100 dark:text-gray-900 text-sm uppercase tracking-wide transition-colors"
+        className="btn-block bg-gray-900 btn btn-neutral"
       >
         Visit Channel
       </button>

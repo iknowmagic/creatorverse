@@ -22,12 +22,8 @@ export function CreatorHero({ creator }: CreatorHeroProps) {
         {creator.description}
       </p>
       <div className="flex flex-col gap-2">
-        <div className="px-2 py-1 border border-gray-400 dark:border-gray-600 text-gray-700 dark:text-gray-300 text-xs">
-          {creator.category}
-        </div>
-        <button className="bg-gray-900 hover:bg-gray-800 dark:bg-gray-100 dark:hover:bg-gray-200 px-4 py-2 font-medium text-gray-100 dark:text-gray-900 text-sm normal-case transition-colors cursor-pointer">
-          Visit Channel
-        </button>
+        <div className="px-2 py-1 text-gray-700 dark:text-gray-300 text-xs">{creator.category}</div>
+        <button className="bg-gray-900 btn btn-neutral">Visit Channel</button>
       </div>
     </div>
   )
