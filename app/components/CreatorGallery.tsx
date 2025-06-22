@@ -10,11 +10,11 @@ interface CreatorGalleryProps {
 
 export function CreatorGallery({ creators, className = '' }: CreatorGalleryProps) {
   const [visibleItems, setVisibleItems] = useState<Creator[]>([])
-  const [isLoading, setIsLoading] = useState(false)
-  const [hasMore, setHasMore] = useState(true)
-  const [currentIndex, setCurrentIndex] = useState(0)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [hasMore, setHasMore] = useState<boolean>(true)
+  const [currentIndex, setCurrentIndex] = useState<number>(0)
 
-  const observerRef = useRef<IntersectionObserver>()
+  const observerRef = useRef<IntersectionObserver | undefined>(undefined)
   const sentinelRef = useRef<HTMLDivElement>(null)
 
   // Initial load - 10 items
@@ -95,16 +95,15 @@ export function CreatorGallery({ creators, className = '' }: CreatorGalleryProps
       y: 20,
       scale: 0.95
     },
-    visible: (index: number) => ({
+    visible: {
       opacity: 1,
       y: 0,
       scale: 1,
       transition: {
-        delay: index * 0.05, // Stagger animation
         duration: 0.4,
-        ease: [0.25, 0.25, 0, 1] // Custom easing for brutalist feel
+        ease: [0.25, 0.25, 0, 1] as const // Custom easing for brutalist feel
       }
-    })
+    }
   }
 
   // Loading skeleton component
@@ -118,17 +117,21 @@ export function CreatorGallery({ creators, className = '' }: CreatorGalleryProps
 
   return (
     <div className={`creator-gallery ${className}`}>
-      {/* Masonry Grid */}
-      <div className="masonry-grid">
+      {/* Masonry Grid - Using Tailwind Grid Classes */}
+      <div className="gap-3 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
         <AnimatePresence>
           {visibleItems.map((creator, index) => (
             <motion.div
               key={creator.id}
-              custom={index % LOAD_MORE} // Reset stagger for each batch
               variants={cardVariants}
               initial="hidden"
               animate="visible"
-              className="masonry-item"
+              transition={{
+                delay: (index % LOAD_MORE) * 0.05, // Stagger animation, reset for each batch
+                duration: 0.4,
+                ease: [0.25, 0.25, 0, 1] as const
+              }}
+              className="break-inside-avoid"
             >
               <CreatorCard creator={creator} />
             </motion.div>
@@ -167,31 +170,6 @@ export function CreatorGallery({ creators, className = '' }: CreatorGalleryProps
           </div>
         </motion.div>
       )}
-
-      <style jsx>{`
-        .masonry-grid {
-          display: grid;
-          gap: 0.75rem;
-          grid-template-columns: 1fr;
-        }
-
-        @media (min-width: 768px) {
-          .masonry-grid {
-            grid-template-columns: repeat(2, 1fr);
-          }
-        }
-
-        @media (min-width: 1024px) {
-          .masonry-grid {
-            grid-template-columns: repeat(3, 1fr);
-          }
-        }
-
-        .masonry-item {
-          break-inside: avoid;
-          page-break-inside: avoid;
-        }
-      `}</style>
     </div>
   )
 }
