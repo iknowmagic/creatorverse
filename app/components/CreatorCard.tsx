@@ -28,7 +28,7 @@ export function CreatorCard({ creator }: CreatorCardProps) {
           <div className="inline-block mb-2 px-1 py-0.5 border border-gray-400 dark:border-gray-600 text-gray-700 dark:text-gray-300 text-xs">
             {creator.category}
           </div>
-          <button className="bg-gray-900 hover:bg-gray-800 dark:bg-gray-100 dark:hover:bg-gray-200 px-2 py-1 w-full font-medium text-gray-100 dark:text-gray-900 text-xs normal-case transition-colors">
+          <button className="bg-gray-900 hover:bg-gray-800 dark:bg-gray-100 dark:hover:bg-gray-200 px-2 py-1 w-full font-medium text-gray-100 dark:text-gray-900 text-xs normal-case transition-colors cursor-pointer">
             Visit
           </button>
         </div>
