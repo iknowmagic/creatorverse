@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,100..900;1,100..900&family=Chivo:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@100..900&family=Libre+Bodoni:wght@400..700&display=swap');
 
 @import 'tailwindcss';
 @plugin "daisyui";
@@ -39,13 +39,13 @@
 }
 
 @theme {
-  --font-chivo: 'Chivo';
+  --font-libre-bodoni: 'Libre Bodoni';
   --font-archivo: 'Archivo';
 }
 
 html,
 body {
-  @apply bg-white dark:bg-gray-900 font-chivo;
+  @apply bg-white dark:bg-gray-900 font-libre-bodoni;
   color-scheme: light dark;
   width: 100%;
   background-color: var(--color-gray-100);
@@ -57,11 +57,13 @@ body {
 }
 
 .font-archivo {
-  font-family: 'Archivo', ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
+  font-family: 'Archivo', 'sans-serif';
 }
 
-.font-chivo {
-  font-family:
-    'Chivo', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-    'Segoe UI Symbol', 'Noto Color Emoji';
+.font-libre-bodoni {
+  font-family: 'Libre Bodoni', 'serif';
+}
+
+.text-right {
+  text-align: right;
 }

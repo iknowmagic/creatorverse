@@ -11,7 +11,7 @@ function CardType1({ creator }: { creator: Creator }) {
   return (
     <div className="bg-base-100 shadow card">
       <div className="card-body">
-        <div className="badge-outline badge">{creator.category}</div>
+        <div className="badge-outline badge badge-sm">{creator.category}</div>
         <h2 className="card-title">{creator.name}</h2>
         <p className="text-sm">{creator.description}</p>
         {creator.followers && <p className="opacity-70 text-sm">{creator.followers}</p>}
@@ -30,7 +30,7 @@ function CardType2({ creator }: { creator: Creator }) {
     <div className="bg-base-100 shadow card">
       <div className="card-body">
         <h2 className="card-title">{creator.name}</h2>
-        <div className="badge badge-secondary">{creator.category}</div>
+        <div className="badge badge-secondary badge-sm">{creator.category}</div>
         <p className="text-sm">{creator.description}</p>
         {creator.followers && <p className="opacity-70 text-sm">{creator.followers}</p>}
         <div className="justify-end card-actions">
@@ -49,7 +49,7 @@ function CardType3({ creator }: { creator: Creator }) {
       <div className="card-body">
         <div className="flex justify-between items-start">
           <h2 className="card-title">{creator.name}</h2>
-          <div className="badge badge-accent">{creator.category}</div>
+          <div className="text-xs line-clamp-1 badge-sm badge badge-accent">{creator.category}</div>
         </div>
         <p className="text-sm">{creator.description}</p>
         <div className="flex justify-between items-center mt-4">
@@ -75,7 +75,7 @@ function CardImage1({ creator }: { creator: Creator }) {
         />
       </figure>
       <div className="card-body">
-        <div className="badge-outline badge">{creator.category}</div>
+        <div className="badge-outline badge badge-sm">{creator.category}</div>
         <h2 className="card-title">{creator.name}</h2>
         {creator.followers && <p className="opacity-70 text-sm">{creator.followers}</p>}
         <div className="justify-end card-actions">
@@ -100,14 +100,11 @@ function CardImage2({ creator }: { creator: Creator }) {
       </figure>
       <div className="card-body">
         <h2 className="card-title">{creator.name}</h2>
-        <div className="badge badge-secondary">{creator.category}</div>
+        <div className="badge badge-secondary badge-sm">{creator.category}</div>
         <p className="text-sm">{creator.description.substring(0, 80)}...</p>
         <div className="flex justify-between items-center mt-2">
           {creator.followers && <span className="opacity-70 text-sm">{creator.followers}</span>}
-          <button
-            onClick={() => window.open(creator.url, '_blank')}
-            className="btn btn-primary btn-sm"
-          >
+          <button onClick={() => window.open(creator.url, '_blank')} className="btn btn-primary">
             Visit
           </button>
         </div>
@@ -128,15 +125,12 @@ function CardImage3({ creator }: { creator: Creator }) {
           />
         </figure>
         <div className="w-2/3 card-body">
-          <div className="badge badge-accent">{creator.category}</div>
+          <div className="text-xs line-clamp-1 badge-sm badge badge-accent">{creator.category}</div>
           <h2 className="text-base card-title">{creator.name}</h2>
           <p className="text-sm">{creator.description.substring(0, 60)}...</p>
           <div className="flex justify-between items-center">
             {creator.followers && <span className="opacity-70 text-xs">{creator.followers}</span>}
-            <button
-              onClick={() => window.open(creator.url, '_blank')}
-              className="btn btn-primary btn-sm"
-            >
+            <button onClick={() => window.open(creator.url, '_blank')} className="btn btn-primary">
               Visit
             </button>
           </div>

@@ -1,119 +1,51 @@
-import { randomCreators } from '~/data/creators'
-import type { Creator } from '~/data/creators'
-import {
-  CardType1,
-  CardType2,
-  CardType3,
-  CardImage1,
-  CardImage2,
-  CardImage3
-} from '~/layouts/advanced/CreatorGallery'
+import { ExternalLink, Link } from 'lucide-react'
+import { creators } from '../app/data/creators'
+import type { Creator } from '../app/data/creators'
 
-// Get a few different creators for variety
-const sampleCreators = randomCreators().slice(0, 6)
-
-export default (
-  <div className="space-y-12 bg-gray-50 dark:bg-gray-950 p-6 min-h-screen">
-    {/* Text-based Cards - DaisyUI */}
-    <section>
-      <h2 className="mb-6 font-bold text-gray-900 dark:text-gray-100 text-2xl">
-        Text-based Cards (DaisyUI)
-      </h2>
-
-      <div className="space-y-8">
-        <div>
-          <h3 className="mb-4 font-semibold text-gray-700 dark:text-gray-300 text-lg">
-            CardType1 - Square Layout
-          </h3>
-          <div className="w-80">
-            <CardType1 creator={sampleCreators[0]} />
-          </div>
-        </div>
-
-        <div>
-          <h3 className="mb-4 font-semibold text-gray-700 dark:text-gray-300 text-lg">
-            CardType2 - Portrait with Description
-          </h3>
-          <div className="w-80">
-            <CardType2 creator={sampleCreators[1]} />
-          </div>
-        </div>
-
-        <div>
-          <h3 className="mb-4 font-semibold text-gray-700 dark:text-gray-300 text-lg">
-            CardType3 - Compact Description
-          </h3>
-          <div className="w-80">
-            <CardType3 creator={sampleCreators[2]} />
-          </div>
+export function Card({ creator }: { creator?: Creator }) {
+  return (
+    <a
+      href={creator?.url}
+      className="group relative flex flex-col p-4 border border-gray-400 min-w-[250px]"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <div className="flex justify-between items-start">
+        <div className="font-libre-bodoni text-gray-900 text-3xl">{creator?.name}</div>
+        <div className="text-gray-600">
+          <Link />
         </div>
       </div>
-    </section>
-
-    {/* Image-based Cards - DaisyUI */}
-    <section>
-      <h2 className="mb-6 font-bold text-gray-900 dark:text-gray-100 text-2xl">
-        Image-based Cards (DaisyUI)
-      </h2>
-
-      <div className="space-y-8">
-        <div>
-          <h3 className="mb-4 font-semibold text-gray-700 dark:text-gray-300 text-lg">
-            CardImage1 - Square with Large Image
-          </h3>
-          <div className="w-80">
-            <CardImage1 creator={sampleCreators[3]} />
-          </div>
+      <div className="text-gray-600">{creator?.category}</div>
+      <div className="divider divider-neutral"></div>
+      <div className="text-gray-700">{creator?.description}</div>
+      {creator?.imageURL && (
+        <div className="relative mt-auto pt-6">
+          <img
+            src={creator?.imageURL}
+            alt={creator?.name}
+            className="grayscale w-full object-cover aspect-video"
+          />
         </div>
+      )}
 
-        <div>
-          <h3 className="mb-4 font-semibold text-gray-700 dark:text-gray-300 text-lg">
-            CardImage2 - Portrait with Small Image
-          </h3>
-          <div className="w-80">
-            <CardImage2 creator={sampleCreators[4]} />
-          </div>
-        </div>
-
-        <div>
-          <h3 className="mb-4 font-semibold text-gray-700 dark:text-gray-300 text-lg">
-            CardImage3 - Landscape Format
-          </h3>
-          <div className="w-96 h-48">
-            <CardImage3 creator={sampleCreators[5]} />
-          </div>
-        </div>
+      <div className="top-0 left-0 absolute flex justify-center items-center bg-gray-800 opacity-0 group-hover:opacity-80 w-full h-full text-white transition-opacity">
+        <ExternalLink size={48} />
       </div>
-    </section>
+    </a>
+  )
+}
 
-    {/* All Cards Grid */}
-    <section>
-      <h2 className="mb-6 font-bold text-gray-900 dark:text-gray-100 text-2xl">All Card Types</h2>
-      <div className="gap-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-        <CardType1 creator={sampleCreators[0]} />
-        <CardType2 creator={sampleCreators[1]} />
-        <CardType3 creator={sampleCreators[2]} />
-        <CardImage1 creator={sampleCreators[3]} />
-        <CardImage2 creator={sampleCreators[4]} />
-        <div className="lg:col-span-2">
-          <CardImage3 creator={sampleCreators[5]} />
-        </div>
-      </div>
-    </section>
+function Gallery() {
+  return (
+    <div className="gap-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 p-4">
+      {creators.map(creator => (
+        <Card key={creator.id} creator={creator} />
+      ))}
+    </div>
+  )
+}
 
-    {/* Mixed Layout */}
-    <section>
-      <h2 className="mb-6 font-bold text-gray-900 dark:text-gray-100 text-2xl">Mixed Layout</h2>
-      <div className="gap-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-        <CardType1 creator={sampleCreators[0]} />
-        <CardImage1 creator={sampleCreators[1]} />
-        <CardType2 creator={sampleCreators[2]} />
-        <CardImage2 creator={sampleCreators[3]} />
-        <div className="lg:col-span-2">
-          <CardImage3 creator={sampleCreators[4]} />
-        </div>
-        <CardType3 creator={sampleCreators[5]} />
-      </div>
-    </section>
-  </div>
-)
+export default {
+  Gallery: <Gallery />
+}
