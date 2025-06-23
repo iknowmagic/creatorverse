@@ -1,4 +1,4 @@
-import Layout from '../layouts/advanced'
+import Layout from '../layouts/basic'
 
 export function meta() {
   return [

@@ -9,7 +9,7 @@ import { CreatorGallery } from './CreatorGallery'
 
 export default function Welcome() {
   return (
-    <main className="flex flex-col bg-gray-100 dark:bg-gray-900 p-4 min-w-[360px] max-w-[960px] min-h-screen font-archivo uppercase">
+    <main className="flex flex-col bg-gray-100 dark:bg-gray-900 p-4 min-w-[360px] max-w-[960px] min-h-screen font-archivo">
       <header className="flex lg:flex-row flex-col items-start lg:items-center gap-4">
         <h1 className="font-chivo text-4xl md:text-8xl">creatorverse</h1>
         <p className="lg:max-w-48 text-gray-700 dark:text-gray-300 text-sm text-left">
@@ -27,10 +27,10 @@ export default function Welcome() {
 
       <div className="relative mt-8 mb-8">
         {/* Custom Navigation Buttons */}
-        <button className="top-1/2 left-2 z-10 absolute bg-gray-900 hover:bg-gray-800 dark:bg-gray-100 dark:hover:bg-gray-200 p-2 transition-colors -translate-y-1/2 cursor-pointer swiper-button-prev-custom">
+        <button className="swiper-button-prev-custom top-1/2 left-2 z-10 absolute bg-gray-900 hover:bg-gray-800 dark:bg-gray-100 dark:hover:bg-gray-200 p-2 transition-colors -translate-y-1/2 cursor-pointer">
           <ChevronLeft className="w-5 h-5 text-gray-100 dark:text-gray-900" />
         </button>
-        <button className="top-1/2 right-2 z-10 absolute bg-gray-900 hover:bg-gray-800 dark:bg-gray-100 dark:hover:bg-gray-200 p-2 transition-colors -translate-y-1/2 cursor-pointer swiper-button-next-custom">
+        <button className="swiper-button-next-custom top-1/2 right-2 z-10 absolute bg-gray-900 hover:bg-gray-800 dark:bg-gray-100 dark:hover:bg-gray-200 p-2 transition-colors -translate-y-1/2 cursor-pointer">
           <ChevronRight className="w-5 h-5 text-gray-100 dark:text-gray-900" />
         </button>
 

@@ -1,5 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@100..900&family=Libre+Bodoni:wght@400..700&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@100..900&family=Chivo:wght@100..900&family=Libre+Bodoni:wght@400..700&display=swap');
 @import 'tailwindcss';
 @plugin "daisyui";
 
@@ -39,13 +38,14 @@
 }
 
 @theme {
-  --font-libre-bodoni: 'Libre Bodoni';
+  --font-chivo: 'Chivo';
   --font-archivo: 'Archivo';
+  --font-libre-bodoni: 'Libre Bodoni';
 }
 
 html,
 body {
-  @apply bg-white dark:bg-gray-900 font-libre-bodoni;
+  @apply bg-white dark:bg-gray-900 font-chivo;
   color-scheme: light dark;
   width: 100%;
   background-color: var(--color-gray-100);
@@ -58,6 +58,10 @@ body {
 
 .font-archivo {
   font-family: 'Archivo', 'sans-serif';
+}
+
+.font-chivo {
+  font-family: 'Chivo', 'sans-serif';
 }
 
 .font-libre-bodoni {

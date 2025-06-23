@@ -305,7 +305,7 @@ export function ReactWookmark({
           animate={{ opacity: 1 }}
           className="flex justify-center mt-8"
         >
-          <div className="flex items-center gap-2 text-gray-500 dark:text-gray-400 text-sm uppercase">
+          <div className="flex items-center gap-2 text-gray-500 dark:text-gray-400 text-sm">
             <div className="border-2 border-gray-500 border-t-transparent rounded-full w-4 h-4 animate-spin" />
             Loading More Creators
           </div>
@@ -322,7 +322,7 @@ export function ReactWookmark({
           animate={{ opacity: 1, y: 0 }}
           className="mt-12 mb-8 text-center"
         >
-          <div className="inline-block px-4 py-2 border border-gray-400 dark:border-gray-600 text-gray-700 dark:text-gray-300 text-sm uppercase">
+          <div className="inline-block px-4 py-2 border border-gray-400 dark:border-gray-600 text-gray-700 dark:text-gray-300 text-sm">
             End of Gallery — {creators.length} Total Creators
           </div>
         </motion.div>
