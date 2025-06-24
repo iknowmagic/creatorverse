@@ -44,11 +44,12 @@ export function MasonryInfiniteScroll<T extends { id: string | number }>({
   const sentinelRef = useRef<HTMLDivElement>(null)
   const observerRef = useRef<IntersectionObserver>()
   const isLoadingRef = useRef(false) // Prevent race conditions
+  const actionTriggered = useRef(false) // Prevent multiple triggers like react-infinite-scroll-component
 
   // Initialize with first batch
   useEffect(() => {
     if (allItems.length > 0 && visibleItems.length === 0) {
-      console.log('🚀 Initializing with first batch:', initialCount)
+      // console.log('🚀 Initializing with first batch:', initialCount)
       const initial = allItems.slice(0, initialCount)
       setVisibleItems(initial)
       setCurrentIndex(initialCount)
@@ -111,7 +112,7 @@ export function MasonryInfiniteScroll<T extends { id: string | number }>({
     setLayoutItems(newLayoutItems)
     setContainerHeight(finalHeight)
     setIsLayoutReady(true)
-    console.log('📐 Layout calculated:', { items: newLayoutItems.length, height: finalHeight })
+    // console.log('📐 Layout calculated:', { items: newLayoutItems.length, height: finalHeight })
   }, [visibleItems, itemWidth, gap])
 
   // Measure and layout when items change
@@ -128,62 +129,69 @@ export function MasonryInfiniteScroll<T extends { id: string | number }>({
     }
   }, [visibleItems, calculateLayout])
 
-  // Trigger layout when visible items change
+  // Reset action trigger when new items are loaded (like react-infinite-scroll-component)
+  useEffect(() => {
+    actionTriggered.current = false
+    // console.log('🔄 actionTriggered reset after data change')
+  }, [visibleItems.length])
+
+  // Trigger layout when visible items change - FIX for single column flash
   useEffect(() => {
     if (visibleItems.length > 0) {
-      setIsLayoutReady(false)
-      setTimeout(measureAndLayout, 100)
+      // DON'T set isLayoutReady to false immediately - this causes the flash!
+      // Instead, keep current layout visible while calculating new layout
+      setTimeout(measureAndLayout, 50) // Reduced delay
     }
   }, [visibleItems.length, measureAndLayout])
 
-  // Load more function - NO setTimeout, direct execution
+  // Load more function - borrowing patterns from react-infinite-scroll-component
   const loadMore = useCallback(() => {
-    console.log('📞 loadMore called:', {
-      isLoading: isLoadingRef.current,
-      currentIndex,
-      totalItems: allItems.length,
-      visibleItems: visibleItems.length
-    })
+    // console.log('📞 loadMore called:', {
+    //   isLoading: isLoadingRef.current,
+    //   currentIndex,
+    //   totalItems: allItems.length,
+    //   visibleItems: visibleItems.length
+    // })
 
-    // Use ref to prevent race conditions
+    // Prevent multiple triggers (like react-infinite-scroll-component)
     if (isLoadingRef.current || currentIndex >= allItems.length) {
-      console.log('❌ Load blocked')
+      // console.log('❌ Load blocked')
       return
     }
 
-    console.log('✅ Loading more items immediately...')
+    // console.log('✅ Loading more items immediately...')
     isLoadingRef.current = true
     setIsLoading(true)
 
     // Execute immediately - no setTimeout!
     const nextBatch = allItems.slice(currentIndex, currentIndex + loadMoreCount)
-    console.log('📦 Next batch:', {
-      from: currentIndex,
-      to: currentIndex + loadMoreCount,
-      size: nextBatch.length
-    })
+    // console.log('📦 Next batch:', {
+    //   from: currentIndex,
+    //   to: currentIndex + loadMoreCount,
+    //   size: nextBatch.length
+    // })
 
     if (nextBatch.length > 0) {
-      // Update state immediately
+      // Update state immediately - DON'T reset layout ready here
       setVisibleItems(prev => {
         const newItems = [...prev, ...nextBatch]
-        console.log('📊 Updated visibleItems:', prev.length, '→', newItems.length)
+        // console.log('📊 Updated visibleItems:', prev.length, '→', newItems.length)
         return newItems
       })
 
       setCurrentIndex(prev => {
         const newIndex = prev + loadMoreCount
-        console.log('📍 Updated currentIndex:', prev, '→', newIndex)
+        // console.log('📍 Updated currentIndex:', prev, '→', newIndex)
         return newIndex
       })
     }
 
-    // Short delay just for UI smoothness, then reset loading
+    // Shorter delay for UI smoothness
     setTimeout(() => {
       isLoadingRef.current = false
       setIsLoading(false)
-      console.log('✅ Loading complete')
-    }, 300)
+      // console.log('✅ Loading complete')
+    }, 200)
   }, [allItems, currentIndex, loadMoreCount])
 
   // Setup intersection observer - MUCH simpler!
@@ -194,19 +202,27 @@ export function MasonryInfiniteScroll<T extends { id: string | number }>({
 
     if (!sentinelRef.current) return
 
-    console.log('👁️ Setting up intersection observer')
+    // console.log('👁️ Setting up intersection observer')
 
     observerRef.current = new IntersectionObserver(
       entries => {
         const [entry] = entries
-        console.log('👀 Intersection observed:', {
-          isIntersecting: entry.isIntersecting,
-          isLoading: isLoadingRef.current,
-          hasMore: currentIndex < allItems.length
-        })
+        // console.log('👀 Intersection observed:', {
+        //   isIntersecting: entry.isIntersecting,
+        //   isLoading: isLoadingRef.current,
+        //   actionTriggered: actionTriggered.current,
+        //   hasMore: currentIndex < allItems.length
+        // })
+
+        // Prevent multiple triggers (borrowed from react-infinite-scroll-component)
+        if (actionTriggered.current) {
+          // console.log('❌ Action already triggered, skipping')
+          return
+        }
 
         if (entry.isIntersecting && !isLoadingRef.current && currentIndex < allItems.length) {
-          console.log('🎯 Triggering loadMore from intersection')
+          // console.log('🎯 Triggering loadMore from intersection')
+          actionTriggered.current = true
           loadMore()
         }
       },
@@ -276,10 +292,10 @@ export function MasonryInfiniteScroll<T extends { id: string | number }>({
           </AnimatePresence>
         )}
 
-        {/* Measurement items (hidden when layout ready) */}
+        {/* Measurement items - hidden and positioned to not affect layout */}
         <div
-          className={isLayoutReady ? 'opacity-0 pointer-events-none' : 'space-y-4'}
-          style={{ width: `${itemWidth}px` }}
+          className="top-0 left-0 absolute opacity-0 pointer-events-none"
+          style={{ width: `${itemWidth}px`, zIndex: -1 }}
         >
           {visibleItems.map(item => (
             <div
@@ -299,15 +315,8 @@ export function MasonryInfiniteScroll<T extends { id: string | number }>({
         </div>
       </div>
 
-      {/* Intersection Observer Sentinel - OUTSIDE masonry container */}
-      {hasMore && (
-        <div
-          ref={sentinelRef}
-          className="flex justify-center items-center bg-yellow-100 border border-yellow-300 w-full h-4 text-yellow-800 text-xs text-center"
-        >
-          SCROLL TRIGGER (visible for debugging)
-        </div>
-      )}
+      {/* Intersection Observer Sentinel - hidden for production */}
+      {hasMore && <div ref={sentinelRef} className="w-full h-4" style={{ visibility: 'hidden' }} />}
 
       {/* Loading indicator */}
       <AnimatePresence>
@@ -338,8 +347,8 @@ export function MasonryInfiniteScroll<T extends { id: string | number }>({
         )}
       </AnimatePresence>
 
-      {/* Manual trigger for debugging */}
-      {hasMore && !isLoading && (
+      {/* Uncomment for debugging */}
+      {/* {hasMore && !isLoading && (
         <div className="py-4 text-center">
           <button
             onClick={loadMore}
@@ -348,7 +357,7 @@ export function MasonryInfiniteScroll<T extends { id: string | number }>({
             🔧 Manual Load More
           </button>
         </div>
-      )}
+      )} */}
 
       {/* Completion message */}
       {!hasMore && visibleItems.length > 0 && (

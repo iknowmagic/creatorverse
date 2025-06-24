@@ -1,7 +1,7 @@
 import 'swiper/css'
 import 'swiper/css/autoplay'
 import 'swiper/css/navigation'
-import { categories, creators } from '~/data/creators'
+import { categories, randomCreatorImages } from '~/data/creators'
 import { Card } from './Card'
 import { CarouselNavigation } from './Carousel'
 import { MasonryInfiniteScroll } from './MasonryInfiniteScroll'
@@ -29,7 +29,7 @@ export default function Welcome() {
       </div>
 
       <MasonryInfiniteScroll
-        allItems={creators}
+        allItems={randomCreatorImages()}
         renderItem={creator => <Card creator={creator} />}
         itemWidth={296}
         gap={12}
