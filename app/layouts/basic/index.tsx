@@ -5,7 +5,7 @@ import 'swiper/css/navigation'
 import 'swiper/css/autoplay'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { categories, orderedCreators, selectedCreators, randomCreators } from '~/data/creators'
-import { Hero } from '~/layouts/basic/Hero'
+import { Carousel } from './Carousel'
 import { Gallery } from './Gallery'
 
 export default function Welcome() {
@@ -35,27 +35,7 @@ export default function Welcome() {
           <ChevronRight className="w-5 h-5 text-gray-100 dark:text-gray-900" />
         </button>
 
-        <Swiper
-          modules={[Navigation, Autoplay]}
-          spaceBetween={50}
-          slidesPerView={1}
-          navigation={{
-            prevEl: '.swiper-button-prev-custom',
-            nextEl: '.swiper-button-next-custom'
-          }}
-          autoplay={{
-            delay: 4000,
-            disableOnInteraction: false,
-            pauseOnMouseEnter: true
-          }}
-          loop={true}
-        >
-          {selectedCreators().map(creator => (
-            <SwiperSlide key={creator.id}>
-              <Hero creator={creator} />
-            </SwiperSlide>
-          ))}
-        </Swiper>
+        <Carousel />
       </div>
 
       <Gallery creators={randomCreators()} className="mt-8" />
