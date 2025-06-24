@@ -4,7 +4,7 @@ import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/autoplay'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
-import { categories, orderedCreators, selectedCreators } from '~/data/creators'
+import { categories, orderedCreators, selectedCreators, randomCreators } from '~/data/creators'
 import { Hero } from '~/layouts/basic/Hero'
 import { Gallery } from './Gallery'
 
@@ -58,7 +58,7 @@ export default function Welcome() {
         </Swiper>
       </div>
 
-      <Gallery creators={orderedCreators()} className="mt-8" />
+      <Gallery creators={randomCreators()} className="mt-8" />
     </main>
   )
 }
