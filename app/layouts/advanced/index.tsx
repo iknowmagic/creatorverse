@@ -4,7 +4,7 @@ import 'swiper/css'
 import 'swiper/css/navigation'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { categories, orderedCreators, randomCreators, selectedCreators } from '~/data/creators'
-import { CreatorHero } from '~/layouts/advanced/CreatorHero'
+import { Hero } from '~/layouts/basic/Hero'
 import { CreatorGallery } from './CreatorGallery'
 
 export default function Welcome() {
@@ -51,7 +51,7 @@ export default function Welcome() {
         >
           {selectedCreators().map(creator => (
             <SwiperSlide key={creator.id}>
-              <CreatorHero creator={creator} />
+              <Hero creator={creator} />
             </SwiperSlide>
           ))}
         </Swiper>

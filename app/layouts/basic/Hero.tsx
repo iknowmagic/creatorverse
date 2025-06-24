@@ -1,15 +1,24 @@
 import type { Creator } from '../../data/creators'
 
-interface CreatorHeroProps {
+interface Hero {
   creator: Creator
 }
 
-export function CreatorHero({ creator }: CreatorHeroProps) {
+export function Hero({ creator }: Hero) {
   return (
     <div className="flex flex-col justify-center items-center bg-gray-200 dark:bg-gray-800 mx-2 p-8 text-center">
-      <div className="flex justify-center items-center bg-gray-400 dark:bg-gray-600 mb-6 w-24 h-24">
-        <div className="bg-gray-500 dark:bg-gray-700 w-16 h-16"></div>
-      </div>
+      {creator.imageURL && (
+        <img
+          src={creator.imageURL}
+          alt={creator.name}
+          className="grayscale rounded-xs w-24 h-24 object-cover aspect-square"
+        />
+      )}
+      {!creator.imageURL && (
+        <div className="flex justify-center items-center bg-gray-400 dark:bg-gray-600 mb-6 w-24 h-24">
+          <div className="bg-gray-500 dark:bg-gray-700 w-16 h-16"></div>
+        </div>
+      )}
       <h1 className="mb-2 font-chivo font-bold text-gray-900 dark:text-gray-100 text-2xl normal-case">
         {creator.name}
       </h1>
@@ -23,7 +32,7 @@ export function CreatorHero({ creator }: CreatorHeroProps) {
       </p>
       <div className="flex flex-col gap-2">
         <div className="px-2 py-1 text-gray-700 dark:text-gray-300 text-xs">{creator.category}</div>
-        <button className="bg-gray-900 btn btn-neutral">Visit Channel</button>
+        <button className="btn btn-neutral bg-gray-900">Visit Channel</button>
       </div>
     </div>
   )

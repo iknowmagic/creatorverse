@@ -5,7 +5,7 @@ import 'swiper/css/navigation'
 import 'swiper/css/autoplay'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { categories, orderedCreators, selectedCreators } from '~/data/creators'
-import { CreatorHero } from '~/layouts/advanced/CreatorHero'
+import { Hero } from '~/layouts/basic/Hero'
 import { Gallery } from './Gallery'
 
 export default function Welcome() {
@@ -52,13 +52,12 @@ export default function Welcome() {
         >
           {selectedCreators().map(creator => (
             <SwiperSlide key={creator.id}>
-              <CreatorHero creator={creator} />
+              <Hero creator={creator} />
             </SwiperSlide>
           ))}
         </Swiper>
       </div>
 
-      {/* 🎯 REPLACED: Static grid with dynamic Gallery */}
       <Gallery creators={orderedCreators()} className="mt-8" />
     </main>
   )

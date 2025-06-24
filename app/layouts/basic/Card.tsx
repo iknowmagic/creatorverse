@@ -27,7 +27,7 @@ export function Card({ creator }: CardProps) {
           <img
             src={creator?.imageURL}
             alt={creator?.name}
-            className="grayscale w-full object-cover aspect-video"
+            className="grayscale rounded-xs w-full object-cover aspect-video"
           />
         </div>
       )}
