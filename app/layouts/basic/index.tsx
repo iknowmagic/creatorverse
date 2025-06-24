@@ -1,9 +1,10 @@
 import 'swiper/css'
 import 'swiper/css/autoplay'
 import 'swiper/css/navigation'
-import { categories, randomCreatorImages } from '~/data/creators'
+import { randomCreatorImages } from '~/data/creators'
 import { Card } from './Card'
 import { CarouselNavigation } from './Carousel'
+import { CategorySelector } from './CategorySelector'
 import { InfiniteScrolling } from './InfiniteScrolling'
 
 export default function Welcome() {
@@ -18,11 +19,7 @@ export default function Welcome() {
 
       <div className="divider divider-neutral"></div>
 
-      <div className="gap-2 grid sm:grid-flow-col auto-cols-auto mb-8 md:text-xl lg:text-2xl uppercase">
-        {categories.map((category: string) => (
-          <div key={category}>{category}</div>
-        ))}
-      </div>
+      <CategorySelector />
 
       <div className="mt-12 mb-8">
         <CarouselNavigation />
