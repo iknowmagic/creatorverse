@@ -3,13 +3,14 @@ import type { Creator } from '~/data/creators'
 
 interface CardProps {
   creator: Creator
+  className?: string
 }
 
-export function Card({ creator }: CardProps) {
+export function Card({ creator, className }: CardProps) {
   return (
     <a
       href={creator?.url}
-      className="group relative flex flex-col p-4 border border-gray-400 min-w-[250px] h-full"
+      className={`group relative flex flex-col p-4 border border-gray-400 min-w-[250px] h-full bg-white ${className}`}
       target="_blank"
       rel="noopener noreferrer"
     >
