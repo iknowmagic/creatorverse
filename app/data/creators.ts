@@ -1362,3 +1362,13 @@ export function getTagCounts(): Record<string, number> {
     {} as Record<string, number>
   )
 }
+
+export function randomCreatorImages(): Creator[] {
+  return creators.map(creator => {
+    if (Math.random() < 0.5) {
+      const { imageURL, ...rest } = creator
+      return rest as Creator
+    }
+    return creator
+  })
+}

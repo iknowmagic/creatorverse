@@ -3,7 +3,8 @@ import 'swiper/css/autoplay'
 import 'swiper/css/navigation'
 import { categories, creators } from '~/data/creators'
 import { Card } from './Card'
-import { InfiniteScrolling } from './InfiniteScrolling'
+import { CarouselNavigation } from './Carousel'
+import { MasonryInfiniteScroll } from './MasonryInfiniteScroll'
 
 export default function Welcome() {
   return (
@@ -23,9 +24,11 @@ export default function Welcome() {
         ))}
       </div>
 
-      <div className="mt-12 mb-8">{/* <CarouselNavigation /> */}</div>
+      <div className="mt-12 mb-8">
+        <CarouselNavigation />
+      </div>
 
-      <InfiniteScrolling
+      <MasonryInfiniteScroll
         allItems={creators}
         renderItem={creator => <Card creator={creator} />}
         itemWidth={296}

@@ -25,9 +25,10 @@ export function InfiniteScrolling<T extends { id: string | number }>({
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isLoading, setIsLoading] = useState(false)
 
-  const sentinelRef = useRef<HTMLDivElement>(null)
-  const observerRef = useRef<IntersectionObserver>()
+  const masonryContainerRef = useRef<HTMLDivElement>(null)
   const loadingTimeoutRef = useRef<NodeJS.Timeout>()
+  const lastScrollY = useRef(0)
+  const ticking = useRef(false)
 
   // Initialize with first batch
   useEffect(() => {
@@ -38,7 +39,7 @@ export function InfiniteScrolling<T extends { id: string | number }>({
     }
   }, [allItems, visibleItems.length, initialCount])
 
-  // Simplified load more function
+  // Load more function
   const loadMore = useCallback(() => {
     if (isLoading || currentIndex >= allItems.length) return
 
@@ -62,49 +63,77 @@ export function InfiniteScrolling<T extends { id: string | number }>({
     }, 400)
   }, [allItems, currentIndex, isLoading, loadMoreCount])
 
-  // Setup intersection observer
+  // Custom scroll handler that works with Masonry's absolute positioning
+  const handleScroll = useCallback(() => {
+    if (!masonryContainerRef.current || ticking.current) return
+
+    ticking.current = true
+
+    requestAnimationFrame(() => {
+      const container = masonryContainerRef.current
+      if (!container) {
+        ticking.current = false
+        return
+      }
+
+      // Get the container's bounding rect
+      const containerRect = container.getBoundingClientRect()
+      const containerHeight = container.offsetHeight
+      const viewportHeight = window.innerHeight
+
+      // Calculate how much of the container is visible
+      const visibleBottom = Math.min(containerRect.bottom, viewportHeight)
+      const visibleTop = Math.max(containerRect.top, 0)
+      const visibleHeight = visibleBottom - visibleTop
+
+      // Trigger loading when we're near the bottom of the visible content
+      // This accounts for the fixed height container with absolute positioned items
+      const scrollProgress = (viewportHeight - containerRect.top) / containerHeight
+      const shouldLoad = scrollProgress > 0.7 && !isLoading && currentIndex < allItems.length
+
+      if (shouldLoad) {
+        loadMore()
+      }
+
+      ticking.current = false
+    })
+  }, [loadMore, isLoading, currentIndex, allItems.length])
+
+  // Set up scroll listener
   useEffect(() => {
-    if (observerRef.current) {
-      observerRef.current.disconnect()
+    const throttledScroll = () => {
+      lastScrollY.current = window.scrollY
+      handleScroll()
     }
 
-    observerRef.current = new IntersectionObserver(
-      entries => {
-        const [entry] = entries
-        if (entry.isIntersecting && !isLoading && currentIndex < allItems.length) {
-          loadMore()
-        }
-      },
-      { rootMargin: '200px', threshold: 0.1 }
-    )
-
-    if (sentinelRef.current) {
-      observerRef.current.observe(sentinelRef.current)
-    }
+    window.addEventListener('scroll', throttledScroll, { passive: true })
+    window.addEventListener('resize', throttledScroll)
 
     return () => {
-      if (observerRef.current) {
-        observerRef.current.disconnect()
-      }
+      window.removeEventListener('scroll', throttledScroll)
+      window.removeEventListener('resize', throttledScroll)
       if (loadingTimeoutRef.current) {
         clearTimeout(loadingTimeoutRef.current)
       }
     }
-  }, [loadMore, isLoading, currentIndex, allItems.length])
+  }, [handleScroll])
 
   const hasMore = currentIndex < allItems.length
 
   return (
     <div>
-      <Masonry
-        items={visibleItems}
-        renderItem={renderItem}
-        itemWidth={itemWidth}
-        gap={gap}
-        className={className}
-      />
+      {/* Modified Masonry with ref for scroll detection */}
+      <div ref={masonryContainerRef}>
+        <Masonry
+          items={visibleItems}
+          renderItem={renderItem}
+          itemWidth={itemWidth}
+          gap={gap}
+          className={className}
+        />
+      </div>
 
-      {/* Simple loading indicator */}
+      {/* Loading indicator */}
       <AnimatePresence>
         {isLoading && (
           <motion.div
@@ -132,13 +161,6 @@ export function InfiniteScrolling<T extends { id: string | number }>({
           </motion.div>
         )}
       </AnimatePresence>
-
-      {/* Intersection observer sentinel */}
-      {hasMore && !isLoading && (
-        <div ref={sentinelRef} className="flex justify-center items-center w-full h-10">
-          {/* Invisible trigger area */}
-        </div>
-      )}
 
       {/* Completion message */}
       {!hasMore && visibleItems.length > 0 && (
