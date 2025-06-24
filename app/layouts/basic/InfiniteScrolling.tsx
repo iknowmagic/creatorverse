@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { Masonry } from './Masonry'
+import { Masonry, type MasonryRef } from './Masonry'
 
 interface InfiniteScrollingProps<T> {
   allItems: T[]
@@ -21,14 +21,17 @@ export function InfiniteScrolling<T extends { id: string | number }>({
   initialCount = 12,
   loadMoreCount = 18
 }: InfiniteScrollingProps<T>) {
+  // Infinite scroll state
   const [visibleItems, setVisibleItems] = useState<T[]>([])
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isLoading, setIsLoading] = useState(false)
 
-  const masonryContainerRef = useRef<HTMLDivElement>(null)
-  const loadingTimeoutRef = useRef<NodeJS.Timeout>()
-  const lastScrollY = useRef(0)
-  const ticking = useRef(false)
+  // Refs for coordination
+  const masonryRef = useRef<MasonryRef>(null)
+  const sentinelRef = useRef<HTMLDivElement>(null)
+  const observerRef = useRef<IntersectionObserver>()
+  const isLoadingRef = useRef(false)
+  const actionTriggered = useRef(false) // Prevent multiple triggers
 
   // Initialize with first batch
   useEffect(() => {
@@ -37,101 +40,98 @@ export function InfiniteScrolling<T extends { id: string | number }>({
       setVisibleItems(initial)
       setCurrentIndex(initialCount)
     }
-  }, [allItems, visibleItems.length, initialCount])
+  }, [allItems, initialCount])
 
-  // Load more function
+  // Load more function - patterns from react-infinite-scroll-component
   const loadMore = useCallback(() => {
-    if (isLoading || currentIndex >= allItems.length) return
+    // Prevent multiple triggers
+    if (isLoadingRef.current || currentIndex >= allItems.length) {
+      return
+    }
 
+    isLoadingRef.current = true
     setIsLoading(true)
 
-    // Clear any existing timeout
-    if (loadingTimeoutRef.current) {
-      clearTimeout(loadingTimeoutRef.current)
+    // Execute immediately - no setTimeout!
+    const nextBatch = allItems.slice(currentIndex, currentIndex + loadMoreCount)
+
+    if (nextBatch.length > 0) {
+      // Update state immediately
+      setVisibleItems(prev => [...prev, ...nextBatch])
+      setCurrentIndex(prev => prev + loadMoreCount)
     }
 
-    // Add new items after a brief delay for smooth UX
-    loadingTimeoutRef.current = setTimeout(() => {
-      const nextBatch = allItems.slice(currentIndex, currentIndex + loadMoreCount)
-
-      if (nextBatch.length > 0) {
-        setVisibleItems(prev => [...prev, ...nextBatch])
-        setCurrentIndex(prev => prev + loadMoreCount)
-      }
-
+    // Short delay for UI smoothness
+    setTimeout(() => {
+      isLoadingRef.current = false
       setIsLoading(false)
-    }, 400)
-  }, [allItems, currentIndex, isLoading, loadMoreCount])
+    }, 200)
+  }, [allItems, currentIndex, loadMoreCount])
 
-  // Custom scroll handler that works with Masonry's absolute positioning
-  const handleScroll = useCallback(() => {
-    if (!masonryContainerRef.current || ticking.current) return
-
-    ticking.current = true
-
-    requestAnimationFrame(() => {
-      const container = masonryContainerRef.current
-      if (!container) {
-        ticking.current = false
-        return
-      }
-
-      // Get the container's bounding rect
-      const containerRect = container.getBoundingClientRect()
-      const containerHeight = container.offsetHeight
-      const viewportHeight = window.innerHeight
-
-      // Calculate how much of the container is visible
-      const visibleBottom = Math.min(containerRect.bottom, viewportHeight)
-      const visibleTop = Math.max(containerRect.top, 0)
-      const visibleHeight = visibleBottom - visibleTop
-
-      // Trigger loading when we're near the bottom of the visible content
-      // This accounts for the fixed height container with absolute positioned items
-      const scrollProgress = (viewportHeight - containerRect.top) / containerHeight
-      const shouldLoad = scrollProgress > 0.7 && !isLoading && currentIndex < allItems.length
-
-      if (shouldLoad) {
-        loadMore()
-      }
-
-      ticking.current = false
-    })
-  }, [loadMore, isLoading, currentIndex, allItems.length])
-
-  // Set up scroll listener
+  // Reset action trigger when new items are loaded
   useEffect(() => {
-    const throttledScroll = () => {
-      lastScrollY.current = window.scrollY
-      handleScroll()
+    actionTriggered.current = false
+  }, [visibleItems.length])
+
+  // Setup intersection observer
+  useEffect(() => {
+    if (observerRef.current) {
+      observerRef.current.disconnect()
     }
 
-    window.addEventListener('scroll', throttledScroll, { passive: true })
-    window.addEventListener('resize', throttledScroll)
+    if (!sentinelRef.current) return
+
+    observerRef.current = new IntersectionObserver(
+      entries => {
+        const [entry] = entries
+
+        // Prevent multiple triggers (borrowed from react-infinite-scroll-component)
+        if (actionTriggered.current) {
+          return
+        }
+
+        if (entry.isIntersecting && !isLoadingRef.current && currentIndex < allItems.length) {
+          actionTriggered.current = true
+          loadMore()
+        }
+      },
+      {
+        rootMargin: '200px',
+        threshold: 0.1
+      }
+    )
+
+    observerRef.current.observe(sentinelRef.current)
 
     return () => {
-      window.removeEventListener('scroll', throttledScroll)
-      window.removeEventListener('resize', throttledScroll)
-      if (loadingTimeoutRef.current) {
-        clearTimeout(loadingTimeoutRef.current)
+      if (observerRef.current) {
+        observerRef.current.disconnect()
       }
     }
-  }, [handleScroll])
+  }, [loadMore, currentIndex, allItems.length])
 
   const hasMore = currentIndex < allItems.length
 
+  // Handle layout completion from Masonry
+  const handleLayoutComplete = useCallback((height: number) => {
+    // Layout is complete, could trigger additional logic here if needed
+  }, [])
+
   return (
     <div>
-      {/* Modified Masonry with ref for scroll detection */}
-      <div ref={masonryContainerRef}>
-        <Masonry
-          items={visibleItems}
-          renderItem={renderItem}
-          itemWidth={itemWidth}
-          gap={gap}
-          className={className}
-        />
-      </div>
+      {/* Masonry component with visible items */}
+      <Masonry
+        ref={masonryRef}
+        items={visibleItems}
+        renderItem={renderItem}
+        itemWidth={itemWidth}
+        gap={gap}
+        className={className}
+        onLayoutComplete={handleLayoutComplete}
+      />
+
+      {/* Intersection Observer Sentinel - outside masonry container */}
+      {hasMore && <div ref={sentinelRef} className="w-full h-4" style={{ visibility: 'hidden' }} />}
 
       {/* Loading indicator */}
       <AnimatePresence>

@@ -1,5 +1,12 @@
 import { AnimatePresence, motion } from 'framer-motion'
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, {
+  forwardRef,
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState
+} from 'react'
 
 interface MasonryProps<T> {
   items: T[]
@@ -7,6 +14,7 @@ interface MasonryProps<T> {
   itemWidth?: number
   gap?: number
   className?: string
+  onLayoutComplete?: (height: number) => void
 }
 
 interface LayoutItem<T> {
@@ -18,27 +26,42 @@ interface LayoutItem<T> {
   height: number
 }
 
-export function Masonry<T extends { id: string | number }>({
-  items,
-  renderItem,
-  itemWidth = 300,
-  gap = 16,
-  className = ''
-}: MasonryProps<T>) {
+export interface MasonryRef {
+  getContainerHeight: () => number
+  isLayoutReady: () => boolean
+}
+
+export const Masonry = forwardRef<MasonryRef, MasonryProps<any>>(function Masonry<
+  T extends { id: string | number }
+>(
+  {
+    items,
+    renderItem,
+    itemWidth = 300,
+    gap = 16,
+    className = '',
+    onLayoutComplete
+  }: MasonryProps<T>,
+  ref
+) {
   const [layoutItems, setLayoutItems] = useState<LayoutItem<T>[]>([])
   const [containerHeight, setContainerHeight] = useState(0)
-  const [isReady, setIsReady] = useState(false)
+  const [isLayoutReady, setIsLayoutReady] = useState(false)
 
   const containerRef = useRef<HTMLDivElement>(null)
   const measureElementsRef = useRef<Map<string | number, HTMLDivElement>>(new Map())
 
-  // Simple layout calculation
+  // Expose methods to parent via ref
+  useImperativeHandle(ref, () => ({
+    getContainerHeight: () => containerHeight,
+    isLayoutReady: () => isLayoutReady
+  }))
+
+  // Layout calculation
   const calculateLayout = useCallback(() => {
     if (!containerRef.current || items.length === 0) return
 
     const containerWidth = containerRef.current.offsetWidth
-
-    // Calculate how many columns fit
     const columnWidth = itemWidth + gap
     const maxColumns = Math.floor((containerWidth + gap) / columnWidth)
     const columns = Math.max(1, Math.min(maxColumns, items.length))
@@ -54,17 +77,13 @@ export function Masonry<T extends { id: string | number }>({
     // Process each item
     items.forEach(item => {
       const element = measureElementsRef.current.get(item.id)
-
-      if (!element || element.offsetHeight === 0) {
-        return
-      }
+      if (!element || element.offsetHeight === 0) return
 
       const itemHeight = element.offsetHeight
 
-      // Find column with minimum height
+      // Find shortest column
       let minHeight = columnHeights[0]
       let minColumn = 0
-
       for (let i = 1; i < columns; i++) {
         if (columnHeights[i] < minHeight) {
           minHeight = columnHeights[i]
@@ -76,7 +95,6 @@ export function Masonry<T extends { id: string | number }>({
       const x = leftOffset + minColumn * columnWidth
       const y = minHeight
 
-      // Add to layout
       newLayoutItems.push({
         item,
         id: item.id,
@@ -94,12 +112,14 @@ export function Masonry<T extends { id: string | number }>({
 
     setLayoutItems(newLayoutItems)
     setContainerHeight(finalHeight)
-    setIsReady(true)
-  }, [items, itemWidth, gap])
+    setIsLayoutReady(true)
 
-  // Measure items and trigger layout
+    // Notify parent component
+    onLayoutComplete?.(finalHeight)
+  }, [items, itemWidth, gap, onLayoutComplete])
+
+  // Measure and layout
   const measureAndLayout = useCallback(() => {
-    // Wait for all elements to be measured
     const allMeasured = items.every(item => {
       const element = measureElementsRef.current.get(item.id)
       return element && element.offsetHeight > 0
@@ -112,21 +132,23 @@ export function Masonry<T extends { id: string | number }>({
     }
   }, [items, calculateLayout])
 
-  // Initialize layout when items change
+  // Trigger layout when items change - NO flash fix applied here
   useEffect(() => {
     if (items.length > 0) {
-      setIsReady(false)
-      // Give DOM time to render, then measure
-      setTimeout(measureAndLayout, 100)
+      // Only reset layout ready for initial load
+      if (layoutItems.length === 0) {
+        setIsLayoutReady(false)
+      }
+      setTimeout(measureAndLayout, 50)
     }
   }, [items.length, measureAndLayout])
 
   // Handle resize
   const handleResize = useCallback(() => {
-    if (isReady) {
+    if (isLayoutReady) {
       measureAndLayout()
     }
-  }, [isReady, measureAndLayout])
+  }, [isLayoutReady, measureAndLayout])
 
   useEffect(() => {
     window.addEventListener('resize', handleResize)
@@ -134,18 +156,17 @@ export function Masonry<T extends { id: string | number }>({
   }, [handleResize])
 
   return (
-    <div className={`${className}`}>
-      {/* NO GRID CLASSES - Container for layout */}
+    <div className={className}>
       <div
         ref={containerRef}
         className="relative w-full"
         style={{
-          height: isReady ? `${containerHeight}px` : 'auto',
+          height: isLayoutReady ? `${containerHeight}px` : 'auto',
           minHeight: '200px'
         }}
       >
-        {/* Positioned items (only when ready) */}
-        {isReady && (
+        {/* Positioned items (when layout is ready) */}
+        {isLayoutReady && (
           <AnimatePresence>
             {layoutItems.map((layoutItem, index) => (
               <motion.div
@@ -170,10 +191,10 @@ export function Masonry<T extends { id: string | number }>({
           </AnimatePresence>
         )}
 
-        {/* Measurement items (NO GRID CLASSES) */}
+        {/* Measurement items - hidden and positioned to not affect layout */}
         <div
-          className={isReady ? 'opacity-0 pointer-events-none' : 'space-y-4'}
-          style={{ width: `${itemWidth}px` }}
+          className="top-0 left-0 absolute opacity-0 pointer-events-none"
+          style={{ width: `${itemWidth}px`, zIndex: -1 }}
         >
           {items.map(item => (
             <div
@@ -194,4 +215,4 @@ export function Masonry<T extends { id: string | number }>({
       </div>
     </div>
   )
-}
+})

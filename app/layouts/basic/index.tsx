@@ -4,7 +4,7 @@ import 'swiper/css/navigation'
 import { categories, randomCreatorImages } from '~/data/creators'
 import { Card } from './Card'
 import { CarouselNavigation } from './Carousel'
-import { MasonryInfiniteScroll } from './MasonryInfiniteScroll'
+import { InfiniteScrolling } from './InfiniteScrolling'
 
 export default function Welcome() {
   return (
@@ -28,7 +28,7 @@ export default function Welcome() {
         <CarouselNavigation />
       </div>
 
-      <MasonryInfiniteScroll
+      <InfiniteScrolling
         allItems={randomCreatorImages()}
         renderItem={creator => <Card creator={creator} />}
         itemWidth={296}

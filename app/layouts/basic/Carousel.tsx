@@ -1,13 +1,13 @@
-import { Swiper, SwiperSlide } from 'swiper/react'
-import { Navigation, Autoplay, EffectCoverflow } from 'swiper/modules'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
 import 'swiper/css'
-import 'swiper/css/navigation'
 import 'swiper/css/autoplay'
 import 'swiper/css/effect-cards'
 import 'swiper/css/effect-coverflow'
+import 'swiper/css/navigation'
+import { Autoplay, EffectCoverflow, Navigation } from 'swiper/modules'
+import { Swiper, SwiperSlide } from 'swiper/react'
 import { selectedCreators } from '../../data/creators'
 import { Card } from './Card'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
 
 export function Carousel() {
   return (
