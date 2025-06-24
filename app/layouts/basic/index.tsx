@@ -17,7 +17,7 @@ export default function Welcome() {
         </p>
       </header>
 
-      <div className="divider divider-neutral"></div>
+      <div className="divider sm:divider-neutral"></div>
 
       <CategorySelector />
 

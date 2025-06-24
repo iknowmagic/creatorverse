@@ -5,6 +5,7 @@ import { categories } from '../../data/creators'
 export function CategorySelector() {
   const [categorySelected, setCategorySelected] = useState<string | null>(null)
   const [categoryAnimated, setCategoryAnimated] = useState<string | null>(null)
+  const [categoryHovered, setCategoryHovered] = useState<string | null>(null)
 
   const handleCategoryChange = (category: string) => {
     if (categorySelected === category) {
@@ -14,21 +15,24 @@ export function CategorySelector() {
       setCategoryAnimated(category)
     }
   }
+
   return (
-    <div className="gap-3 grid sm:grid-flow-col auto-cols-auto mb-8 md:text-xl lg:text-2xl uppercase">
+    <div className="gap-3 grid sm:grid-flow-col auto-cols-auto mb-8 w-fit md:text-xl lg:text-2xl uppercase">
       {categories.map((category: string) => (
         <div
           className="flex flex-col cursor-pointer"
           key={category}
           onClick={() => handleCategoryChange(category)}
+          onMouseEnter={() => setCategoryHovered(category)}
+          onMouseLeave={() => setCategoryHovered(null)}
         >
-          <div className="border-transparent border-b-2">{category}</div>
+          <div>{category}</div>
           <motion.div
             animate={{
               opacity:
                 categoryAnimated === category
                   ? [0, 1, 0, 1, 0, 1] // Blink pattern
-                  : categorySelected === category
+                  : categorySelected === category || categoryHovered === category
                     ? 1
                     : 0
             }}
