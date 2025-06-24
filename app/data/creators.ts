@@ -28,10 +28,10 @@ export interface Creator {
   id: number
   name: string
   description: string
-  imageURL: string
   url: string
-  category: ContainerCategory // Container category (5 main ones)
-  tag: CreatorTag // Specific tag (original categories)
+  imageURL?: string
+  category: ContainerCategory
+  tag: CreatorTag
   followers?: string
 }
 

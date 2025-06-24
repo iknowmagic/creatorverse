@@ -1,12 +1,20 @@
-import { Swiper, SwiperSlide } from 'swiper/react'
-import { Navigation, Autoplay } from 'swiper/modules'
 import 'swiper/css'
-import 'swiper/css/navigation'
 import 'swiper/css/autoplay'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
-import { categories, orderedCreators, selectedCreators, randomCreators } from '~/data/creators'
-import { Carousel, CarouselNavigation } from './Carousel'
-import { Gallery } from './Gallery'
+import 'swiper/css/navigation'
+import { categories } from '~/data/creators'
+import { creators } from '../../data/creators'
+import { Card } from './Card'
+import { CarouselNavigation } from './Carousel'
+import { InfiniteScrolling } from './Masonry'
+
+// Randomly remove imageURL from some creators ahead of time
+const randomCreators = creators.map(creator => {
+  if (Math.random() < 0.5) {
+    // Set imageURL to undefined instead of removing it to satisfy the Creator type
+    return { ...creator, imageURL: undefined }
+  }
+  return creator
+})
 
 export default function Welcome() {
   return (
@@ -17,20 +25,25 @@ export default function Welcome() {
           A collection of content creators from around the world.
         </p>
       </header>
-
       <div className="divider divider-neutral"></div>
-
       <div className="gap-2 grid sm:grid-flow-col auto-cols-auto mb-8 md:text-xl lg:text-2xl uppercase">
-        {categories.map(category => (
+        {categories.map((category: string) => (
           <div key={category}>{category}</div>
         ))}
       </div>
-
       <div className="mt-12 mb-8">
         <CarouselNavigation />
       </div>
 
-      <Gallery creators={randomCreators()} className="mt-8" />
+      <InfiniteScrolling
+        allItems={randomCreators}
+        renderItem={creator => <Card creator={creator} />}
+        itemWidth={296}
+        gap={12}
+        className="mt-8"
+        initialCount={12}
+        loadMoreCount={18}
+      />
     </main>
   )
 }
