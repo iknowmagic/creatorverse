@@ -11,13 +11,15 @@ import { Card } from './Card'
 
 export function Carousel() {
   return (
-    <div className="relative mx-auto h-[400px]">
-      {' '}
-      {/* Set your desired size */}
+    <div className="relative mx-auto px-2 sm:px-10 lg:px-0 h-[400px]">
       <Swiper
         effect="coverflow"
         modules={[Navigation, Autoplay, EffectCoverflow]}
-        slidesPerView={3}
+        slidesPerView={1} // default for mobile
+        breakpoints={{
+          640: { slidesPerView: 2 },
+          768: { slidesPerView: 3 }
+        }}
         navigation={{
           prevEl: '.swiper-button-prev-custom',
           nextEl: '.swiper-button-next-custom'
@@ -44,10 +46,10 @@ export function CarouselNavigation() {
   return (
     <div className="relative mt-8 mb-8">
       {/* Custom Navigation Buttons */}
-      <button className="swiper-button-prev-custom top-1/2 left-2 z-10 absolute bg-gray-900 hover:bg-gray-800 dark:bg-gray-100 dark:hover:bg-gray-200 p-2 transition-colors -translate-y-1/2 cursor-pointer">
+      <button className="swiper-button-prev-custom hidden sm:block top-1/2 left-2 z-10 absolute bg-gray-900 hover:bg-gray-800 dark:bg-gray-100 dark:hover:bg-gray-200 p-2 transition-colors -translate-y-1/2 cursor-pointer">
         <ChevronLeft className="w-5 h-5 text-gray-100 dark:text-gray-900" />
       </button>
-      <button className="swiper-button-next-custom top-1/2 right-2 z-10 absolute bg-gray-900 hover:bg-gray-800 dark:bg-gray-100 dark:hover:bg-gray-200 p-2 transition-colors -translate-y-1/2 cursor-pointer">
+      <button className="swiper-button-next-custom hidden sm:block top-1/2 right-2 z-10 absolute bg-gray-900 hover:bg-gray-800 dark:bg-gray-100 dark:hover:bg-gray-200 p-2 transition-colors -translate-y-1/2 cursor-pointer">
         <ChevronRight className="w-5 h-5 text-gray-100 dark:text-gray-900" />
       </button>
 
