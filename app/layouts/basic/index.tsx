@@ -1,11 +1,12 @@
 import 'swiper/css'
 import 'swiper/css/autoplay'
 import 'swiper/css/navigation'
-import { categories } from '~/data/creators'
+import { categories, type Creator } from '~/data/creators'
 import { creators } from '../../data/creators'
 import { Card } from './Card'
 import { CarouselNavigation } from './Carousel'
-import { InfiniteScrolling } from './Masonry'
+import { InfiniteScrolling } from './InfiniteScrolling'
+import type { JSX } from 'react'
 
 // Randomly remove imageURL from some creators ahead of time
 const randomCreators = creators.map(creator => {
@@ -27,9 +28,11 @@ export default function Welcome() {
       </header>
       <div className="divider divider-neutral"></div>
       <div className="gap-2 grid sm:grid-flow-col auto-cols-auto mb-8 md:text-xl lg:text-2xl uppercase">
-        {categories.map((category: string) => (
-          <div key={category}>{category}</div>
-        ))}
+        {categories.map(
+          (category: string, index: number): JSX.Element => (
+            <div key={category}>{category}</div>
+          )
+        )}
       </div>
       <div className="mt-12 mb-8">
         <CarouselNavigation />
@@ -37,7 +40,7 @@ export default function Welcome() {
 
       <InfiniteScrolling
         allItems={randomCreators}
-        renderItem={creator => <Card creator={creator} />}
+        renderItem={(creator: Creator): JSX.Element => <Card creator={creator} />}
         itemWidth={296}
         gap={12}
         className="mt-8"
