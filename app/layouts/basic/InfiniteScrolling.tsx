@@ -75,7 +75,7 @@ export function InfiniteScrolling<T extends { id: string | number }>({
           loadMore()
         }
       },
-      { rootMargin: '200px' }
+      { rootMargin: '200px', threshold: 0.1 }
     )
 
     if (sentinelRef.current) {
@@ -134,7 +134,11 @@ export function InfiniteScrolling<T extends { id: string | number }>({
       </AnimatePresence>
 
       {/* Intersection observer sentinel */}
-      {hasMore && !isLoading && <div ref={sentinelRef} className="w-full h-8" />}
+      {hasMore && !isLoading && (
+        <div ref={sentinelRef} className="flex justify-center items-center w-full h-10">
+          {/* Invisible trigger area */}
+        </div>
+      )}
 
       {/* Completion message */}
       {!hasMore && visibleItems.length > 0 && (
