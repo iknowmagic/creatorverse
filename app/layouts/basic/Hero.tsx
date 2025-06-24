@@ -1,10 +1,10 @@
 import type { Creator } from '../../data/creators'
 
-interface Hero {
+interface HeroProps {
   creator: Creator
 }
 
-export function Hero({ creator }: Hero) {
+export function Hero({ creator }: HeroProps) {
   return (
     <div className="flex flex-col justify-center items-center bg-gray-200 dark:bg-gray-800 mx-2 p-8 text-center">
       {creator.imageURL && (
