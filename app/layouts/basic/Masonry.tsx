@@ -31,6 +31,21 @@ export interface MasonryRef {
   isLayoutReady: () => boolean
 }
 
+interface MasonryInternalProps<T extends { id: string | number }> extends MasonryProps<T> {}
+
+interface MasonryState<T> {
+  layoutItems: LayoutItem<T>[]
+  containerHeight: number
+  isLayoutReady: boolean
+}
+
+interface MeasurementItemProps<T> {
+  item: T
+  itemWidth: number
+  renderItem: (item: T) => React.ReactNode
+  measureElementsRef: React.MutableRefObject<Map<string | number, HTMLDivElement>>
+}
+
 export const Masonry = forwardRef<MasonryRef, MasonryProps<any>>(function Masonry<
   T extends { id: string | number }
 >(
@@ -42,48 +57,51 @@ export const Masonry = forwardRef<MasonryRef, MasonryProps<any>>(function Masonr
     className = '',
     onLayoutComplete
   }: MasonryProps<T>,
-  ref
+  ref: React.Ref<MasonryRef>
 ) {
   const [layoutItems, setLayoutItems] = useState<LayoutItem<T>[]>([])
-  const [containerHeight, setContainerHeight] = useState(0)
-  const [isLayoutReady, setIsLayoutReady] = useState(false)
+  const [containerHeight, setContainerHeight] = useState<number>(0)
+  const [isLayoutReady, setIsLayoutReady] = useState<boolean>(false)
 
   const containerRef = useRef<HTMLDivElement>(null)
   const measureElementsRef = useRef<Map<string | number, HTMLDivElement>>(new Map())
 
   // Expose methods to parent via ref
-  useImperativeHandle(ref, () => ({
-    getContainerHeight: () => containerHeight,
-    isLayoutReady: () => isLayoutReady
-  }))
+  useImperativeHandle(
+    ref,
+    (): MasonryRef => ({
+      getContainerHeight: () => containerHeight,
+      isLayoutReady: () => isLayoutReady
+    })
+  )
 
   // Layout calculation
-  const calculateLayout = useCallback(() => {
+  const calculateLayout = useCallback((): void => {
     if (!containerRef.current || items.length === 0) return
 
-    const containerWidth = containerRef.current.offsetWidth
-    const columnWidth = itemWidth + gap
-    const maxColumns = Math.floor((containerWidth + gap) / columnWidth)
-    const columns = Math.max(1, Math.min(maxColumns, items.length))
+    const containerWidth: number = containerRef.current.offsetWidth
+    const columnWidth: number = itemWidth + gap
+    const maxColumns: number = Math.floor((containerWidth + gap) / columnWidth)
+    const columns: number = Math.max(1, Math.min(maxColumns, items.length))
 
     // Center the layout
-    const totalLayoutWidth = columns * columnWidth - gap
-    const leftOffset = Math.max(0, Math.floor((containerWidth - totalLayoutWidth) / 2))
+    const totalLayoutWidth: number = columns * columnWidth - gap
+    const leftOffset: number = Math.max(0, Math.floor((containerWidth - totalLayoutWidth) / 2))
 
     // Initialize column heights
-    const columnHeights = new Array(columns).fill(0)
+    const columnHeights: number[] = new Array(columns).fill(0)
     const newLayoutItems: LayoutItem<T>[] = []
 
     // Process each item
-    items.forEach(item => {
+    items.forEach((item: T) => {
       const element = measureElementsRef.current.get(item.id)
       if (!element || element.offsetHeight === 0) return
 
-      const itemHeight = element.offsetHeight
+      const itemHeight: number = element.offsetHeight
 
       // Find shortest column
-      let minHeight = columnHeights[0]
-      let minColumn = 0
+      let minHeight: number = columnHeights[0]
+      let minColumn: number = 0
       for (let i = 1; i < columns; i++) {
         if (columnHeights[i] < minHeight) {
           minHeight = columnHeights[i]
@@ -92,8 +110,8 @@ export const Masonry = forwardRef<MasonryRef, MasonryProps<any>>(function Masonr
       }
 
       // Calculate position
-      const x = leftOffset + minColumn * columnWidth
-      const y = minHeight
+      const x: number = leftOffset + minColumn * columnWidth
+      const y: number = minHeight
 
       newLayoutItems.push({
         item,
@@ -108,7 +126,7 @@ export const Masonry = forwardRef<MasonryRef, MasonryProps<any>>(function Masonr
       columnHeights[minColumn] = minHeight + itemHeight + gap
     })
 
-    const finalHeight = Math.max(...columnHeights) - gap
+    const finalHeight: number = Math.max(...columnHeights) - gap
 
     setLayoutItems(newLayoutItems)
     setContainerHeight(finalHeight)
@@ -119,8 +137,8 @@ export const Masonry = forwardRef<MasonryRef, MasonryProps<any>>(function Masonr
   }, [items, itemWidth, gap, onLayoutComplete])
 
   // Measure and layout
-  const measureAndLayout = useCallback(() => {
-    const allMeasured = items.every(item => {
+  const measureAndLayout = useCallback((): void => {
+    const allMeasured: boolean = items.every((item: T) => {
       const element = measureElementsRef.current.get(item.id)
       return element && element.offsetHeight > 0
     })
@@ -133,7 +151,7 @@ export const Masonry = forwardRef<MasonryRef, MasonryProps<any>>(function Masonr
   }, [items, calculateLayout])
 
   // Trigger layout when items change - NO flash fix applied here
-  useEffect(() => {
+  useEffect((): void => {
     if (items.length > 0) {
       setIsLayoutReady(false)
       setTimeout(measureAndLayout, 50)
@@ -142,23 +160,16 @@ export const Masonry = forwardRef<MasonryRef, MasonryProps<any>>(function Masonr
   }, [items.length, measureAndLayout])
 
   // Handle resize
-  const handleResize = useCallback(() => {
+  const handleResize = useCallback((): void => {
     if (isLayoutReady) {
       measureAndLayout()
     }
   }, [isLayoutReady, measureAndLayout])
 
-  useEffect(() => {
+  useEffect((): (() => void) => {
     window.addEventListener('resize', handleResize)
     return () => window.removeEventListener('resize', handleResize)
   }, [handleResize])
-
-  interface MeasurementItemProps<T> {
-    item: T
-    itemWidth: number
-    renderItem: (item: T) => React.ReactNode
-    measureElementsRef: React.MutableRefObject<Map<string | number, HTMLDivElement>>
-  }
 
   return (
     <div className={className}>

@@ -1,21 +1,20 @@
 import { motion } from 'framer-motion'
 import { useState } from 'react'
 import { categories } from '../../data/creators'
+import { creatorsStore } from '../../stores/creatorsStore'
 
-interface CategorySelectorProps {
-  categorySelected?: string | null
-  onCategoryChange?: (category: string | null) => void
-}
-
-export function CategorySelector({ categorySelected, onCategoryChange }: CategorySelectorProps) {
+export function CategorySelector() {
   const [categoryAnimated, setCategoryAnimated] = useState<string | null>(null)
   const [categoryHovered, setCategoryHovered] = useState<string | null>(null)
 
+  const store = creatorsStore()
+  const { categorySelected, filterByCategory } = store
+
   const handleCategoryChange = (category: string) => {
     if (categorySelected === category) {
-      onCategoryChange?.(null)
+      filterByCategory(null)
     } else {
-      onCategoryChange?.(category) // Notify parent of category change if provided
+      filterByCategory(category)
       setCategoryAnimated(category)
     }
   }

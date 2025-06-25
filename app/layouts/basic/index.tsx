@@ -1,32 +1,19 @@
-import { useState } from 'react'
+import { useEffect } from 'react'
 import 'swiper/css'
 import 'swiper/css/autoplay'
 import 'swiper/css/navigation'
 import { randomCreatorImages } from '~/data/creators'
+import { creatorsStore } from '../../stores/creatorsStore'
 import { Card } from './Card'
 import { CategorySelector } from './CategorySelector'
 import { InfiniteScrolling } from './InfiniteScrolling'
 
-function sleep(ms: number) {
-  return new Promise(resolve => setTimeout(resolve, ms))
-}
-
 export default function Welcome() {
-  const [categorySelected, setCategorySelected] = useState<string | null>(null)
-  const [items, setItems] = useState(randomCreatorImages())
-  const filterCreators = async (category: string | null) => {
-    await sleep(500) // Simulate network delay
-    if (!category) {
-      setItems(randomCreatorImages())
-    } else {
-      setItems(randomCreatorImages().filter(creator => creator.category === category))
-    }
-  }
+  const store = creatorsStore()
 
-  const onCategorySelected = (category: string | null) => {
-    setCategorySelected(category)
-    filterCreators(category)
-  }
+  useEffect(() => {
+    store.initializeCreators(randomCreatorImages())
+  }, [])
 
   return (
     <main className="flex flex-col bg-gray-100 dark:bg-gray-900 p-4 min-w-[360px] max-w-[960px] min-h-screen font-archivo">
@@ -39,11 +26,10 @@ export default function Welcome() {
 
       <div className="divider sm:divider-neutral"></div>
 
-      <CategorySelector categorySelected={categorySelected} onCategoryChange={onCategorySelected} />
+      <CategorySelector />
 
       <InfiniteScrolling
-        key={categorySelected || 'all'}
-        allItems={items}
+        allItems={store.creators}
         renderItem={creator => <Card creator={creator} />}
         itemWidth={296}
         gap={12}
