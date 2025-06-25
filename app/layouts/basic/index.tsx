@@ -7,6 +7,7 @@ import { Card } from './Card'
 import { CategorySelector } from './CategorySelector'
 import { Header } from './Header'
 import { InfiniteScrolling } from './InfiniteScrolling'
+import { CategoriesWait } from './Wait'
 
 export default function Welcome() {
   const [creators, setCreators] = useState([] as Creator[])
@@ -32,29 +33,33 @@ export default function Welcome() {
 
       <div className="divider sm:divider-neutral"></div>
 
-      <CategorySelector
-        categories={categories}
-        onCategoryChange={category => {
-          if (category) {
-            filterByCategory(category)
-              .then(data => {
-                setCreators(data)
-              })
-              .catch(error => {
-                console.error('Error filtering creators by category:', error)
-              })
-          } else {
-            // Reset the filter if no category is selected
-            getCreators()
-              .then(data => {
-                setCreators(data)
-              })
-              .catch(error => {
-                console.error('Error fetching creators:', error)
-              })
-          }
-        }}
-      />
+      {categories.length == 0 && <CategoriesWait />}
+
+      {categories.length > 0 && (
+        <CategorySelector
+          categories={categories}
+          onCategoryChange={category => {
+            if (category) {
+              filterByCategory(category)
+                .then(data => {
+                  setCreators(data)
+                })
+                .catch(error => {
+                  console.error('Error filtering creators by category:', error)
+                })
+            } else {
+              // Reset the filter if no category is selected
+              getCreators()
+                .then(data => {
+                  setCreators(data)
+                })
+                .catch(error => {
+                  console.error('Error fetching creators:', error)
+                })
+            }
+          }}
+        />
+      )}
 
       <InfiniteScrolling
         allItems={creators}
