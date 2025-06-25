@@ -135,11 +135,9 @@ export const Masonry = forwardRef<MasonryRef, MasonryProps<any>>(function Masonr
   // Trigger layout when items change - NO flash fix applied here
   useEffect(() => {
     if (items.length > 0) {
-      // Only reset layout ready for initial load
-      if (layoutItems.length === 0) {
-        setIsLayoutReady(false)
-      }
+      setIsLayoutReady(false)
       setTimeout(measureAndLayout, 50)
+      measureElementsRef.current.clear()
     }
   }, [items.length, measureAndLayout])
 
@@ -155,6 +153,13 @@ export const Masonry = forwardRef<MasonryRef, MasonryProps<any>>(function Masonr
     return () => window.removeEventListener('resize', handleResize)
   }, [handleResize])
 
+  interface MeasurementItemProps<T> {
+    item: T
+    itemWidth: number
+    renderItem: (item: T) => React.ReactNode
+    measureElementsRef: React.MutableRefObject<Map<string | number, HTMLDivElement>>
+  }
+
   return (
     <div className={className}>
       <div
@@ -168,7 +173,7 @@ export const Masonry = forwardRef<MasonryRef, MasonryProps<any>>(function Masonr
         {/* Positioned items (when layout is ready) */}
         {isLayoutReady && (
           <AnimatePresence>
-            {layoutItems.map((layoutItem, index) => (
+            {layoutItems.map((layoutItem: LayoutItem<any>, index: number) => (
               <motion.div
                 key={layoutItem.id}
                 initial={{ opacity: 0, scale: 0.95 }}
@@ -196,11 +201,11 @@ export const Masonry = forwardRef<MasonryRef, MasonryProps<any>>(function Masonr
           className="top-0 left-0 absolute opacity-0 pointer-events-none"
           style={{ width: `${itemWidth}px`, zIndex: -1 }}
         >
-          {items.map(item => (
+          {items.map((item: any) => (
             <div
               key={`measure-${item.id}`}
               style={{ width: `${itemWidth}px` }}
-              ref={el => {
+              ref={(el: HTMLDivElement | null) => {
                 if (el) {
                   measureElementsRef.current.set(item.id, el)
                 } else {
