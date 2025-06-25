@@ -1,7 +1,7 @@
-import { useState, useEffect, useCallback, useRef } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import type { Creator } from '~/lib/client'
 import { Card } from './Card'
-import type { Creator } from '~/data/creators'
 
 interface GalleryProps {
   creators: Creator[]
