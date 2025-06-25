@@ -2,8 +2,8 @@ import Layout from '../layouts/basic'
 
 export function meta() {
   return [
-    { title: 'New React Router App' },
-    { name: 'description', content: 'Welcome to React Router!' }
+    { title: 'creatorverse' },
+    { name: 'description', content: 'A collection of content creators from around the world.' }
   ]
 }
 
