@@ -2,28 +2,23 @@ import { useEffect, useState } from 'react'
 import 'swiper/css'
 import 'swiper/css/autoplay'
 import 'swiper/css/navigation'
-import { supabase, type Creator } from '~/lib/client'
-import { creatorsStore } from '../../stores/creatorsStore'
+import { filterByCategory, getCreators, type Creator } from '~/lib/client'
 import { Card } from './Card'
 import { CategorySelector } from './CategorySelector'
 import { Header } from './Header'
 import { InfiniteScrolling } from './InfiniteScrolling'
 
 export default function Welcome() {
-  const store = creatorsStore()
   const [creators, setCreators] = useState([] as Creator[])
 
   useEffect(() => {
-    const fetchCreators = async () => {
-      const { data, error } = await supabase.from('creators').select('*')
-      if (error) {
+    getCreators()
+      .then(data => {
+        setCreators(data)
+      })
+      .catch(error => {
         console.error('Error fetching creators:', error)
-      } else {
-        setCreators(data as Creator[])
-      }
-    }
-
-    fetchCreators()
+      })
   }, [])
 
   return (
@@ -32,7 +27,28 @@ export default function Welcome() {
 
       <div className="divider sm:divider-neutral"></div>
 
-      <CategorySelector />
+      <CategorySelector
+        onCategoryChange={category => {
+          if (category) {
+            filterByCategory(category)
+              .then(data => {
+                setCreators(data)
+              })
+              .catch(error => {
+                console.error('Error filtering creators by category:', error)
+              })
+          } else {
+            // Reset the filter if no category is selected
+            getCreators()
+              .then(data => {
+                setCreators(data)
+              })
+              .catch(error => {
+                console.error('Error fetching creators:', error)
+              })
+          }
+        }}
+      />
 
       <InfiniteScrolling
         allItems={creators}

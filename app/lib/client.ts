@@ -19,4 +19,39 @@ export interface Creator {
 }
 
 const supabase = createClient(URL, API_KEY)
-export { supabase }
+
+async function getCreators(): Promise<Creator[]> {
+  const { data, error } = await supabase.from('random_creators').select('*')
+  if (error) {
+    console.error('Error fetching creators:', error)
+    throw error
+  }
+  return data || []
+}
+
+async function getCategories(): Promise<string[]> {
+  // select distinct category names from the creators table
+  const { data, error } = await supabase
+    .from('categories')
+    .select('*')
+    .order('category', { ascending: true })
+  if (error) {
+    console.error('Error fetching categories:', error)
+    throw error
+  }
+  return data?.map((category: { category: string }) => category.category) || []
+}
+
+async function filterByCategory(category: string | null): Promise<Creator[]> {
+  const { data, error } = await supabase
+    .from('random_creators')
+    .select('*')
+    .eq('category', category)
+  if (error) {
+    console.error('Error filtering creators by category:', error)
+    throw error
+  }
+  return data || []
+}
+
+export { filterByCategory, getCategories, getCreators, supabase }

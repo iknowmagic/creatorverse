@@ -1,21 +1,32 @@
 import { motion } from 'framer-motion'
-import { useState } from 'react'
-import { categories } from '../../data/creators'
-import { creatorsStore } from '../../stores/creatorsStore'
+import { useEffect, useState } from 'react'
+import { getCategories } from '~/lib/client'
 
-export function CategorySelector() {
+interface CategorySelectorProps {
+  onCategoryChange?: (category: string | null) => void
+}
+
+export function CategorySelector({ onCategoryChange }: CategorySelectorProps) {
   const [categoryAnimated, setCategoryAnimated] = useState<string | null>(null)
   const [categoryHovered, setCategoryHovered] = useState<string | null>(null)
+  const [categorySelected, setCategorySelected] = useState<string | null>(null)
+  const [categories, setCategories] = useState<string[]>([])
 
-  const store = creatorsStore()
-  const { categorySelected, filterByCategory } = store
+  useEffect(() => {
+    getCategories()
+      .then(data => {
+        setCategories(data)
+      })
+      .catch(error => {
+        console.error('Error fetching categories:', error)
+      })
+  }, [])
 
   const handleCategoryChange = (category: string) => {
-    if (categorySelected === category) {
-      filterByCategory(null)
-    } else {
-      filterByCategory(category)
-      setCategoryAnimated(category)
+    setCategorySelected(category)
+    setCategoryAnimated(category)
+    if (onCategoryChange) {
+      onCategoryChange(category)
     }
   }
 
