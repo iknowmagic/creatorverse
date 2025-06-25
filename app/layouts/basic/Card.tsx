@@ -1,5 +1,5 @@
 import { ExternalLink, Link } from 'lucide-react'
-import type { Creator } from '~/data/creators'
+import type { Creator } from '~/lib/client'
 
 interface CardProps {
   creator: Creator
@@ -23,10 +23,10 @@ export function Card({ creator, className }: CardProps) {
       <div className="text-gray-600">{creator?.category}</div>
       <div className="divider divider-neutral"></div>
       <div className="text-gray-700">{creator?.description}</div>
-      {creator?.imageURL && (
+      {creator?.image_url && (
         <div className="relative mt-auto pt-6">
           <img
-            src={creator?.imageURL}
+            src={creator?.image_url}
             alt={creator?.name}
             className="grayscale rounded-xs w-full object-cover aspect-video"
           />

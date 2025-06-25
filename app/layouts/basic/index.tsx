@@ -1,8 +1,8 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import 'swiper/css'
 import 'swiper/css/autoplay'
 import 'swiper/css/navigation'
-import { randomCreatorImages } from '~/data/creators'
+import { supabase, type Creator } from '~/lib/client'
 import { creatorsStore } from '../../stores/creatorsStore'
 import { Card } from './Card'
 import { CategorySelector } from './CategorySelector'
@@ -11,9 +11,19 @@ import { InfiniteScrolling } from './InfiniteScrolling'
 
 export default function Welcome() {
   const store = creatorsStore()
+  const [creators, setCreators] = useState([] as Creator[])
 
   useEffect(() => {
-    store.initializeCreators(randomCreatorImages())
+    const fetchCreators = async () => {
+      const { data, error } = await supabase.from('creators').select('*')
+      if (error) {
+        console.error('Error fetching creators:', error)
+      } else {
+        setCreators(data as Creator[])
+      }
+    }
+
+    fetchCreators()
   }, [])
 
   return (
@@ -25,7 +35,7 @@ export default function Welcome() {
       <CategorySelector />
 
       <InfiniteScrolling
-        allItems={store.creators}
+        allItems={creators}
         renderItem={creator => <Card creator={creator} />}
         itemWidth={296}
         gap={12}
