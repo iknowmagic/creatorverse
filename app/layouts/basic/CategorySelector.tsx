@@ -1,8 +1,8 @@
 import { motion } from 'framer-motion'
-import { useEffect, useState } from 'react'
-import { getCategories } from '~/lib/client'
+import { useState } from 'react'
 
 interface CategorySelectorProps {
+  categories: string[]
   onCategoryChange?: (category: string | null) => void
 }
 
@@ -23,25 +23,13 @@ function getCategoryOpacity({
   return 0
 }
 
-export function CategorySelector({ onCategoryChange }: CategorySelectorProps) {
+export function CategorySelector({ categories, onCategoryChange }: CategorySelectorProps) {
   const [categoryAnimated, setCategoryAnimated] = useState<string | null>(null)
   const [categoryHovered, setCategoryHovered] = useState<string | null>(null)
   const [categorySelected, setCategorySelected] = useState<string | null>(null)
-  const [categories, setCategories] = useState<string[]>([])
-
-  useEffect(() => {
-    getCategories()
-      .then(data => {
-        setCategories(data)
-      })
-      .catch(error => {
-        console.error('Error fetching categories:', error)
-      })
-  }, [])
 
   const handleCategoryChange = (category: string) => {
     if (categorySelected === category) {
-      // If the category is already selected, reset it
       setCategorySelected(null)
       setCategoryAnimated(null)
       if (onCategoryChange) {

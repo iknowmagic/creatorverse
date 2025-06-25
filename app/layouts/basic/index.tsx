@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import 'swiper/css'
 import 'swiper/css/autoplay'
 import 'swiper/css/navigation'
-import { filterByCategory, getCreators, type Creator } from '~/lib/client'
+import { filterByCategory, getCategories, getCreators, type Creator } from '~/lib/client'
 import { Card } from './Card'
 import { CategorySelector } from './CategorySelector'
 import { Header } from './Header'
@@ -10,6 +10,7 @@ import { InfiniteScrolling } from './InfiniteScrolling'
 
 export default function Welcome() {
   const [creators, setCreators] = useState([] as Creator[])
+  const [categories, setCategories] = useState<string[]>([])
 
   useEffect(() => {
     getCreators()
@@ -21,6 +22,10 @@ export default function Welcome() {
       })
   }, [])
 
+  useEffect(() => {
+    getCategories().then(setCategories).catch(console.error)
+  }, [])
+
   return (
     <main className="flex flex-col bg-gray-100 dark:bg-gray-900 p-4 min-w-[360px] max-w-[960px] min-h-screen font-archivo">
       <Header />
@@ -28,6 +33,7 @@ export default function Welcome() {
       <div className="divider sm:divider-neutral"></div>
 
       <CategorySelector
+        categories={categories}
         onCategoryChange={category => {
           if (category) {
             filterByCategory(category)
