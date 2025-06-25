@@ -6,10 +6,10 @@ import 'swiper/css/effect-coverflow'
 import 'swiper/css/navigation'
 import { Autoplay, EffectCoverflow, Navigation } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import { selectedCreators } from '../../data/creators'
 import { Card } from './Card'
 
-export function Carousel() {
+export function Carousel({ creators }: { creators: any[] }) {
+  const selectedCreators = creators.length > 20 ? creators.slice(0, 20) : creators
   return (
     <div className="relative mx-auto px-2 sm:px-10 lg:px-0 h-[400px]">
       <Swiper
@@ -32,7 +32,7 @@ export function Carousel() {
         loop={true}
         className="h-full"
       >
-        {selectedCreators().map(creator => (
+        {selectedCreators.map(creator => (
           <SwiperSlide key={creator.id} className="flex justify-center items-center h-full">
             <Card creator={creator} className="w-full h-full" />
           </SwiperSlide>
@@ -42,7 +42,7 @@ export function Carousel() {
   )
 }
 
-export function CarouselNavigation() {
+export function CarouselNavigation({ creators }: { creators: any[] }) {
   return (
     <div className="relative mt-8 mb-8">
       {/* Custom Navigation Buttons */}
@@ -53,7 +53,7 @@ export function CarouselNavigation() {
         <ChevronRight className="w-5 h-5 text-gray-100 dark:text-gray-900" />
       </button>
 
-      <Carousel />
+      <Carousel creators={creators} />
     </div>
   )
 }

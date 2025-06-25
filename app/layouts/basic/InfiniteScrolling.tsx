@@ -29,16 +29,19 @@ export function InfiniteScrolling<T extends { id: string | number }>({
   // Refs for coordination
   const masonryRef = useRef<MasonryRef>(null)
   const sentinelRef = useRef<HTMLDivElement>(null)
-  const observerRef = useRef<IntersectionObserver>()
+  const observerRef = useRef<IntersectionObserver | null>(null)
   const isLoadingRef = useRef(false)
   const actionTriggered = useRef(false) // Prevent multiple triggers
 
   // Initialize with first batch
   useEffect(() => {
-    if (allItems.length > 0 && visibleItems.length === 0) {
+    if (allItems.length > 0) {
       const initial = allItems.slice(0, initialCount)
       setVisibleItems(initial)
       setCurrentIndex(initialCount)
+    } else {
+      setVisibleItems([])
+      setCurrentIndex(0)
     }
   }, [allItems, initialCount])
 
