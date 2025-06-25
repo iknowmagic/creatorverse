@@ -23,10 +23,19 @@ export function CategorySelector({ onCategoryChange }: CategorySelectorProps) {
   }, [])
 
   const handleCategoryChange = (category: string) => {
-    setCategorySelected(category)
-    setCategoryAnimated(category)
-    if (onCategoryChange) {
-      onCategoryChange(category)
+    if (categorySelected === category) {
+      // If the category is already selected, reset it
+      setCategorySelected(null)
+      setCategoryAnimated(null)
+      if (onCategoryChange) {
+        onCategoryChange(null)
+      }
+    } else {
+      setCategorySelected(category)
+      setCategoryAnimated(category)
+      if (onCategoryChange) {
+        onCategoryChange(category)
+      }
     }
   }
 
