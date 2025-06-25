@@ -6,6 +6,23 @@ interface CategorySelectorProps {
   onCategoryChange?: (category: string | null) => void
 }
 
+function getCategoryOpacity({
+  categoryAnimated,
+  categorySelected,
+  categoryHovered,
+  category
+}: {
+  categoryAnimated: string | null
+  categorySelected: string | null
+  categoryHovered: string | null
+  category: string
+}) {
+  if (categoryAnimated === category) return [0, 1, 0, 1, 0, 1] // Blink pattern
+  if (categorySelected === category) return 1
+  if (categoryHovered === category) return 0.5
+  return 0
+}
+
 export function CategorySelector({ onCategoryChange }: CategorySelectorProps) {
   const [categoryAnimated, setCategoryAnimated] = useState<string | null>(null)
   const [categoryHovered, setCategoryHovered] = useState<string | null>(null)
@@ -52,12 +69,12 @@ export function CategorySelector({ onCategoryChange }: CategorySelectorProps) {
           <div>{category}</div>
           <motion.div
             animate={{
-              opacity:
-                categoryAnimated === category
-                  ? [0, 1, 0, 1, 0, 1] // Blink pattern
-                  : categorySelected === category || categoryHovered === category
-                    ? 1
-                    : 0
+              opacity: getCategoryOpacity({
+                categoryAnimated,
+                categorySelected,
+                categoryHovered,
+                category
+              })
             }}
             transition={{
               duration: categoryAnimated === category ? 0.6 : 0.3,
