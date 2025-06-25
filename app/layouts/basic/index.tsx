@@ -7,7 +7,7 @@ import { Card } from './Card'
 import { CategorySelector } from './CategorySelector'
 import { Header } from './Header'
 import { InfiniteScrolling } from './InfiniteScrolling'
-import { CategoriesWait } from './Wait'
+import { CardsWait, CategoriesWait } from './Wait'
 
 export default function Welcome() {
   const [creators, setCreators] = useState([] as Creator[])
@@ -61,15 +61,18 @@ export default function Welcome() {
         />
       )}
 
-      <InfiniteScrolling
-        allItems={creators}
-        renderItem={creator => <Card creator={creator} />}
-        itemWidth={296}
-        gap={12}
-        className="mt-8"
-        initialCount={12}
-        loadMoreCount={18}
-      />
+      {creators.length === 0 && <CardsWait count={12} />}
+      {creators.length > 0 && (
+        <InfiniteScrolling
+          allItems={creators}
+          renderItem={creator => <Card creator={creator} />}
+          itemWidth={296}
+          gap={12}
+          className="mt-8"
+          initialCount={12}
+          loadMoreCount={18}
+        />
+      )}
     </main>
   )
 }

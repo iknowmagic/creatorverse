@@ -45,7 +45,7 @@ export function CategorySelector({ categories, onCategoryChange }: CategorySelec
   }
 
   return (
-    <div className="gap-3 grid sm:grid-flow-col auto-cols-auto mb-8 w-fit md:text-xl lg:text-2xl uppercase">
+    <div className="gap-3 grid sm:grid-flow-col auto-cols-auto mb-8 pl-3 w-fit md:text-xl lg:text-2xl uppercase">
       {categories.map((category: string) => (
         <div
           className="flex flex-col cursor-pointer"
