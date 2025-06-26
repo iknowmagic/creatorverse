@@ -1,7 +1,6 @@
-import React from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Search, X } from 'lucide-react'
-import { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useSearchSuggestions, type SearchSuggestion } from './useCreators'
 
 interface SearchTag {
@@ -40,8 +39,8 @@ export function SearchAutocomplete({ onTagsChange, className = '' }: SearchAutoc
   const handleSuggestionSelect = (suggestion: SearchSuggestion) => {
     const newTag: SearchTag = {
       type: suggestion.source_type,
-      value: suggestion.match_text,
-      displayText: suggestion.display_text
+      value: suggestion.match_words, // ✅ Use match_words
+      displayText: suggestion.match_words // ✅ Use match_words for display too
     }
 
     // Don't add duplicate tags
@@ -159,7 +158,7 @@ export function SearchAutocomplete({ onTagsChange, className = '' }: SearchAutoc
           >
             {suggestions.map((suggestion, index) => (
               <button
-                key={`${suggestion.source_type}-${suggestion.match_text}`}
+                key={`${suggestion.source_type}-${suggestion.match_words}`}
                 onClick={() => handleSuggestionSelect(suggestion)}
                 className={`w-full px-3 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-600 border-b border-gray-300 dark:border-gray-500 transition-colors ${
                   index === focusedIndex ? 'bg-gray-100 dark:bg-gray-600' : ''
