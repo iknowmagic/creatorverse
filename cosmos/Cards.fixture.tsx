@@ -1,7 +1,5 @@
-import { ExternalLink, Link } from 'lucide-react'
 import { creators } from '../app/data/creators'
-import type { Creator } from '../app/data/creators'
-import { Card } from '../app/layouts/basic/Card'
+import { Card } from '../app/pages/homepage/Card'
 
 function Gallery() {
   return (

@@ -11,7 +11,7 @@ import { Header } from './Header'
 import { InfiniteScrolling } from './InfiniteScrolling'
 import { CardsWait, CategoriesWait } from './Wait'
 
-export default function Welcome() {
+export default function Homepage() {
   const [creators, setCreators] = useState([] as Creator[])
   const [categories, setCategories] = useState<string[]>([])
   const [isError, setIsError] = useState(false)

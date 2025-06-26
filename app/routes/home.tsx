@@ -1,4 +1,4 @@
-import Layout from '../layouts/basic'
+import Homepage from '../pages/homepage'
 
 export function meta() {
   return [
@@ -8,5 +8,5 @@ export function meta() {
 }
 
 export default function Home() {
-  return <Layout />
+  return <Homepage />
 }
