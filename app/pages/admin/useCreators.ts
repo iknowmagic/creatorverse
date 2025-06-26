@@ -15,7 +15,7 @@ interface SortingState {
 interface UseCreatorsParams {
   pagination: PaginationState
   sorting: SortingState[]
-  globalFilter: string
+  searchTags: SearchTag[] // Changed from globalFilter: string
 }
 
 interface UseCreatorsResult {
@@ -29,7 +29,7 @@ interface UseCreatorsResult {
 export function useCreators({
   pagination,
   sorting,
-  globalFilter
+  searchTags // Changed from globalFilter
 }: UseCreatorsParams): UseCreatorsResult {
   const [creators, setCreators] = useState<Creator[]>([])
   const [totalCount, setTotalCount] = useState(0)
@@ -46,7 +46,7 @@ export function useCreators({
       const to = from + pagination.pageSize - 1
 
       // Build the query
-      let query = supabase.from('random_creators').select('*', { count: 'exact' }).range(from, to)
+      let query = supabase.from('creators').select('*', { count: 'exact' }).range(from, to)
 
       // Apply sorting
       if (sorting.length > 0) {
@@ -57,11 +57,27 @@ export function useCreators({
         query = query.order('created_at', { ascending: false })
       }
 
-      // Apply global search filter
-      if (globalFilter) {
-        query = query.or(
-          `name.ilike.%${globalFilter}%,category.ilike.%${globalFilter}%,description.ilike.%${globalFilter}%`
-        )
+      // Replace globalFilter logic with searchTags logic
+      if (searchTags.length > 0) {
+        const conditions: string[] = []
+
+        searchTags.forEach(tag => {
+          switch (tag.type) {
+            case 'name':
+              conditions.push(`name.ilike.%${tag.value}%`)
+              break
+            case 'category':
+              conditions.push(`category.ilike.%${tag.value}%`)
+              break
+            case 'description':
+              conditions.push(`description.ilike.%${tag.value}%`)
+              break
+          }
+        })
+
+        if (conditions.length > 0) {
+          query = query.or(conditions.join(','))
+        }
       }
 
       const { data, error: supabaseError, count } = await query
@@ -82,7 +98,7 @@ export function useCreators({
 
   useEffect(() => {
     fetchCreators()
-  }, [pagination.pageIndex, pagination.pageSize, sorting, globalFilter])
+  }, [pagination.pageIndex, pagination.pageSize, sorting, searchTags]) // Updated dependency
 
   return {
     creators,
@@ -90,5 +106,69 @@ export function useCreators({
     isLoading,
     error,
     refetch: fetchCreators
+  }
+}
+
+// Updated SearchSuggestion interface
+export interface SearchSuggestion {
+  source_type: 'name' | 'description' | 'category'
+  match_words: string // New: the actual matched word
+  highlighted_text: string
+  category: string
+}
+
+export interface SearchTag {
+  type: 'name' | 'description' | 'category'
+  value: string
+  displayText: string
+}
+
+// Add this hook at the bottom of the file
+export function useSearchSuggestions(searchTerm: string) {
+  const [suggestions, setSuggestions] = useState<SearchSuggestion[]>([])
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    // Clear suggestions if search term is too short
+    if (!searchTerm || searchTerm.trim().length < 2) {
+      setSuggestions([])
+      setIsLoading(false)
+      return
+    }
+
+    // Debounce the search
+    const timeoutId = setTimeout(async () => {
+      try {
+        setIsLoading(true)
+        setError(null)
+
+        // Updated RPC call
+        const { data, error: supabaseError } = await supabase.rpc('get_search_words', {
+          search_term: searchTerm.trim()
+        })
+
+        if (supabaseError) {
+          throw supabaseError
+        }
+
+        setSuggestions(data || [])
+      } catch (err) {
+        console.error('Error fetching search suggestions:', err)
+        setError(err instanceof Error ? err.message : 'Failed to fetch suggestions')
+        setSuggestions([])
+      } finally {
+        setIsLoading(false)
+      }
+    }, 1000) // 1 second debounce
+
+    // Cleanup timeout on unmount or searchTerm change
+    return () => clearTimeout(timeoutId)
+  }, [searchTerm])
+
+  return {
+    suggestions,
+    isLoading,
+    error
   }
 }

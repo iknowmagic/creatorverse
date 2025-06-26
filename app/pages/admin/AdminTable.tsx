@@ -7,6 +7,7 @@ import {
 } from '@tanstack/react-table'
 import { ChevronDown, ChevronUp, Edit, ExternalLink, Trash2 } from 'lucide-react'
 import { useMemo, useState } from 'react'
+import { SearchAutocomplete } from './SearchAutocomplete'
 import { type Creator } from '~/lib/client'
 import { useCreators } from './useCreators'
 
@@ -23,6 +24,12 @@ interface SortingState {
   desc: boolean
 }
 
+interface SearchTag {
+  type: 'name' | 'description' | 'category'
+  value: string
+  displayText: string
+}
+
 export function AdminTable() {
   // Table state
   const [pagination, setPagination] = useState<PaginationState>({
@@ -30,13 +37,13 @@ export function AdminTable() {
     pageSize: 20
   })
   const [sorting, setSorting] = useState<SortingState[]>([])
-  const [globalFilter, setGlobalFilter] = useState('')
+  const [searchTags, setSearchTags] = useState<SearchTag[]>([])
 
   // Fetch data with server-side params
   const { creators, totalCount, isLoading, error } = useCreators({
     pagination,
     sorting,
-    globalFilter
+    searchTags // Add this
   })
 
   const columns = useMemo(
@@ -128,11 +135,11 @@ export function AdminTable() {
     state: {
       pagination,
       sorting,
-      globalFilter
+      searchTags // Add this
     },
     onPaginationChange: setPagination,
-    onSortingChange: setSorting,
-    onGlobalFilterChange: setGlobalFilter
+    onSortingChange: setSorting
+    // Removed: onGlobalFilterChange: setGlobalFilter
   })
 
   const handleEdit = (creator: Creator) => {
@@ -157,12 +164,7 @@ export function AdminTable() {
     <div className="space-y-4">
       {/* Search */}
       <div className="flex justify-between items-center">
-        <input
-          value={globalFilter ?? ''}
-          onChange={e => setGlobalFilter(e.target.value)}
-          placeholder="Search creators..."
-          className="bg-white dark:bg-gray-700 px-3 py-2 border border-gray-400 focus:border-gray-600 dark:border-gray-600 dark:focus:border-gray-400 focus:outline-none font-archivo text-gray-900 dark:text-gray-100"
-        />
+        <SearchAutocomplete onTagsChange={setSearchTags} className="flex-1 max-w-lg" />
         <div className="text-gray-600 dark:text-gray-400 text-sm">{totalCount} creators total</div>
       </div>
 
@@ -242,7 +244,9 @@ export function AdminTable() {
         {/* Empty State */}
         {!isLoading && creators.length === 0 && (
           <div className="py-8 text-gray-500 dark:text-gray-400 text-center">
-            {globalFilter ? 'No creators found matching your search.' : 'No creators found.'}
+            {searchTags.length > 0
+              ? 'No creators found matching your search.'
+              : 'No creators found.'}
           </div>
         )}
       </div>
