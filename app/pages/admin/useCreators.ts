@@ -15,7 +15,7 @@ interface SortingState {
 interface UseCreatorsParams {
   pagination: PaginationState
   sorting: SortingState[]
-  searchTags: SearchTag[] // Changed from globalFilter: string
+  searchTags: SearchTag[]
 }
 
 interface UseCreatorsResult {
@@ -29,7 +29,7 @@ interface UseCreatorsResult {
 export function useCreators({
   pagination,
   sorting,
-  searchTags // Changed from globalFilter
+  searchTags
 }: UseCreatorsParams): UseCreatorsResult {
   const [creators, setCreators] = useState<Creator[]>([])
   const [totalCount, setTotalCount] = useState(0)
@@ -41,43 +41,33 @@ export function useCreators({
       setIsLoading(true)
       setError(null)
 
-      // Calculate offset for pagination
       const from = pagination.pageIndex * pagination.pageSize
       const to = from + pagination.pageSize - 1
 
-      // Build the query
       let query = supabase.from('creators').select('*', { count: 'exact' }).range(from, to)
 
-      // Apply sorting
       if (sorting.length > 0) {
-        const sort = sorting[0] // TanStack Table sends array, we use first item
+        const sort = sorting[0]
         query = query.order(sort.id, { ascending: !sort.desc })
       } else {
-        // Default sort by created_at desc
         query = query.order('created_at', { ascending: false })
       }
 
-      // Replace globalFilter logic with searchTags logic
+      // AND logic for multiple tags
       if (searchTags.length > 0) {
-        const conditions: string[] = []
-
         searchTags.forEach(tag => {
           switch (tag.type) {
             case 'name':
-              conditions.push(`name.ilike.%${tag.value}%`)
+              query = query.ilike('name', `%${tag.value}%`)
               break
             case 'category':
-              conditions.push(`category.ilike.%${tag.value}%`)
+              query = query.ilike('category', `%${tag.value}%`)
               break
             case 'description':
-              conditions.push(`description.ilike.%${tag.value}%`)
+              query = query.ilike('description', `%${tag.value}%`)
               break
           }
         })
-
-        if (conditions.length > 0) {
-          query = query.or(conditions.join(','))
-        }
       }
 
       const { data, error: supabaseError, count } = await query
@@ -98,7 +88,7 @@ export function useCreators({
 
   useEffect(() => {
     fetchCreators()
-  }, [pagination.pageIndex, pagination.pageSize, sorting, searchTags]) // Updated dependency
+  }, [pagination.pageIndex, pagination.pageSize, sorting, searchTags])
 
   return {
     creators,
@@ -109,10 +99,9 @@ export function useCreators({
   }
 }
 
-// Updated SearchSuggestion interface
 export interface SearchSuggestion {
   source_type: 'name' | 'description' | 'category'
-  match_words: string // New: the actual matched word
+  match_words: string
   highlighted_text: string
   category: string
 }
@@ -123,29 +112,32 @@ export interface SearchTag {
   displayText: string
 }
 
-// Add this hook at the bottom of the file
-export function useSearchSuggestions(searchTerm: string) {
+export function useSearchSuggestions(searchTerm: string, existingTags: SearchTag[] = []) {
   const [suggestions, setSuggestions] = useState<SearchSuggestion[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    // Clear suggestions if search term is too short
     if (!searchTerm || searchTerm.trim().length < 2) {
       setSuggestions([])
       setIsLoading(false)
       return
     }
 
-    // Debounce the search
     const timeoutId = setTimeout(async () => {
       try {
         setIsLoading(true)
         setError(null)
 
-        // Updated RPC call
-        const { data, error: supabaseError } = await supabase.rpc('get_search_words', {
-          search_term: searchTerm.trim()
+        // Convert tags to JSON format for PostgreSQL
+        const tagsJson = existingTags.map(tag => ({
+          type: tag.type,
+          value: tag.value
+        }))
+
+        const { data, error: supabaseError } = await supabase.rpc('get_search_words_with_filters', {
+          search_term: searchTerm.trim(),
+          existing_tags: tagsJson
         })
 
         if (supabaseError) {
@@ -160,11 +152,10 @@ export function useSearchSuggestions(searchTerm: string) {
       } finally {
         setIsLoading(false)
       }
-    }, 1000) // 1 second debounce
+    }, 400) // 400ms debounce
 
-    // Cleanup timeout on unmount or searchTerm change
     return () => clearTimeout(timeoutId)
-  }, [searchTerm])
+  }, [searchTerm, existingTags]) // Add existingTags dependency
 
   return {
     suggestions,

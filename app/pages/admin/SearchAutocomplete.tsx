@@ -23,7 +23,7 @@ export function SearchAutocomplete({ onTagsChange, className = '' }: SearchAutoc
   const inputRef = useRef<HTMLInputElement>(null)
   const dropdownRef = useRef<HTMLDivElement>(null)
 
-  const { suggestions, isLoading } = useSearchSuggestions(searchTerm)
+  const { suggestions, isLoading } = useSearchSuggestions(searchTerm, selectedTags)
 
   // Notify parent when tags change
   useEffect(() => {
