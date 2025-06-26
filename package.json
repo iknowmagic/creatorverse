@@ -17,7 +17,8 @@
     "minor": "npm version minor",
     "major": "npm version major",
     "cosmos": "cosmos",
-    "cosmos-export": "cosmos-export"
+    "cosmos-export": "cosmos-export",
+    "preview": "vite preview"
   },
   "dependencies": {
     "@react-router/node": "^7.6.2",
