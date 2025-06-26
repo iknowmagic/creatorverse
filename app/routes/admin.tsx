@@ -1,4 +1,5 @@
-import Admin from '../pages/admin'
+import { AdminDashboard } from '../pages/admin/AdminDashboard'
+import { ProtectedRoute } from '../pages/admin/ProtectedRoute'
 
 export function meta() {
   return [
@@ -8,5 +9,9 @@ export function meta() {
 }
 
 export default function AdminRoute() {
-  return <Admin />
+  return (
+    <ProtectedRoute>
+      <AdminDashboard />
+    </ProtectedRoute>
+  )
 }

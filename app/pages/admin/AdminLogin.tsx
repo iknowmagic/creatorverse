@@ -31,6 +31,13 @@ function AdminLogin() {
     console.log('Login response:', data)
   }
 
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(e.target.value)
+    if (error) {
+      setError('')
+    }
+  }
+
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !isLoading && password.trim()) {
       handleSubmit()
@@ -94,7 +101,7 @@ function AdminLogin() {
                 id="password"
                 type={showPassword ? 'text' : 'password'}
                 value={password}
-                onChange={e => setPassword(e.target.value)}
+                onChange={e => handlePasswordChange(e)}
                 onKeyPress={handleKeyPress}
                 placeholder="Enter admin password"
                 className="dark:bg-gray-700 px-3 sm:px-4 py-3 sm:py-3 pr-10 sm:pr-12 border border-gray-400 focus:border-gray-600 dark:border-gray-600 dark:focus:border-gray-400 rounded-none focus:outline-none w-full text-gray-900 dark:text-gray-100 text-sm sm:text-base transition-colors"
