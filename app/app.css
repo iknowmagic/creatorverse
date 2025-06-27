@@ -48,7 +48,7 @@ body {
   @apply bg-white dark:bg-gray-900 font-chivo;
   color-scheme: light dark;
   width: 100%;
-  background-color: var(--color-gray-100);
+  background-color: var(--color-base-100);
   font-family: 'Archivo';
 
   @media (prefers-color-scheme: dark) {
@@ -74,42 +74,4 @@ button {
 
 .text-right {
   text-align: right;
-}
-
-.shiny-container {
-  position: relative;
-  display: inline-block;
-}
-
-.shiny-image {
-  display: block;
-}
-
-.shine-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  /* Diagonal shine using a linear gradient at 135deg (top-left to bottom-right) */
-  -webkit-mask-image: linear-gradient(135deg, transparent 40%, white 46%, transparent 60%);
-  mask-image: linear-gradient(135deg, transparent 40%, white 46%, transparent 60%);
-  -webkit-mask-size: 250% 250%;
-  mask-size: 250% 250%;
-  /* Start at top-left, animate to bottom-right */
-  -webkit-mask-position: 0% 0%;
-  mask-position: 0% 0%;
-  animation: shine-diagonal 1.8s linear infinite;
-  pointer-events: none;
-}
-
-@keyframes shine-diagonal {
-  0% {
-    -webkit-mask-position: 0% 0%;
-    mask-position: 0% 0%;
-  }
-  100% {
-    -webkit-mask-position: 100% 100%;
-    mask-position: 100% 100%;
-  }
 }
