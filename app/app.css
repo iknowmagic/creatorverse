@@ -56,6 +56,10 @@ body {
   }
 }
 
+button {
+  cursor: pointer;
+}
+
 .font-archivo {
   font-family: 'Archivo', 'sans-serif';
 }

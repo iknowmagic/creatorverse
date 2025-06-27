@@ -7,8 +7,8 @@ import {
 } from '@tanstack/react-table'
 import { ChevronDown, ChevronUp, Edit, ExternalLink, Trash2 } from 'lucide-react'
 import { useMemo, useState } from 'react'
-import { SearchAutocomplete } from './SearchAutocomplete'
 import { type Creator } from '~/lib/client'
+import { SearchAutocomplete } from './SearchAutocomplete'
 import { useCreators } from './useCreators'
 
 const columnHelper = createColumnHelper<Creator>()
@@ -43,7 +43,7 @@ export function AdminTable() {
   const { creators, totalCount, isLoading, error } = useCreators({
     pagination,
     sorting,
-    searchTags // Add this
+    searchTags
   })
 
   const columns = useMemo(
@@ -59,10 +59,26 @@ export function AdminTable() {
       columnHelper.accessor('category', {
         header: 'CATEGORY',
         cell: ({ getValue }) => (
-          <div className="bg-gray-100 dark:bg-gray-700 px-2 py-1 border border-gray-400 dark:border-gray-600 text-xs uppercase tracking-wide">
+          <div className="bg-gray-100 dark:bg-gray-700 px-2 py-1 border border-gray-400 dark:border-gray-600 max-w-[250px] text-xs uppercase tracking-wide">
             {getValue()}
           </div>
         )
+      }),
+      columnHelper.accessor('description', {
+        header: 'DESCRIPTION',
+        cell: ({ getValue }) => {
+          const description = getValue()
+          const truncated =
+            description.length > 80 ? `${description.substring(0, 80)}...` : description
+          return (
+            <div
+              className="max-w-[250px] text-gray-700 dark:text-gray-300 text-sm leading-tight"
+              title={description} // Full description on hover
+            >
+              {truncated}
+            </div>
+          )
+        }
       }),
       columnHelper.accessor('url', {
         header: 'URL',
@@ -74,7 +90,7 @@ export function AdminTable() {
               href={url}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1 font-mono text-blue-600 dark:text-blue-400 text-sm hover:underline"
+              className="flex items-center gap-1 font-mono text-blue-600 dark:text-blue-400 text-xs hover:underline"
             >
               {displayUrl}
               <ExternalLink size={12} />
@@ -82,8 +98,8 @@ export function AdminTable() {
           )
         }
       }),
-      columnHelper.accessor('created_at', {
-        header: 'CREATED',
+      columnHelper.accessor('updated_at', {
+        header: 'UPDATED',
         cell: ({ getValue }) => {
           const date = new Date(getValue())
           return (
@@ -126,20 +142,21 @@ export function AdminTable() {
     data: creators,
     columns,
     getCoreRowModel: getCoreRowModel(),
-    // Server-side pagination
     manualPagination: true,
     pageCount,
-    // Server-side sorting
     manualSorting: true,
-    // State management
     state: {
       pagination,
-      sorting,
-      searchTags // Add this
+      sorting
+      // searchTags removed from here
     },
     onPaginationChange: setPagination,
-    onSortingChange: setSorting
-    // Removed: onGlobalFilterChange: setGlobalFilter
+    onSortingChange: setSorting,
+    initialState: {
+      columnVisibility: {
+        description: true
+      }
+    }
   })
 
   const handleEdit = (creator: Creator) => {
@@ -162,10 +179,20 @@ export function AdminTable() {
 
   return (
     <div className="space-y-4">
-      {/* Search */}
+      {/* Search and Controls */}
       <div className="flex justify-between items-center">
         <SearchAutocomplete onTagsChange={setSearchTags} className="flex-1 max-w-lg" />
-        <div className="text-gray-600 dark:text-gray-400 text-sm">{totalCount} creators total</div>
+        <div className="flex items-center gap-4">
+          <button
+            onClick={() => table.getColumn('description')?.toggleVisibility()}
+            className="hidden bg-white hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 px-3 py-1 border border-gray-400 dark:border-gray-600 font-chivo text-gray-900 dark:text-gray-100 text-xs uppercase tracking-wide transition-colors"
+          >
+            {table.getColumn('description')?.getIsVisible() ? 'Hide' : 'Show'} Descriptions
+          </button>
+          <div className="text-gray-600 dark:text-gray-400 text-sm">
+            {totalCount} creators total
+          </div>
+        </div>
       </div>
 
       {/* Loading State */}
