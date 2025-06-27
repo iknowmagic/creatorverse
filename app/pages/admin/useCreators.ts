@@ -47,10 +47,13 @@ export function useCreators({
       let query = supabase.from('creators').select('*', { count: 'exact' }).range(from, to)
 
       if (sorting.length > 0) {
-        const sort = sorting[0]
-        query = query.order(sort.id, { ascending: !sort.desc })
+        // Apply all sorting columns in order
+        sorting.forEach(sort => {
+          query = query.order(sort.id, { ascending: !sort.desc })
+        })
       } else {
-        query = query.order('created_at', { ascending: false })
+        // Default: sort by category first, then name
+        query = query.order('category', { ascending: true }).order('name', { ascending: true })
       }
 
       // AND logic for multiple tags

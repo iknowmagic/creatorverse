@@ -36,7 +36,10 @@ export function AdminTable() {
     pageIndex: 0,
     pageSize: 20
   })
-  const [sorting, setSorting] = useState<SortingState[]>([])
+  const [sorting, setSorting] = useState<SortingState[]>([
+    { id: 'category', desc: false },
+    { id: 'name', desc: false }
+  ])
   const [searchTags, setSearchTags] = useState<SearchTag[]>([])
 
   // Fetch data with server-side params
@@ -48,18 +51,18 @@ export function AdminTable() {
 
   const columns = useMemo(
     () => [
-      columnHelper.accessor('name', {
-        header: 'NAME',
-        cell: ({ getValue }) => (
-          <div className="font-chivo font-medium text-gray-900 dark:text-gray-100">
-            {getValue()}
-          </div>
-        )
-      }),
       columnHelper.accessor('category', {
         header: 'CATEGORY',
         cell: ({ getValue }) => (
           <div className="bg-gray-100 dark:bg-gray-700 px-2 py-1 border border-gray-400 dark:border-gray-600 max-w-[250px] text-xs uppercase tracking-wide">
+            {getValue()}
+          </div>
+        )
+      }),
+      columnHelper.accessor('name', {
+        header: 'NAME',
+        cell: ({ getValue }) => (
+          <div className="font-chivo font-medium text-gray-900 dark:text-gray-100">
             {getValue()}
           </div>
         )
@@ -145,17 +148,21 @@ export function AdminTable() {
     manualPagination: true,
     pageCount,
     manualSorting: true,
+    enableMultiSort: true, // Enable multi-column sorting
     state: {
       pagination,
       sorting
-      // searchTags removed from here
     },
     onPaginationChange: setPagination,
     onSortingChange: setSorting,
     initialState: {
       columnVisibility: {
         description: true
-      }
+      },
+      sorting: [
+        { id: 'category', desc: false },
+        { id: 'name', desc: false }
+      ]
     }
   })
 
