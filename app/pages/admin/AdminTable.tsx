@@ -5,7 +5,7 @@ import {
   getCoreRowModel,
   useReactTable
 } from '@tanstack/react-table'
-import { ChevronDown, ChevronUp, Edit, ExternalLink, Trash2 } from 'lucide-react'
+import { ChevronDown, ChevronUp, Edit, ExternalLink, ImageOff, Trash2 } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import { type Creator } from '~/lib/client'
 import { SearchAutocomplete } from './SearchAutocomplete'
@@ -83,10 +83,50 @@ export function AdminTable() {
           )
         }
       }),
+      columnHelper.accessor('image_url', {
+        header: 'IMAGE',
+        cell: ({ getValue }) => {
+          const imageUrl = getValue()
+          if (!imageUrl) {
+            return (
+              <div className="flex justify-center items-center bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 w-8 h-8">
+                <ImageOff size={14} className="text-gray-400" />
+              </div>
+            )
+          }
+          return (
+            <img
+              src={imageUrl}
+              alt="Creator"
+              className="border border-gray-300 dark:border-gray-600 w-8 h-8 object-cover hover:scale-150 transition-transform cursor-pointer"
+              title="Click to view larger"
+              onClick={() => window.open(imageUrl, '_blank')}
+            />
+          )
+        }
+      }),
       columnHelper.accessor('url', {
         header: 'URL',
-        cell: ({ getValue }) => {
+        cell: ({ getValue, table }) => {
           const url = getValue()
+          const isImageColumnVisible = table.getColumn('image_url')?.getIsVisible()
+
+          if (isImageColumnVisible) {
+            // When image column is visible, just show the icon
+            return (
+              <a
+                href={url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex justify-center items-center text-blue-600 hover:text-blue-800 dark:hover:text-blue-200 dark:text-blue-400 transition-colors"
+                title={url}
+              >
+                <ExternalLink size={16} />
+              </a>
+            )
+          }
+
+          // When image column is hidden, show full URL
           const displayUrl = url.length > 30 ? `${url.substring(0, 30)}...` : url
           return (
             <a
@@ -96,7 +136,7 @@ export function AdminTable() {
               className="flex items-center gap-1 font-mono text-blue-600 dark:text-blue-400 text-xs hover:underline"
             >
               {displayUrl}
-              <ExternalLink size={12} />
+              <ExternalLink size={14} />
             </a>
           )
         }
@@ -157,7 +197,8 @@ export function AdminTable() {
     onSortingChange: setSorting,
     initialState: {
       columnVisibility: {
-        description: true
+        description: true,
+        image_url: false // Hide images by default
       },
       sorting: [
         { id: 'category', desc: false },
@@ -191,10 +232,10 @@ export function AdminTable() {
         <SearchAutocomplete onTagsChange={setSearchTags} className="flex-1 max-w-lg" />
         <div className="flex items-center gap-4">
           <button
-            onClick={() => table.getColumn('description')?.toggleVisibility()}
-            className="hidden bg-white hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 px-3 py-1 border border-gray-400 dark:border-gray-600 font-chivo text-gray-900 dark:text-gray-100 text-xs uppercase tracking-wide transition-colors"
+            onClick={() => table.getColumn('image_url')?.toggleVisibility()}
+            className="bg-white hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 px-3 py-1 border border-gray-400 dark:border-gray-600 font-chivo text-gray-900 dark:text-gray-100 text-xs uppercase tracking-wide transition-colors"
           >
-            {table.getColumn('description')?.getIsVisible() ? 'Hide' : 'Show'} Descriptions
+            {table.getColumn('image_url')?.getIsVisible() ? 'Hide' : 'Show'} Creator Images
           </button>
           <div className="text-gray-600 dark:text-gray-400 text-sm">
             {totalCount} creators total
