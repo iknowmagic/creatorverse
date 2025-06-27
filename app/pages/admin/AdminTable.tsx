@@ -54,7 +54,7 @@ export function AdminTable() {
       columnHelper.accessor('category', {
         header: 'CATEGORY',
         cell: ({ getValue }) => (
-          <div className="bg-gray-100 dark:bg-gray-700 px-2 py-1 border border-gray-400 dark:border-gray-600 max-w-[250px] text-xs uppercase tracking-wide">
+          <div className="bg-gray-100 dark:bg-gray-700 px-2 py-1 border-gray-400 dark:border-gray-600 max-w-[250px] text-sm tracking-wide">
             {getValue()}
           </div>
         )
