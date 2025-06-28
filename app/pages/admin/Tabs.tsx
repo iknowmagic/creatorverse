@@ -26,7 +26,7 @@ export function Tabs({ tabs, defaultTab, className = '' }: TabsProps) {
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
             className={`
-              relative px-6 py-3 font-chivo text-sm font-medium uppercase tracking-wide transition-all
+              relative px-6 py-2 font-chivo text-sm font-medium uppercase tracking-wide transition-all
               border-b-0
               ${index > 0 ? 'ml-[-2px]' : ''}
               ${
