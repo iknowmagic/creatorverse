@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { X } from 'lucide-react'
-import { forwardRef, useImperativeHandle, useState } from 'react'
+import React, { forwardRef, useImperativeHandle, useState } from 'react'
 
 interface ModalProps {
   children: React.ReactNode
