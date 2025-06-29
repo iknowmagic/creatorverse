@@ -5,7 +5,7 @@ import {
   getCoreRowModel,
   useReactTable
 } from '@tanstack/react-table'
-import { ChevronDown, ChevronUp, RotateCcw, Trash, Trash2 } from 'lucide-react'
+import { ChevronDown, ChevronUp, History, Trash, Trash2 } from 'lucide-react'
 import { useMemo, useRef, useState } from 'react'
 import { Modal, type ModalRef } from './Modal'
 import {
@@ -107,7 +107,7 @@ export function HistoryTable() {
               className="p-1 text-gray-600 hover:text-green-600 dark:hover:text-green-400 dark:text-gray-400 transition-colors"
               title="Restore this state"
             >
-              <RotateCcw size={16} />
+              <History size={16} />
             </button>
             <button
               onClick={() => {
