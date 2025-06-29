@@ -11,14 +11,19 @@
   --color-base-200: oklch(97% 0 0);
   --color-base-300: oklch(94% 0 0);
   --color-base-content: oklch(0% 0 0);
-  --color-primary: oklch(15.906% 0 0);
-  --color-primary-content: oklch(100% 0 0);
-  --color-secondary: oklch(21.455% 0.001 17.278);
-  --color-secondary-content: oklch(100% 0 0);
-  --color-accent: oklch(26.861% 0 0);
-  --color-accent-content: oklch(100% 0 0);
+
+  /* High contrast primary/secondary */
+  --color-primary: oklch(0% 0 0); /* Black background */
+  --color-primary-content: oklch(100% 0 0); /* White text on black */
+  --color-secondary: oklch(95% 0 0); /* Light gray background  */
+  --color-secondary-content: oklch(0% 0 0); /* Black text on light gray */
+  --color-accent: oklch(50% 0 0); /* Dark gray - between primary/secondary */
+  --color-accent-content: oklch(100% 0 0); /* White text on dark gray */
+
   --color-neutral: oklch(0% 0 0);
   --color-neutral-content: oklch(100% 0 0);
+
+  /* Keep the existing color values - they work well */
   --color-info: oklch(79.54% 0.103 205.9);
   --color-info-content: oklch(15.908% 0.02 205.9);
   --color-success: oklch(90.13% 0.153 164.14);
@@ -27,6 +32,7 @@
   --color-warning-content: oklch(17.674% 0.027 79.94);
   --color-error: oklch(78.66% 0.15 28.47);
   --color-error-content: oklch(15.732% 0.03 28.47);
+
   --radius-selector: 0rem;
   --radius-field: 0rem;
   --radius-box: 0rem;
@@ -74,4 +80,359 @@ button {
 
 .text-right {
   text-align: right;
+}
+
+/* ===== CREATORVERSE THEME CLASSES ===== */
+[data-theme='lofi'] {
+  /* === BUTTONS === */
+  .btn {
+    @apply font-chivo font-medium uppercase tracking-wide transition-colors;
+    @apply border-2 focus:outline-none;
+    border-radius: 0;
+  }
+
+  .btn-sm {
+    @apply px-3 py-1 text-xs;
+  }
+
+  .btn-md {
+    @apply px-4 py-2 text-sm;
+  }
+
+  .btn-lg {
+    @apply px-6 py-3 text-base;
+  }
+
+  .btn-primary {
+    @apply bg-gray-900 dark:bg-gray-100 
+           text-white dark:text-gray-900 
+           border-gray-900 dark:border-gray-100
+           hover:bg-gray-800 dark:hover:bg-gray-200;
+  }
+
+  .btn-secondary {
+    @apply bg-gray-200 dark:bg-gray-700 
+           text-gray-900 dark:text-gray-100
+           border-gray-400 dark:border-gray-600
+           hover:bg-gray-300 dark:hover:bg-gray-600;
+  }
+
+  .btn-accent {
+    @apply bg-gray-600 dark:bg-gray-400 
+           text-white dark:text-gray-900
+           border-gray-600 dark:border-gray-400
+           hover:bg-gray-500 dark:hover:bg-gray-300;
+  }
+
+  .btn-success {
+    @apply bg-green-600 text-white border-green-600
+           hover:bg-green-700;
+  }
+
+  .btn-info {
+    @apply bg-blue-600 text-white border-blue-600
+           hover:bg-blue-700;
+  }
+
+  .btn-warning {
+    @apply bg-yellow-600 text-white border-yellow-600
+           hover:bg-yellow-700;
+  }
+
+  .btn-error {
+    @apply bg-red-600 text-white border-red-600
+           hover:bg-red-700;
+  }
+
+  .btn:disabled {
+    @apply bg-gray-100 dark:bg-gray-800 
+           text-gray-400 dark:text-gray-500 
+           border-gray-300 dark:border-gray-600
+           cursor-not-allowed;
+  }
+
+  /* === TABLES === */
+  .table {
+    @apply border-2 border-gray-900 dark:border-gray-100 
+           w-full border-collapse overflow-x-auto;
+  }
+
+  .table thead th {
+    @apply bg-gray-100 dark:bg-gray-800
+           border-b-2 border-r border-gray-900 dark:border-gray-100
+           px-4 py-3 text-left 
+           font-chivo font-bold text-sm uppercase tracking-wide
+           text-gray-900 dark:text-gray-100;
+  }
+
+  .table tbody td {
+    @apply px-4 py-3 border-gray-400 dark:border-gray-600 
+           border-r border-b text-sm;
+  }
+
+  .table tbody tr:hover {
+    @apply bg-gray-50 dark:bg-gray-800 transition-colors;
+  }
+
+  /* === MODALS === */
+  .modal {
+    @apply fixed top-0 left-0 z-50 
+           flex items-center justify-center w-full h-full;
+  }
+
+  .modal-backdrop {
+    @apply absolute top-0 left-0 w-full h-full
+           bg-gray-900 dark:bg-black;
+    opacity: 0.8;
+  }
+
+  .modal-box {
+    @apply relative z-10 flex flex-col 
+           bg-white dark:bg-gray-800 
+           border-2 border-gray-900 dark:border-gray-100
+           min-h-40 max-h-[80vh] overflow-hidden;
+    border-radius: 0;
+  }
+
+  .modal-box-sm {
+    @apply min-w-80 max-w-sm;
+  }
+
+  .modal-box-md {
+    @apply min-w-96 max-w-md;
+  }
+
+  .modal-box-lg {
+    @apply min-w-[32rem] max-w-2xl;
+  }
+
+  .modal-header {
+    @apply flex items-center justify-between p-4
+           font-chivo font-bold text-lg uppercase tracking-wide
+           text-gray-900 dark:text-gray-100;
+  }
+
+  .modal-body {
+    @apply flex-1 p-4 overflow-y-auto
+           text-gray-700 dark:text-gray-300 text-sm leading-relaxed;
+  }
+
+  .modal-action {
+    @apply flex justify-end items-center gap-3 p-4;
+  }
+
+  /* === TABS === */
+  .tabs {
+    @apply flex items-end gap-0;
+  }
+
+  .tab {
+    @apply px-6 py-2 border-2 border-b-0
+           font-chivo text-sm font-medium uppercase tracking-wide
+           transition-all cursor-pointer;
+  }
+
+  .tab:not(:first-child) {
+    margin-left: -2px;
+  }
+
+  .tab-active {
+    @apply bg-white dark:bg-gray-800 
+           text-gray-900 dark:text-gray-100 
+           border-gray-900 dark:border-gray-100 z-10;
+  }
+
+  .tab:not(.tab-active) {
+    @apply bg-transparent text-gray-500 dark:text-gray-400
+           border-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700
+           hover:text-gray-900 dark:hover:text-gray-100;
+  }
+
+  .tab-content {
+    @apply bg-white dark:bg-gray-800 
+           border-2 border-gray-900 dark:border-gray-100 
+           min-h-[400px];
+  }
+
+  /* === INPUTS === */
+  .input {
+    @apply bg-white dark:bg-gray-700 
+           border-2 border-gray-400 dark:border-gray-600
+           focus:border-gray-900 dark:focus:border-gray-100
+           focus:outline-none text-gray-900 dark:text-gray-100
+           px-3 py-2 font-archivo transition-colors;
+    border-radius: 0;
+  }
+
+  .input-sm {
+    @apply px-2 py-1 text-sm;
+  }
+
+  .input-md {
+    @apply px-3 py-2 text-base;
+  }
+
+  .input-lg {
+    @apply px-4 py-3 text-lg;
+  }
+
+  .textarea {
+    @apply input resize-none;
+  }
+
+  /* === BADGES === */
+  .badge {
+    @apply px-2 py-1 font-chivo font-medium text-xs uppercase tracking-wide;
+  }
+
+  .badge-success {
+    @apply text-green-700 dark:text-green-300;
+  }
+
+  .badge-info {
+    @apply text-blue-700 dark:text-blue-300;
+  }
+
+  .badge-error {
+    @apply text-red-700 dark:text-red-300;
+  }
+
+  .badge-warning {
+    @apply text-yellow-700 dark:text-yellow-300;
+  }
+
+  /* === CARDS === */
+  .card {
+    @apply bg-white dark:bg-gray-800 
+           border-2 border-gray-900 dark:border-gray-100;
+    border-radius: 0;
+  }
+
+  .card-body {
+    @apply p-6;
+  }
+
+  .card-title {
+    @apply font-libre-bodoni font-bold text-xl
+           text-gray-900 dark:text-gray-100 uppercase tracking-wide;
+  }
+
+  /* === ALERTS === */
+  .alert {
+    @apply p-4 border-2 text-sm;
+    border-radius: 0;
+  }
+
+  .alert-success {
+    @apply bg-green-50 dark:bg-green-900/20 
+           border-green-200 dark:border-green-800 
+           text-green-700 dark:text-green-400;
+  }
+
+  .alert-info {
+    @apply bg-blue-50 dark:bg-blue-900/20 
+           border-blue-200 dark:border-blue-800 
+           text-blue-700 dark:text-blue-400;
+  }
+
+  .alert-warning {
+    @apply bg-yellow-50 dark:bg-yellow-900/20 
+           border-yellow-200 dark:border-yellow-800 
+           text-yellow-700 dark:text-yellow-400;
+  }
+
+  .alert-error {
+    @apply bg-red-50 dark:bg-red-900/20 
+           border-red-200 dark:border-red-800 
+           text-red-700 dark:text-red-400;
+  }
+
+  /* === DIVIDERS === */
+  .divider {
+    @apply bg-gray-900 dark:bg-gray-100 my-4 w-full h-0.5;
+  }
+
+  /* === LOADING === */
+  .loading {
+    @apply border-2 border-gray-500 border-t-transparent rounded-full 
+           w-6 h-6 animate-spin;
+  }
+
+  .loading-sm {
+    @apply w-4 h-4;
+  }
+
+  .loading-lg {
+    @apply w-8 h-8;
+  }
+
+  /* === UTILITY CLASSES === */
+  .text-header-xl {
+    @apply font-libre-bodoni text-4xl md:text-8xl 
+           text-gray-900 dark:text-gray-100;
+  }
+
+  .text-header-lg {
+    @apply font-libre-bodoni text-2xl md:text-4xl 
+           text-gray-900 dark:text-gray-100;
+  }
+
+  .text-header-md {
+    @apply font-chivo font-bold text-xl uppercase tracking-wide
+           text-gray-900 dark:text-gray-100;
+  }
+
+  .text-header-sm {
+    @apply font-chivo font-bold text-lg uppercase tracking-wide
+           text-gray-900 dark:text-gray-100;
+  }
+
+  .text-ui-lg {
+    @apply font-chivo text-base font-medium 
+           text-gray-900 dark:text-gray-100;
+  }
+
+  .text-ui-md {
+    @apply font-chivo text-sm font-medium 
+           text-gray-900 dark:text-gray-100;
+  }
+
+  .text-ui-sm {
+    @apply font-chivo text-xs uppercase tracking-wide
+           text-gray-900 dark:text-gray-100;
+  }
+
+  .text-content-lg {
+    @apply font-archivo text-base leading-relaxed
+           text-gray-700 dark:text-gray-300;
+  }
+
+  .text-content-md {
+    @apply font-archivo text-sm leading-tight
+           text-gray-700 dark:text-gray-300;
+  }
+
+  .text-content-sm {
+    @apply font-archivo text-xs
+           text-gray-600 dark:text-gray-400;
+  }
+
+  /* === HOVER STATES === */
+  .hover-lift {
+    @apply transition-colors duration-200
+           hover:bg-gray-50 dark:hover:bg-gray-800;
+  }
+
+  .icon-hover {
+    @apply text-gray-600 hover:text-gray-900 
+           dark:text-gray-400 dark:hover:text-gray-100
+           transition-colors cursor-pointer;
+  }
+
+  /* === FOCUS STATES === */
+  .focus-brutalist {
+    @apply focus:outline-none 
+           focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-100
+           focus:ring-offset-2;
+  }
 }

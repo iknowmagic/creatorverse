@@ -1,32 +1,11 @@
 import { LogOut } from 'lucide-react'
 import { supabase } from '~/lib/client'
 import { AdminTable } from './AdminTable'
+import { HistoryTable } from './HistoryTable'
 import { Tabs } from './Tabs'
 
 const handleLogout = async () => {
   await supabase.auth.signOut()
-}
-
-// Placeholder component for History tab
-function HistoryPlaceholder() {
-  return (
-    <div className="bg-white dark:bg-gray-800 p-8 border-2 border-gray-900 dark:border-gray-100 text-center">
-      <div className="space-y-4">
-        <h2 className="font-chivo font-bold text-gray-900 dark:text-gray-100 text-xl uppercase tracking-wide">
-          History Management
-        </h2>
-        <p className="text-gray-600 dark:text-gray-400 text-sm">
-          HistoryTable component coming soon...
-        </p>
-        <div className="space-y-2 text-gray-500 dark:text-gray-500 text-xs">
-          <div>• View all creator changes (create/update/delete)</div>
-          <div>• Restore creators to previous states</div>
-          <div>• Delete specific history entries</div>
-          <div>• Clear all history with one click</div>
-        </div>
-      </div>
-    </div>
-  )
 }
 
 // pages/AdminDashboard.tsx
@@ -40,7 +19,7 @@ export function AdminDashboard() {
     {
       id: 'history',
       label: 'History',
-      component: <HistoryPlaceholder />
+      component: <HistoryTable />
     }
   ]
 
