@@ -251,7 +251,7 @@ export function AdminTable() {
         <div className="flex items-center gap-4">
           <button
             onClick={() => addModalRef.current?.showModal()}
-            className="flex gap-2 bg-white hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 px-3 py-1 border border-gray-400 dark:border-gray-600 font-chivo text-gray-900 dark:text-gray-100 text-xs uppercase tracking-wide transition-colors"
+            className="btn btn-secondary btn-sm"
             title="Add new creator"
           >
             <FilePlus2 size={14} />
@@ -259,7 +259,7 @@ export function AdminTable() {
           </button>
           <button
             onClick={() => table.getColumn('image_url')?.toggleVisibility()}
-            className="bg-white hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 px-3 py-1 border border-gray-400 dark:border-gray-600 font-chivo text-gray-900 dark:text-gray-100 text-xs uppercase tracking-wide transition-colors"
+            className="btn btn-secondary btn-sm"
           >
             {table.getColumn('image_url')?.getIsVisible() ? 'Hide' : 'Show'} Creator Images
           </button>
