@@ -5,10 +5,21 @@ import {
   getCoreRowModel,
   useReactTable
 } from '@tanstack/react-table'
-import { ChevronDown, ChevronUp, Edit, ExternalLink, ImageOff, Trash2 } from 'lucide-react'
+import {
+  ChevronDown,
+  ChevronUp,
+  Edit,
+  ExternalLink,
+  FilePlus2,
+  ImageOff,
+  Trash2
+} from 'lucide-react'
 import { useMemo, useRef, useState } from 'react'
 import { type Creator } from '~/lib/client'
-import { Modal, type ModalRef } from './Modal'
+import { AddModal } from './AddModal'
+import { DeleteModal } from './DeleteModal'
+import { EditModal } from './EditModal'
+import { type ModalRef } from './Modal'
 import { SearchAutocomplete } from './SearchAutocomplete'
 import { useCreators } from './useCreators'
 
@@ -32,9 +43,10 @@ interface SearchTag {
 }
 
 export function AdminTable() {
-  // Add refs for modals
+  // Modal refs
   const editModalRef = useRef<ModalRef>(null)
   const deleteModalRef = useRef<ModalRef>(null)
+  const addModalRef = useRef<ModalRef>(null)
   const [selectedCreator, setSelectedCreator] = useState<Creator | null>(null)
 
   // Table state
@@ -49,11 +61,17 @@ export function AdminTable() {
   const [searchTags, setSearchTags] = useState<SearchTag[]>([])
 
   // Fetch data with server-side params
-  const { creators, totalCount, isLoading, error } = useCreators({
+  const { creators, totalCount, isLoading, error, refetch } = useCreators({
     pagination,
     sorting,
     searchTags
   })
+
+  // Success handler for modals
+  const handleModalSuccess = async () => {
+    await refetch()
+    setSelectedCreator(null)
+  }
 
   const columns = useMemo(
     () => [
@@ -217,19 +235,6 @@ export function AdminTable() {
     }
   })
 
-  const handleConfirmDelete = async () => {
-    if (!selectedCreator) return
-
-    try {
-      // TODO: Implement actual delete
-      console.log('Deleting:', selectedCreator.name)
-      deleteModalRef.current?.close()
-      setSelectedCreator(null)
-    } catch (error) {
-      console.error('Failed to delete creator:', error)
-    }
-  }
-
   if (error) {
     return (
       <div className="bg-red-50 dark:bg-red-900/20 p-4 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400">
@@ -244,6 +249,14 @@ export function AdminTable() {
       <div className="flex justify-between items-center">
         <SearchAutocomplete onTagsChange={setSearchTags} className="flex-1 max-w-lg" />
         <div className="flex items-center gap-4">
+          <button
+            onClick={() => addModalRef.current?.showModal()}
+            className="flex gap-2 bg-white hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 px-3 py-1 border border-gray-400 dark:border-gray-600 font-chivo text-gray-900 dark:text-gray-100 text-xs uppercase tracking-wide transition-colors"
+            title="Add new creator"
+          >
+            <FilePlus2 size={14} />
+            Add Creator
+          </button>
           <button
             onClick={() => table.getColumn('image_url')?.toggleVisibility()}
             className="bg-white hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 px-3 py-1 border border-gray-400 dark:border-gray-600 font-chivo text-gray-900 dark:text-gray-100 text-xs uppercase tracking-wide transition-colors"
@@ -387,39 +400,11 @@ export function AdminTable() {
       )}
 
       {/* Modals */}
-      <Modal ref={editModalRef} title="Edit Creator">
-        <p>Edit form for: {selectedCreator?.name}</p>
-        {/* TODO: Add edit form */}
-      </Modal>
+      <EditModal ref={editModalRef} creator={selectedCreator} onSuccess={handleModalSuccess} />
 
-      <Modal
-        ref={deleteModalRef}
-        title="Delete Creator"
-        size="sm"
-        actions={
-          <>
-            <button
-              className="bg-white hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700 px-4 py-2 border-2 border-gray-400 dark:border-gray-600 font-chivo text-gray-900 dark:text-gray-100 text-sm uppercase tracking-wide transition-colors"
-              onClick={() => deleteModalRef.current?.close()}
-            >
-              Cancel
-            </button>
-            <button
-              className="bg-red-600 hover:bg-red-700 px-4 py-2 border-2 border-red-600 font-chivo text-white text-sm uppercase tracking-wide transition-colors"
-              onClick={handleConfirmDelete}
-            >
-              Delete
-            </button>
-          </>
-        }
-      >
-        <p>
-          Are you sure you want to delete <strong>{selectedCreator?.name}</strong>?
-        </p>
-        <p className="mt-2 text-gray-600 dark:text-gray-400 text-sm">
-          This action cannot be undone.
-        </p>
-      </Modal>
+      <AddModal ref={addModalRef} onSuccess={handleModalSuccess} />
+
+      <DeleteModal ref={deleteModalRef} creator={selectedCreator} onSuccess={handleModalSuccess} />
     </div>
   )
 }
