@@ -2,6 +2,7 @@
 import React, { forwardRef, useState } from 'react'
 import { supabase } from '~/lib/client'
 import { Modal, type ModalRef } from './Modal'
+import { useCategories } from './useCreators'
 
 interface AddModalProps {
   onSuccess: () => void
@@ -18,7 +19,12 @@ export const AddModal = forwardRef<ModalRef, AddModalProps>(({ onSuccess }, ref)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  // Fetch categories
+  const { categories, isLoading: categoriesLoading } = useCategories()
+
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target
     setFormData(prev => ({ ...prev, [name]: value }))
     if (error) setError('')
@@ -150,16 +156,24 @@ export const AddModal = forwardRef<ModalRef, AddModalProps>(({ onSuccess }, ref)
           >
             Category *
           </label>
-          <input
-            type="text"
+          <select
             id="add-category"
             name="category"
             value={formData.category}
             onChange={handleInputChange}
-            placeholder="e.g., Tech, Gaming, Art, Music, Education"
             className="bg-white dark:bg-gray-700 px-3 py-2 border-2 border-gray-400 focus:border-gray-600 dark:border-gray-600 dark:focus:border-gray-400 focus:outline-none w-full text-gray-900 dark:text-gray-100 text-sm transition-colors"
             required
-          />
+            disabled={categoriesLoading}
+          >
+            <option value="" disabled={true}>
+              {categoriesLoading ? 'Loading categories...' : 'Select a category'}
+            </option>
+            {categories.map(category => (
+              <option key={category} value={category}>
+                {category}
+              </option>
+            ))}
+          </select>
         </div>
 
         {/* Image URL Field */}

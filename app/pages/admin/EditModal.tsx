@@ -2,6 +2,7 @@
 import React, { forwardRef, useEffect, useState } from 'react'
 import { supabase, type Creator } from '~/lib/client'
 import { Modal, type ModalRef } from './Modal'
+import { useCategories } from './useCreators'
 
 interface EditModalProps {
   creator: Creator | null
@@ -19,6 +20,9 @@ export const EditModal = forwardRef<ModalRef, EditModalProps>(({ creator, onSucc
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
 
+  // Fetch categories
+  const { categories, isLoading: categoriesLoading } = useCategories()
+
   // Update form when creator changes
   useEffect(() => {
     if (creator) {
@@ -33,7 +37,9 @@ export const EditModal = forwardRef<ModalRef, EditModalProps>(({ creator, onSucc
     }
   }, [creator])
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target
     setFormData(prev => ({ ...prev, [name]: value }))
     if (error) setError('')
@@ -161,16 +167,24 @@ export const EditModal = forwardRef<ModalRef, EditModalProps>(({ creator, onSucc
           >
             Category *
           </label>
-          <input
-            type="text"
+          <select
             id="edit-category"
             name="category"
             value={formData.category}
             onChange={handleInputChange}
-            placeholder="e.g., Tech, Gaming, Art, Music, Education"
             className="bg-white dark:bg-gray-700 px-3 py-2 border-2 border-gray-400 focus:border-gray-600 dark:border-gray-600 dark:focus:border-gray-400 focus:outline-none w-full text-gray-900 dark:text-gray-100 text-sm transition-colors"
             required
-          />
+            disabled={categoriesLoading}
+          >
+            <option value="" disabled={true}>
+              {categoriesLoading ? 'Loading categories...' : 'Select a category'}
+            </option>
+            {categories.map(category => (
+              <option key={category} value={category}>
+                {category}
+              </option>
+            ))}
+          </select>
         </div>
 
         {/* Image URL Field */}
