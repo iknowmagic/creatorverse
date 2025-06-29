@@ -232,9 +232,9 @@ export function HistoryTable() {
         <div className="flex items-center gap-4">
           <button
             onClick={() => clearModalRef.current?.showModal()}
-            className="bg-white hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 px-3 py-1 border border-gray-400 dark:border-gray-600 font-chivo text-gray-900 dark:text-gray-100 text-xs uppercase tracking-wide transition-colors"
+            className="btn btn-secondary btn-sm"
           >
-            <Trash size={14} className="inline -mt-1 mr-1" />
+            <Trash size={14} className="inline mr-1" />
             Clear History
           </button>
           <div className="text-gray-600 dark:text-gray-400 text-sm">{totalCount} records total</div>
