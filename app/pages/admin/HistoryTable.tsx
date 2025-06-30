@@ -7,15 +7,18 @@ import {
 } from '@tanstack/react-table'
 import { ChevronDown, ChevronUp, History, Trash, Trash2 } from 'lucide-react'
 import { useMemo, useRef, useState } from 'react'
-import { Modal, type ModalRef } from './Modal'
+import { ClearHistoryModal, DeleteHistoryModal, RestoreModal } from './HistoryModals'
+import { type ModalRef } from './Modal'
 import {
   clearHistory,
   deleteFromHistory,
+  getRestoreDiff,
   restoreCreator,
   useHistory,
   type HistoryFilter,
   type HistoryRecord,
   type PaginationState,
+  type RestoreDiff,
   type SortingState
 } from './useCreators'
 
@@ -27,6 +30,11 @@ export function HistoryTable() {
   const deleteModalRef = useRef<ModalRef>(null)
   const clearModalRef = useRef<ModalRef>(null)
   const [selectedRecord, setSelectedRecord] = useState<HistoryRecord | null>(null)
+
+  // Restore diff state
+  const [restoreDiff, setRestoreDiff] = useState<RestoreDiff[]>([])
+  const [restoreDiffLoading, setRestoreDiffLoading] = useState(false)
+  const [restoreDiffError, setRestoreDiffError] = useState<string | null>(null)
 
   // Table state
   const [pagination, setPagination] = useState<PaginationState>({
@@ -58,6 +66,28 @@ export function HistoryTable() {
       default:
         return `${baseClasses} text-gray-700 dark:text-gray-300`
     }
+  }
+
+  // Fetch restore diff when modal opens
+  const handleRestoreClick = async (record: HistoryRecord) => {
+    setSelectedRecord(record)
+    setRestoreDiffLoading(true)
+    setRestoreDiffError(null)
+
+    try {
+      const { data, error } = await getRestoreDiff(record.history_id)
+      if (error) {
+        setRestoreDiffError(error)
+      } else {
+        setRestoreDiff(data)
+      }
+    } catch (err) {
+      setRestoreDiffError('Failed to load restore preview')
+    } finally {
+      setRestoreDiffLoading(false)
+    }
+
+    restoreModalRef.current?.showModal()
   }
 
   const columns = useMemo(
@@ -100,10 +130,7 @@ export function HistoryTable() {
         cell: ({ row }) => (
           <div className="flex gap-2">
             <button
-              onClick={() => {
-                setSelectedRecord(row.original)
-                restoreModalRef.current?.showModal()
-              }}
+              onClick={() => handleRestoreClick(row.original)}
               className="p-1 text-gray-600 hover:text-green-600 dark:hover:text-green-400 dark:text-gray-400 transition-colors"
               title="Restore this state"
             >
@@ -370,117 +397,28 @@ export function HistoryTable() {
       )}
 
       {/* Modals */}
-      <Modal
+      <RestoreModal
         ref={restoreModalRef}
-        title="Restore Creator"
-        size="md"
-        actions={
-          <>
-            <button
-              className="bg-white hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700 px-4 py-2 border-2 border-gray-400 dark:border-gray-600 font-chivo text-gray-900 dark:text-gray-100 text-sm uppercase tracking-wide transition-colors"
-              onClick={() => restoreModalRef.current?.close()}
-            >
-              Cancel
-            </button>
-            <button
-              className="bg-green-600 hover:bg-green-700 px-4 py-2 border-2 border-green-600 font-chivo text-white text-sm uppercase tracking-wide transition-colors"
-              onClick={handleRestore}
-            >
-              Restore
-            </button>
-          </>
-        }
-      >
-        <div className="space-y-3">
-          <p>
-            Restore <strong>{selectedRecord?.name}</strong> to this state?
-          </p>
-          <div className="bg-gray-100 dark:bg-gray-700 p-3 border border-gray-300 dark:border-gray-600">
-            <div className="space-y-1 text-gray-600 dark:text-gray-400 text-xs">
-              <div>
-                <strong>Action:</strong> {selectedRecord?.action}
-              </div>
-              <div>
-                <strong>Date:</strong>{' '}
-                {selectedRecord?.action_date
-                  ? new Date(selectedRecord.action_date).toLocaleString()
-                  : ''}
-              </div>
-              <div>
-                <strong>Category:</strong> {selectedRecord?.category}
-              </div>
-            </div>
-          </div>
-          <p className="text-gray-600 dark:text-gray-400 text-sm">
-            This will update or create the creator with this historical data.
-          </p>
-        </div>
-      </Modal>
+        selectedRecord={selectedRecord}
+        restoreDiff={restoreDiff}
+        restoreDiffLoading={restoreDiffLoading}
+        restoreDiffError={restoreDiffError}
+        onRestore={handleRestore}
+        onCancel={() => restoreModalRef.current?.close()}
+      />
 
-      <Modal
+      <DeleteHistoryModal
         ref={deleteModalRef}
-        title="Delete from History"
-        size="sm"
-        actions={
-          <>
-            <button
-              className="bg-white hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700 px-4 py-2 border-2 border-gray-400 dark:border-gray-600 font-chivo text-gray-900 dark:text-gray-100 text-sm uppercase tracking-wide transition-colors"
-              onClick={() => deleteModalRef.current?.close()}
-            >
-              Cancel
-            </button>
-            <button
-              className="bg-red-600 hover:bg-red-700 px-4 py-2 border-2 border-red-600 font-chivo text-white text-sm uppercase tracking-wide transition-colors"
-              onClick={handleDeleteFromHistory}
-            >
-              Delete
-            </button>
-          </>
-        }
-      >
-        <p>
-          Remove this history record for <strong>{selectedRecord?.name}</strong>?
-        </p>
-        <p className="mt-2 text-gray-600 dark:text-gray-400 text-sm">
-          This will permanently delete this specific history entry.
-        </p>
-      </Modal>
+        selectedRecord={selectedRecord}
+        onDelete={handleDeleteFromHistory}
+        onCancel={() => deleteModalRef.current?.close()}
+      />
 
-      <Modal
+      <ClearHistoryModal
         ref={clearModalRef}
-        title="Clear All History"
-        size="sm"
-        actions={
-          <>
-            <button
-              className="bg-white hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700 px-4 py-2 border-2 border-gray-400 dark:border-gray-600 font-chivo text-gray-900 dark:text-gray-100 text-sm uppercase tracking-wide transition-colors"
-              onClick={() => clearModalRef.current?.close()}
-            >
-              Cancel
-            </button>
-            <button
-              className="bg-red-600 hover:bg-red-700 px-4 py-2 border-2 border-red-600 font-chivo text-white text-sm uppercase tracking-wide transition-colors"
-              onClick={handleClearHistory}
-            >
-              Clear All
-            </button>
-          </>
-        }
-      >
-        <div className="space-y-3">
-          <p>
-            Are you sure you want to clear <strong>all history records</strong>?
-          </p>
-          <div className="bg-red-50 dark:bg-red-900/20 p-3 border border-red-200 dark:border-red-800">
-            <p className="font-medium text-red-700 dark:text-red-400 text-sm">
-              ⚠️ This action cannot be undone
-            </p>
-          </div>
-          <p className="text-gray-600 dark:text-gray-400 text-sm">
-            All creator change history will be permanently deleted.
-          </p>
-        </div>
-      </Modal>
+        onClear={handleClearHistory}
+        onCancel={() => clearModalRef.current?.close()}
+      />
     </div>
   )
 }

@@ -127,6 +127,14 @@ export interface HistoryRecord {
   updated_at: string
 }
 
+// Restore diff functionality
+export interface RestoreDiff {
+  field_name: string
+  current_value: string | null
+  restore_value: string | null
+  will_change: boolean
+}
+
 interface HistoryFilter {
   action?: 'create' | 'update' | 'delete'
   dateFrom?: string
@@ -296,6 +304,28 @@ export async function clearHistory(filters?: HistoryFilter): Promise<void> {
   } catch (error) {
     console.error('Error clearing history:', error)
     throw error
+  }
+}
+
+// Get restore diff
+export async function getRestoreDiff(historyId: number): Promise<{
+  data: RestoreDiff[]
+  error: string | null
+}> {
+  try {
+    const { data, error } = await supabase.rpc('get_creator_restore_diff', {
+      history_record_id: historyId
+    })
+
+    if (error) throw error
+
+    return { data: data || [], error: null }
+  } catch (err) {
+    console.error('Error fetching restore diff:', err)
+    return {
+      data: [],
+      error: err instanceof Error ? err.message : 'Failed to fetch restore diff'
+    }
   }
 }
 
