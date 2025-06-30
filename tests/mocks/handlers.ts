@@ -126,10 +126,17 @@ export const handlers = [
       paginatedCreators = filteredCreators.slice(range.start, range.end + 1)
     }
 
+    // Calculate proper Content-Range header for Supabase compatibility
+    const startIndex = range?.start || 0
+    const endIndex =
+      paginatedCreators.length > 0
+        ? startIndex + paginatedCreators.length - 1
+        : Math.max(startIndex - 1, 0) // For empty pages, end should be start-1
+
     // Return response with Supabase-style headers
     return HttpResponse.json(paginatedCreators, {
       headers: {
-        'Content-Range': `0-${paginatedCreators.length - 1}/${filteredCreators.length}`,
+        'Content-Range': `${startIndex}-${endIndex}/${filteredCreators.length}`,
         'Content-Type': 'application/json'
       }
     })

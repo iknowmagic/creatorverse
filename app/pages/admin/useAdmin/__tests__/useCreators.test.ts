@@ -269,10 +269,18 @@ describe('useCreators Hook', () => {
 
   describe('Error Handling', () => {
     it('should handle API errors gracefully', async () => {
-      // Override handler to return error
+      // Override handler to return error in Supabase format
       server.use(
         http.get('*/rest/v1/creators', () => {
-          return HttpResponse.json({ error: 'Database connection failed' }, { status: 500 })
+          return HttpResponse.json(
+            {
+              code: '42P01',
+              message: 'Database connection failed',
+              details: 'Unable to connect to database',
+              hint: null
+            },
+            { status: 500 }
+          )
         })
       )
 
@@ -293,7 +301,15 @@ describe('useCreators Hook', () => {
       server.use(
         http.get('*/rest/v1/creators', () => {
           if (shouldError) {
-            return HttpResponse.json({ error: 'Temporary error' }, { status: 500 })
+            return HttpResponse.json(
+              {
+                code: '42P01',
+                message: 'Temporary error',
+                details: 'Temporary database error',
+                hint: null
+              },
+              { status: 500 }
+            )
           }
           // Return empty array but valid response
           return HttpResponse.json([], {
