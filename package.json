@@ -57,6 +57,7 @@
     "@typescript-eslint/eslint-plugin": "^8.34.1",
     "@typescript-eslint/parser": "^8.34.1",
     "@vitejs/plugin-react": "^4.6.0",
+    "@vitest/ui": "3.2.4",
     "daisyui": "^5.0.43",
     "eslint": "^9.29.0",
     "eslint-plugin-react-hooks": "^5.2.0",

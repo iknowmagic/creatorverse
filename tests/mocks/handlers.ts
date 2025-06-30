@@ -119,24 +119,33 @@ export const handlers = [
     ]
     filteredCreators = applySorting(filteredCreators, orders)
 
+    // Store the total count BEFORE pagination for Supabase-style count behavior
+    const totalFilteredCount = filteredCreators.length
+
     // Apply pagination
     const range = parseRange(rangeHeader)
     let paginatedCreators = filteredCreators
     if (range) {
-      paginatedCreators = filteredCreators.slice(range.start, range.end + 1)
+      // Handle out-of-range requests gracefully
+      if (range.start >= filteredCreators.length) {
+        // Request is beyond available data - return empty but valid response
+        paginatedCreators = []
+      } else {
+        paginatedCreators = filteredCreators.slice(range.start, range.end + 1)
+      }
     }
 
-    // Calculate proper Content-Range header for Supabase compatibility
+    // Calculate proper Content-Range header
     const startIndex = range?.start || 0
     const endIndex =
-      paginatedCreators.length > 0
-        ? startIndex + paginatedCreators.length - 1
-        : Math.max(startIndex - 1, 0) // For empty pages, end should be start-1
+      paginatedCreators.length > 0 ? startIndex + paginatedCreators.length - 1 : startIndex - 1 // For empty results, end = start - 1
 
-    // Return response with Supabase-style headers
+    // Always use the TOTAL count, not filtered count for empty pages
+    const totalCount = workingCreators.length // Use full dataset count
+
     return HttpResponse.json(paginatedCreators, {
       headers: {
-        'Content-Range': `${startIndex}-${endIndex}/${filteredCreators.length}`,
+        'Content-Range': `${startIndex}-${endIndex}/${totalCount}`,
         'Content-Type': 'application/json'
       }
     })
