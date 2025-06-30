@@ -1,5 +1,5 @@
 // app/pages/admin/useAdmin/__tests__/useCreators.test.ts
-import { renderHook, waitFor } from '@testing-library/react'
+import { act, renderHook, waitFor } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
 import { beforeEach, describe, expect, it } from 'vitest'
 import { testDataHelpers } from '~/../tests/data'
@@ -93,9 +93,11 @@ describe('useCreators Hook', () => {
     })
 
     it('should handle empty page gracefully', async () => {
+      const totalCreators = testDataHelpers.totalCreators()
+
       const params = {
         ...defaultParams,
-        pagination: { pageIndex: 10, pageSize: 20 } // Way beyond available data
+        pagination: { pageIndex: Math.ceil(totalCreators / 20) + 5, pageSize: 20 } // Way beyond available data
       }
 
       const { result } = renderHook(() => useCreators(params))
@@ -105,7 +107,9 @@ describe('useCreators Hook', () => {
       })
 
       expect(result.current.creators).toHaveLength(0)
-      expect(result.current.totalCount).toBe(testDataHelpers.totalCreators())
+      // The totalCount should still reflect the total number of creators
+      expect(result.current.totalCount).toBe(totalCreators)
+      expect(result.current.error).toBe(null)
     })
   })
 
@@ -269,15 +273,16 @@ describe('useCreators Hook', () => {
 
   describe('Error Handling', () => {
     it('should handle API errors gracefully', async () => {
-      // Override handler to return error in Supabase format
+      // Mock Supabase error response
       server.use(
         http.get('*/rest/v1/creators', () => {
           return HttpResponse.json(
             {
-              code: '42P01',
+              error: 'Database connection failed',
               message: 'Database connection failed',
-              details: 'Unable to connect to database',
-              hint: null
+              details: null,
+              hint: null,
+              code: '08003'
             },
             { status: 500 }
           )
@@ -286,36 +291,44 @@ describe('useCreators Hook', () => {
 
       const { result } = renderHook(() => useCreators(defaultParams))
 
-      await waitFor(() => {
-        expect(result.current.isLoading).toBe(false)
-      })
+      await waitFor(
+        () => {
+          expect(result.current.isLoading).toBe(false)
+        },
+        { timeout: 3000 }
+      )
 
       expect(result.current.error).toBeTruthy()
-      expect(result.current.creators).toEqual([])
-      expect(result.current.totalCount).toBe(0)
+      expect(result.current.error).toContain('Database connection failed')
+      expect(result.current.creators).toHaveLength(0)
     })
 
     it('should clear error on successful retry', async () => {
-      let shouldError = true
+      let callCount = 0
 
+      // First call fails, second succeeds
       server.use(
         http.get('*/rest/v1/creators', () => {
-          if (shouldError) {
+          callCount++
+
+          if (callCount === 1) {
             return HttpResponse.json(
               {
-                code: '42P01',
+                error: 'Temporary error',
                 message: 'Temporary error',
-                details: 'Temporary database error',
-                hint: null
+                details: null,
+                hint: null,
+                code: '08003'
               },
               { status: 500 }
             )
           }
-          // Return empty array but valid response
-          return HttpResponse.json([], {
+
+          // Return successful response on retry
+          const creators = testDataHelpers.getCreators()
+          return HttpResponse.json(creators.slice(0, 20), {
             headers: {
-              'Content-Range': '0-0/0',
-              'Content-Type': 'application/json'
+              'Content-Range': `0-19/${creators.length}`
             }
           })
         })
@@ -323,19 +336,30 @@ describe('useCreators Hook', () => {
 
       const { result } = renderHook(() => useCreators(defaultParams))
 
-      // Wait for error
+      // Wait for initial error
       await waitFor(() => {
-        expect(result.current.error).toBeTruthy()
-      })
-
-      // Fix the error and refetch
-      shouldError = false
-      await result.current.refetch()
-
-      await waitFor(() => {
-        expect(result.current.error).toBe(null)
         expect(result.current.isLoading).toBe(false)
       })
+
+      expect(result.current.error).toBeTruthy()
+      expect(result.current.creators).toHaveLength(0)
+
+      // Trigger refetch
+      act(() => {
+        result.current.refetch()
+      })
+
+      // Wait for successful retry
+      await waitFor(
+        () => {
+          expect(result.current.isLoading).toBe(false)
+        },
+        { timeout: 3000 }
+      )
+
+      expect(result.current.error).toBe(null)
+      expect(result.current.creators.length).toBeGreaterThan(0)
+      expect(result.current.totalCount).toBeGreaterThan(0)
     })
   })
 

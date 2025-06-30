@@ -47,7 +47,7 @@ export function useCreators({
   const fetchCreators = async () => {
     try {
       setIsLoading(true)
-      setError(null)
+      setError(null) // Clear previous errors
 
       const from = pagination.pageIndex * pagination.pageSize
       const to = from + pagination.pageSize - 1
@@ -55,16 +55,13 @@ export function useCreators({
       let query = supabase.from('creators').select('*', { count: 'exact' }).range(from, to)
 
       if (sorting.length > 0) {
-        // Apply all sorting columns in order
         sorting.forEach(sort => {
           query = query.order(sort.id, { ascending: !sort.desc })
         })
       } else {
-        // Default: sort by category first, then name
         query = query.order('category', { ascending: true }).order('name', { ascending: true })
       }
 
-      // AND logic for multiple tags
       if (searchTags.length > 0) {
         searchTags.forEach(tag => {
           switch (tag.type) {
@@ -84,14 +81,17 @@ export function useCreators({
       const { data, error: supabaseError, count } = await query
 
       if (supabaseError) {
-        throw supabaseError
+        throw new Error(supabaseError.message || 'Failed to fetch creators')
       }
 
       setCreators(data || [])
       setTotalCount(count || 0)
     } catch (err) {
       console.error('Error fetching creators:', err)
-      setError(err instanceof Error ? err.message : 'Failed to fetch creators')
+      const errorMessage = err instanceof Error ? err.message : 'Failed to fetch creators'
+      setError(errorMessage)
+      // Don't reset totalCount on error for empty pages - keep previous value
+      setCreators([])
     } finally {
       setIsLoading(false)
     }
