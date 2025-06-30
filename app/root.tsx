@@ -1,21 +1,45 @@
 import React from 'react'
-import {
-  isRouteErrorResponse,
-  Links,
-  Meta,
-  Navigate,
-  Outlet,
-  Scripts,
-  ScrollRestoration
-} from 'react-router'
+import { isRouteErrorResponse, Links, Meta, Outlet, Scripts, ScrollRestoration } from 'react-router'
 
 import { checkConfig } from '~/lib/client'
 import type { Route } from './+types/root'
 import './app.css'
+import { ConfigError } from './pages/ConfigError'
 
-export const links: Route.LinksFunction = () => []
+export const links: Route.LinksFunction = () => [
+  { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
+  {
+    rel: 'preconnect',
+    href: 'https://fonts.gstatic.com',
+    crossOrigin: 'anonymous'
+  },
+  {
+    rel: 'stylesheet',
+    href: 'https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap'
+  }
+]
 
 export function Layout({ children }: { children: React.ReactNode }) {
+  // Check configuration at the very top level, before anything else renders
+  const configValid = checkConfig()
+
+  if (!configValid) {
+    return (
+      <html lang="en" data-theme="lofi">
+        <head>
+          <meta charSet="utf-8" />
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <title>Configuration Error - creatorverse</title>
+          <Links />
+        </head>
+        <body>
+          <ConfigError />
+          <Scripts />
+        </body>
+      </html>
+    )
+  }
+
   return (
     <html lang="en" data-theme="lofi">
       <head>
@@ -34,13 +58,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  // Check configuration before rendering the app
-  const configValid = checkConfig()
-
-  if (!configValid) {
-    return <Navigate to="/error" replace />
-  }
-
   return <Outlet />
 }
 

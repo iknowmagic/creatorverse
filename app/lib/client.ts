@@ -19,12 +19,18 @@ export function checkConfig(): boolean {
   return !!(URL && API_KEY)
 }
 
-// Only create supabase client if config is valid
-export const supabase = checkConfig() ? createClient(URL, API_KEY) : null
+// Only create supabase client if config is valid, otherwise null
+let supabase: any = null
+if (checkConfig()) {
+  supabase = createClient(URL, API_KEY)
+}
 
-// Export API functions only if supabase is available
+export { supabase }
 async function getCreators(): Promise<Creator[]> {
-  if (!supabase) return []
+  if (!supabase) {
+    console.warn('Supabase client not initialized')
+    return []
+  }
 
   const { data, error } = await supabase.from('random_creators').select('*')
   if (error) {
@@ -35,7 +41,10 @@ async function getCreators(): Promise<Creator[]> {
 }
 
 async function getCategories(): Promise<string[]> {
-  if (!supabase) return []
+  if (!supabase) {
+    console.warn('Supabase client not initialized')
+    return []
+  }
 
   const { data, error } = await supabase
     .from('categories')
@@ -49,7 +58,10 @@ async function getCategories(): Promise<string[]> {
 }
 
 async function filterByCategory(category: string | null): Promise<Creator[]> {
-  if (!supabase) return []
+  if (!supabase) {
+    console.warn('Supabase client not initialized')
+    return []
+  }
 
   const { data, error } = await supabase
     .from('random_creators')
