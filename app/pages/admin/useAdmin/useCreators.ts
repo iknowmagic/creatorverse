@@ -50,17 +50,37 @@ export function useCreators({
         })
       }
 
-      const { data, error: supabaseError, count } = await query
+      const response = await query
 
-      if (supabaseError) {
-        throw supabaseError
+      // More robust error checking
+      if (response.error) {
+        throw new Error(response.error.message || response.error.toString() || 'Database error')
       }
+
+      // Check for HTTP errors that might not be caught by Supabase client
+      if (response.status && response.status >= 400) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText || 'Request failed'}`)
+      }
+
+      const { data, count } = response
 
       setCreators(data || [])
       setTotalCount(count || 0)
     } catch (err) {
       console.error('Error fetching creators:', err)
-      setError(err instanceof Error ? err.message : 'Failed to fetch creators')
+      let errorMessage = 'Failed to fetch creators'
+
+      if (err instanceof Error) {
+        errorMessage = err.message
+      } else if (typeof err === 'string') {
+        errorMessage = err
+      } else if (err && typeof err === 'object' && 'message' in err) {
+        errorMessage = String(err.message)
+      }
+
+      setError(errorMessage)
+      setCreators([])
+      // Don't reset totalCount on error for pagination consistency
     } finally {
       setIsLoading(false)
     }

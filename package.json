@@ -22,7 +22,8 @@
     "test": "vitest run --reporter=verbose",
     "test:watch": "vitest watch --reporter=verbose",
     "test:coverage": "vitest run --coverage --reporter=verbose",
-    "test:ui": "vitest --ui --reporter=verbose"
+    "test:ui": "vitest --ui --reporter=verbose",
+    "test:file": "vitest --reporter=basic --reporter=json --outputFile=./test-output.json"
   },
   "dependencies": {
     "@react-router/node": "^7.6.2",
@@ -57,6 +58,8 @@
     "@typescript-eslint/eslint-plugin": "^8.34.1",
     "@typescript-eslint/parser": "^8.34.1",
     "@vitejs/plugin-react": "^4.6.0",
+    "@vitest/coverage-v8": "3.2.4",
+    "@vitest/ui": "3.2.4",
     "daisyui": "^5.0.43",
     "eslint": "^9.29.0",
     "eslint-plugin-react-hooks": "^5.2.0",
