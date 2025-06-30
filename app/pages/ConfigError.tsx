@@ -1,11 +1,10 @@
-import ErrorIcon from '~/assets/error.png'
+import Error from '~/assets/error.png'
 
 export function ConfigError() {
   return (
     <div className="flex flex-col justify-center items-center bg-gray-100 dark:bg-gray-900 px-4 py-8 min-h-screen font-archivo">
       <div className="flex flex-col items-center gap-6 max-w-md text-center">
-        {/* Error Icon */}
-        <img src={ErrorIcon} alt="Error" className="grayscale w-64 h-full" />
+        <img src={Error} alt="Error Icon" className="w-64 h-full" />
 
         {/* Error Message */}
         <div className="space-y-4">
