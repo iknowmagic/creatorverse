@@ -21,7 +21,7 @@ import { DeleteModal } from './DeleteModal'
 import { EditModal } from './EditModal'
 import { type ModalRef } from './Modal'
 import { SearchAutocomplete } from './SearchAutocomplete'
-import { useCreators } from './useCreators'
+import { useCreators } from './useAdmin'
 
 const columnHelper = createColumnHelper<Creator>()
 

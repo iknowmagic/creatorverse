@@ -20,7 +20,7 @@ import {
   type PaginationState,
   type RestoreDiff,
   type SortingState
-} from './useCreators'
+} from './useAdmin'
 
 const columnHelper = createColumnHelper<HistoryRecord>()
 

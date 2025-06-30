@@ -1,7 +1,7 @@
 // pages/admin/HistoryModals.tsx
 import { forwardRef } from 'react'
 import { Modal, type ModalRef } from './Modal'
-import type { HistoryRecord, RestoreDiff } from './useCreators'
+import type { HistoryRecord, RestoreDiff } from './useAdmin'
 
 // Restore Modal
 interface RestoreModalProps {

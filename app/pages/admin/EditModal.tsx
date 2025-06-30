@@ -2,7 +2,7 @@
 import React, { forwardRef, useEffect, useState } from 'react'
 import { supabase, type Creator } from '~/lib/client'
 import { Modal, type ModalRef } from './Modal'
-import { useCategories } from './useCreators'
+import { useCategories } from './useAdmin'
 
 interface EditModalProps {
   creator: Creator | null

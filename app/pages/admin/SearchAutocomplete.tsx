@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { Search, X } from 'lucide-react'
 import React, { useEffect, useRef, useState } from 'react'
-import { useSearchSuggestions, type SearchSuggestion } from './useCreators'
+import { useSearchSuggestions, type SearchSuggestion } from './useAdmin'
 
 interface SearchTag {
   type: 'name' | 'description' | 'category'

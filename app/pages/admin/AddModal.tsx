@@ -2,7 +2,7 @@
 import React, { forwardRef, useState } from 'react'
 import { supabase } from '~/lib/client'
 import { Modal, type ModalRef } from './Modal'
-import { useCategories } from './useCreators'
+import { useCategories } from './useAdmin'
 
 interface AddModalProps {
   onSuccess: () => void
