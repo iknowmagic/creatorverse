@@ -103,7 +103,7 @@ function transformHistoryRecord(row: any): TestHistoryRecord {
  */
 export function creatorsData(): TestCreator[] {
   if (creatorsCache === null) {
-    creatorsCache = parseCSV('creators.csv', transformCreator)
+    creatorsCache = parseCSV('creators_rows.csv', transformCreator)
     console.log(`📊 Loaded ${creatorsCache.length} creators for testing`)
   }
   return creatorsCache
@@ -114,7 +114,7 @@ export function creatorsData(): TestCreator[] {
  */
 export function historyData(): TestHistoryRecord[] {
   if (historyCache === null) {
-    historyCache = parseCSV('creator_history.csv', transformHistoryRecord)
+    historyCache = parseCSV('creator_history_rows.csv', transformHistoryRecord)
     console.log(`📊 Loaded ${historyCache.length} history records for testing`)
   }
   return historyCache
