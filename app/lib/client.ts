@@ -3,10 +3,6 @@ import { createClient } from '@supabase/supabase-js'
 const URL = import.meta.env.VITE_SUPABASE_URL
 const API_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY
 
-if (!URL || !API_KEY) {
-  throw new Error('Supabase URL and API key must be defined in environment variables.')
-}
-
 export interface Creator {
   id: number
   name: string
@@ -18,9 +14,18 @@ export interface Creator {
   updated_at: string
 }
 
-const supabase = createClient(URL, API_KEY)
+// Check if configuration is valid
+export function checkConfig(): boolean {
+  return !!(URL && API_KEY)
+}
 
+// Only create supabase client if config is valid
+export const supabase = checkConfig() ? createClient(URL, API_KEY) : null
+
+// Export API functions only if supabase is available
 async function getCreators(): Promise<Creator[]> {
+  if (!supabase) return []
+
   const { data, error } = await supabase.from('random_creators').select('*')
   if (error) {
     console.error('Error fetching creators:', error)
@@ -30,7 +35,8 @@ async function getCreators(): Promise<Creator[]> {
 }
 
 async function getCategories(): Promise<string[]> {
-  // select distinct category names from the creators table
+  if (!supabase) return []
+
   const { data, error } = await supabase
     .from('categories')
     .select('*')
@@ -43,6 +49,8 @@ async function getCategories(): Promise<string[]> {
 }
 
 async function filterByCategory(category: string | null): Promise<Creator[]> {
+  if (!supabase) return []
+
   const { data, error } = await supabase
     .from('random_creators')
     .select('*')
@@ -54,4 +62,4 @@ async function filterByCategory(category: string | null): Promise<Creator[]> {
   return data || []
 }
 
-export { filterByCategory, getCategories, getCreators, supabase }
+export { filterByCategory, getCategories, getCreators }
