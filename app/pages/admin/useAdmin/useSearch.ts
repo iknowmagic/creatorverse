@@ -1,5 +1,5 @@
 // pages/admin/useAdmin/useSearch.ts
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { supabase } from '~/lib/client'
 import type { SearchSuggestion, SearchTag, UseSearchResult } from './types'
 
@@ -10,6 +10,9 @@ export function useSearchSuggestions(
   const [suggestions, setSuggestions] = useState<SearchSuggestion[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+
+  // Stabilize existingTags dependency to prevent infinite re-renders
+  const memoizedTags = useMemo(() => existingTags, [JSON.stringify(existingTags)])
 
   useEffect(() => {
     if (!searchTerm || searchTerm.trim().length < 2) {
@@ -24,7 +27,7 @@ export function useSearchSuggestions(
         setError(null)
 
         // Convert tags to JSON format for PostgreSQL
-        const tagsJson = existingTags.map(tag => ({
+        const tagsJson = memoizedTags.map(tag => ({
           type: tag.type,
           value: tag.value
         }))
@@ -49,7 +52,7 @@ export function useSearchSuggestions(
     }, 400) // 400ms debounce
 
     return () => clearTimeout(timeoutId)
-  }, [searchTerm, existingTags]) // Add existingTags dependency
+  }, [searchTerm, memoizedTags]) // Use memoized tags
 
   return {
     suggestions,
