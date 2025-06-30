@@ -51,10 +51,9 @@
 
 html,
 body {
-  @apply bg-white dark:bg-gray-900 font-chivo;
+  @apply bg-gray-100 dark:bg-gray-900 font-chivo;
   color-scheme: light dark;
   width: 100%;
-  background-color: var(--color-base-100);
   font-family: 'Archivo';
 
   @media (prefers-color-scheme: dark) {
