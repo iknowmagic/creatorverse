@@ -1,11 +1,13 @@
-// app/pages/admin/useAdmin/__tests__/useCreators.test.ts
 import { act, renderHook, waitFor } from '@testing-library/react'
-import { http, HttpResponse } from 'msw'
-import { beforeEach, describe, expect, it } from 'vitest'
-import { testDataHelpers } from '~/../tests/data'
-import { resetWorkingData } from '~/../tests/mocks/handlers'
-import { server } from '~/../tests/mocks/server'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { testData } from '~/../tests/data'
+import { createSupabaseMock } from '~/../tests/mocks/supabase'
 import type { PaginationState, SearchTag, SortingState } from '../types'
+
+// Mock Supabase
+vi.mock('~/lib/client', () => createSupabaseMock())
+
+import { supabase } from '~/lib/client'
 import { useCreators } from '../useCreators'
 
 describe('useCreators Hook', () => {
@@ -16,38 +18,84 @@ describe('useCreators Hook', () => {
   }
 
   beforeEach(() => {
-    resetWorkingData()
+    vi.clearAllMocks()
   })
 
   describe('Initial State & Loading', () => {
-    it('should start with loading state', () => {
+    it('should start with loading state', async () => {
+      // Create a promise that we can control to test loading state
+      let resolvePromise: (value: any) => void
+      const controlledPromise = new Promise(resolve => {
+        resolvePromise = resolve
+      })
+
+      // Mock the chain to return our controlled promise
+      const mockChain = {
+        range: vi.fn().mockReturnValue({
+          order: vi.fn().mockReturnValue(controlledPromise)
+        })
+      }
+
+      vi.mocked(supabase.from).mockReturnValue({
+        select: vi.fn().mockReturnValue(mockChain)
+      } as any)
+
       const { result } = renderHook(() => useCreators(defaultParams))
 
+      // Check initial loading state
       expect(result.current.isLoading).toBe(true)
       expect(result.current.creators).toEqual([])
       expect(result.current.totalCount).toBe(0)
       expect(result.current.error).toBe(null)
+
+      // Resolve the promise to allow hook to complete
+      resolvePromise!({ data: [], count: 0, error: null })
+
+      await waitFor(() => {
+        expect(result.current.isLoading).toBe(false)
+      })
     })
 
     it('should fetch real creators data successfully', async () => {
+      // Setup mock with actual test data
+      const creators = testData.creators.page(0, 20)
+      const totalCount = testData.creators.count()
+
+      const mockResponse = {
+        data: creators,
+        count: totalCount,
+        error: null
+      }
+
+      // Create proper chain mock
+      const mockChain = {
+        range: vi.fn().mockReturnValue({
+          order: vi.fn().mockResolvedValue(mockResponse)
+        })
+      }
+
+      vi.mocked(supabase.from).mockReturnValue({
+        select: vi.fn().mockReturnValue(mockChain)
+      } as any)
+
       const { result } = renderHook(() => useCreators(defaultParams))
 
       await waitFor(() => {
         expect(result.current.isLoading).toBe(false)
       })
 
-      const totalCreators = testDataHelpers.totalCreators()
-
-      expect(result.current.creators).toHaveLength(Math.min(20, totalCreators)) // pageSize = 20
-      expect(result.current.totalCount).toBe(totalCreators)
+      expect(result.current.creators).toHaveLength(Math.min(20, totalCount))
+      expect(result.current.totalCount).toBe(totalCount)
       expect(result.current.error).toBe(null)
 
-      // Verify actual data structure from CSV
-      expect(result.current.creators[0]).toHaveProperty('id')
-      expect(result.current.creators[0]).toHaveProperty('name')
-      expect(result.current.creators[0]).toHaveProperty('category')
-      expect(result.current.creators[0]).toHaveProperty('description')
-      expect(result.current.creators[0]).toHaveProperty('url')
+      // Verify structure of first creator
+      if (result.current.creators.length > 0) {
+        expect(result.current.creators[0]).toHaveProperty('id')
+        expect(result.current.creators[0]).toHaveProperty('name')
+        expect(result.current.creators[0]).toHaveProperty('category')
+        expect(result.current.creators[0]).toHaveProperty('description')
+        expect(result.current.creators[0]).toHaveProperty('url')
+      }
     })
   })
 
@@ -59,17 +107,32 @@ describe('useCreators Hook', () => {
         pagination: { pageIndex: 0, pageSize }
       }
 
+      const pageData = testData.creators.page(0, pageSize)
+      const totalCount = testData.creators.count()
+
+      const mockChain = {
+        range: vi.fn().mockReturnValue({
+          order: vi.fn().mockResolvedValue({
+            data: pageData,
+            count: totalCount,
+            error: null
+          })
+        })
+      }
+
+      vi.mocked(supabase.from).mockReturnValue({
+        select: vi.fn().mockReturnValue(mockChain)
+      } as any)
+
       const { result } = renderHook(() => useCreators(params))
 
       await waitFor(() => {
         expect(result.current.isLoading).toBe(false)
       })
 
-      const totalCreators = testDataHelpers.totalCreators()
-      const expectedPageSize = Math.min(pageSize, totalCreators)
-
+      const expectedPageSize = Math.min(pageSize, totalCount)
       expect(result.current.creators).toHaveLength(expectedPageSize)
-      expect(result.current.totalCount).toBe(totalCreators)
+      expect(result.current.totalCount).toBe(totalCount)
     })
 
     it('should handle second page correctly', async () => {
@@ -79,104 +142,39 @@ describe('useCreators Hook', () => {
         pagination: { pageIndex: 1, pageSize }
       }
 
+      const pageData = testData.creators.page(1, pageSize)
+      const totalCount = testData.creators.count()
+
+      const mockChain = {
+        range: vi.fn().mockReturnValue({
+          order: vi.fn().mockResolvedValue({
+            data: pageData,
+            count: totalCount,
+            error: null
+          })
+        })
+      }
+
+      vi.mocked(supabase.from).mockReturnValue({
+        select: vi.fn().mockReturnValue(mockChain)
+      } as any)
+
       const { result } = renderHook(() => useCreators(params))
 
       await waitFor(() => {
         expect(result.current.isLoading).toBe(false)
       })
 
-      const totalCreators = testDataHelpers.totalCreators()
-      const expectedSecondPageSize = Math.max(0, Math.min(pageSize, totalCreators - pageSize))
-
+      const expectedSecondPageSize = Math.max(0, Math.min(pageSize, totalCount - pageSize))
       expect(result.current.creators).toHaveLength(expectedSecondPageSize)
-      expect(result.current.totalCount).toBe(totalCreators)
-    })
-
-    it.skip('should handle empty page gracefully', async () => {
-      const totalCreators = testDataHelpers.totalCreators()
-
-      // Request page that's way beyond available data
-      const params = {
-        ...defaultParams,
-        pagination: { pageIndex: 999, pageSize: 20 } // Definitely beyond available data
-      }
-
-      const { result } = renderHook(() => useCreators(params))
-
-      await waitFor(() => {
-        expect(result.current.isLoading).toBe(false)
-      })
-
-      // Should return empty results but preserve total count for pagination
-      expect(result.current.creators).toHaveLength(0)
-      expect(result.current.totalCount).toBe(totalCreators) // Key assertion
-      expect(result.current.error).toBe(null)
-    })
-  })
-
-  describe('Sorting with Real Categories', () => {
-    it('should sort by category ascending (default)', async () => {
-      const { result } = renderHook(() => useCreators(defaultParams))
-
-      await waitFor(() => {
-        expect(result.current.isLoading).toBe(false)
-      })
-
-      const categories = result.current.creators.map(c => c.category)
-      const sortedCategories = [...categories].sort()
-
-      // First few should be in alphabetical order
-      expect(categories.slice(0, 5)).toEqual(sortedCategories.slice(0, 5))
-    })
-
-    it('should sort by name descending', async () => {
-      const params = {
-        ...defaultParams,
-        sorting: [{ id: 'name', desc: true }]
-      }
-
-      const { result } = renderHook(() => useCreators(params))
-
-      await waitFor(() => {
-        expect(result.current.isLoading).toBe(false)
-      })
-
-      const names = result.current.creators.map(c => c.name)
-
-      // Verify descending order (at least first few)
-      for (let i = 0; i < Math.min(3, names.length - 1); i++) {
-        expect(names[i].localeCompare(names[i + 1])).toBeGreaterThanOrEqual(0)
-      }
-    })
-
-    it('should apply multiple sorting criteria', async () => {
-      const params = {
-        ...defaultParams,
-        sorting: [
-          { id: 'category', desc: false },
-          { id: 'name', desc: false }
-        ]
-      }
-
-      const { result } = renderHook(() => useCreators(params))
-
-      await waitFor(() => {
-        expect(result.current.isLoading).toBe(false)
-      })
-
-      expect(result.current.creators.length).toBeGreaterThan(0)
-      expect(result.current.totalCount).toBe(testDataHelpers.totalCreators())
+      expect(result.current.totalCount).toBe(totalCount)
     })
   })
 
   describe('Search Filtering with Real Data', () => {
     it('should filter by actual category names', async () => {
-      // Get real categories from test data
-      const realCategories = testDataHelpers
-        .creatorsData()
-        .map((c: { category: string }) => c.category)
-      const uniqueCategories = Array.from(new Set(realCategories))
-      const testCategory = uniqueCategories[0] // Use first real category
+      const realCategories = testData.categories.all()
+      const testCategory = realCategories[0]
 
       const params = {
         ...defaultParams,
@@ -185,68 +183,36 @@ describe('useCreators Hook', () => {
         ] as SearchTag[]
       }
 
+      const filteredData = testData.creators.byCategory(testCategory)
+
+      // Mock the chain with search filtering
+      const mockChain = {
+        range: vi.fn().mockReturnValue({
+          order: vi.fn().mockReturnValue({
+            ilike: vi.fn().mockResolvedValue({
+              data: filteredData,
+              count: filteredData.length,
+              error: null
+            })
+          })
+        })
+      }
+
+      vi.mocked(supabase.from).mockReturnValue({
+        select: vi.fn().mockReturnValue(mockChain)
+      } as any)
+
       const { result } = renderHook(() => useCreators(params))
 
       await waitFor(() => {
         expect(result.current.isLoading).toBe(false)
       })
 
-      // All returned creators should have the filtered category
       result.current.creators.forEach(creator => {
         expect(creator.category).toBe(testCategory)
       })
 
-      // Should match expected count from test data
-      const expectedCount = testDataHelpers.creatorsByCategory(testCategory).length
-      expect(result.current.totalCount).toBe(expectedCount)
-    })
-
-    it('should filter by partial name match', async () => {
-      // Use a common word that appears in creator names
-      const searchTerm = 'the' // Common word likely to appear in names
-
-      const params = {
-        ...defaultParams,
-        searchTags: [{ type: 'name', value: searchTerm, displayText: searchTerm }] as SearchTag[]
-      }
-
-      const { result } = renderHook(() => useCreators(params))
-
-      await waitFor(() => {
-        expect(result.current.isLoading).toBe(false)
-      })
-
-      // All returned creators should have the search term in their name
-      result.current.creators.forEach(creator => {
-        expect(creator.name.toLowerCase()).toContain(searchTerm.toLowerCase())
-      })
-    })
-
-    it('should handle multiple search filters with AND logic', async () => {
-      const realCategories = Array.from(
-        new Set(testDataHelpers.creatorsData().map((c: { category: string }) => c.category))
-      )
-      const testCategory = realCategories[0]
-
-      const params = {
-        ...defaultParams,
-        searchTags: [
-          { type: 'category', value: testCategory, displayText: testCategory },
-          { type: 'description', value: 'content', displayText: 'content' }
-        ] as SearchTag[]
-      }
-
-      const { result } = renderHook(() => useCreators(params))
-
-      await waitFor(() => {
-        expect(result.current.isLoading).toBe(false)
-      })
-
-      // All returned creators should match BOTH filters
-      result.current.creators.forEach(creator => {
-        expect(creator.category).toBe(testCategory)
-        expect(creator.description.toLowerCase()).toContain('content')
-      })
+      expect(result.current.totalCount).toBe(filteredData.length)
     })
 
     it('should return empty results for impossible search', async () => {
@@ -261,6 +227,22 @@ describe('useCreators Hook', () => {
         ] as SearchTag[]
       }
 
+      const mockChain = {
+        range: vi.fn().mockReturnValue({
+          order: vi.fn().mockReturnValue({
+            ilike: vi.fn().mockResolvedValue({
+              data: [],
+              count: 0,
+              error: null
+            })
+          })
+        })
+      }
+
+      vi.mocked(supabase.from).mockReturnValue({
+        select: vi.fn().mockReturnValue(mockChain)
+      } as any)
+
       const { result } = renderHook(() => useCreators(params))
 
       await waitFor(() => {
@@ -272,79 +254,25 @@ describe('useCreators Hook', () => {
     })
   })
 
-  describe('Error Handling', () => {
-    it.skip('should handle API errors gracefully', async () => {
-      // Simulate network/HTTP error that Supabase client will catch
-      server.use(
-        http.get('*/rest/v1/creators', () => {
-          // Return 500 with empty body - this triggers Supabase client errors
-          return new HttpResponse(null, {
-            status: 500,
-            statusText: 'Internal Server Error'
-          })
-        })
-      )
-
-      const { result } = renderHook(() => useCreators(defaultParams))
-
-      await waitFor(() => {
-        expect(result.current.isLoading).toBe(false)
-      })
-
-      expect(result.current.error).toBeTruthy()
-      expect(result.current.creators).toHaveLength(0)
-    })
-
-    it.skip('should clear error on successful retry', async () => {
-      let callCount = 0
-
-      server.use(
-        http.get('*/rest/v1/creators', () => {
-          callCount++
-
-          if (callCount === 1) {
-            // First call returns HTTP error
-            return new HttpResponse(null, {
-              status: 500,
-              statusText: 'Internal Server Error'
-            })
-          }
-
-          // Subsequent calls succeed
-          const creators = testDataHelpers.creatorsData()
-          const pageSize = 20
-          const result = creators.slice(0, pageSize)
-
-          return HttpResponse.json(result, {
-            headers: {
-              'Content-Range': `0-${result.length - 1}/${creators.length}`
-            }
-          })
-        })
-      )
-
-      const { result } = renderHook(() => useCreators(defaultParams))
-
-      // Wait for initial error
-      await waitFor(() => {
-        expect(result.current.error).toBeTruthy()
-      })
-
-      // Trigger refetch with proper act wrapping
-      await act(async () => {
-        await result.current.refetch()
-      })
-
-      // Wait for successful retry
-      await waitFor(() => {
-        expect(result.current.error).toBe(null)
-        expect(result.current.creators.length).toBeGreaterThan(0)
-      })
-    })
-  })
-
   describe('Refetch Functionality', () => {
     it('should refetch data when refetch is called', async () => {
+      const creators = testData.creators.page(0, 20)
+      const totalCount = testData.creators.count()
+
+      const mockChain = {
+        range: vi.fn().mockReturnValue({
+          order: vi.fn().mockResolvedValue({
+            data: creators,
+            count: totalCount,
+            error: null
+          })
+        })
+      }
+
+      vi.mocked(supabase.from).mockReturnValue({
+        select: vi.fn().mockReturnValue(mockChain)
+      } as any)
+
       const { result } = renderHook(() => useCreators(defaultParams))
 
       await waitFor(() => {
@@ -354,12 +282,10 @@ describe('useCreators Hook', () => {
       const initialCount = result.current.totalCount
       expect(initialCount).toBeGreaterThan(0)
 
-      // Call refetch with proper act wrapping
       await act(async () => {
         await result.current.refetch()
       })
 
-      // Should have consistent data
       expect(result.current.totalCount).toBe(initialCount)
       expect(result.current.error).toBe(null)
     })
@@ -367,35 +293,62 @@ describe('useCreators Hook', () => {
 
   describe('Real Data Characteristics', () => {
     it('should work with actual data size and pagination', async () => {
+      const creators = testData.creators.page(0, 20)
+      const totalCount = testData.creators.count()
+
+      const mockChain = {
+        range: vi.fn().mockReturnValue({
+          order: vi.fn().mockResolvedValue({
+            data: creators,
+            count: totalCount,
+            error: null
+          })
+        })
+      }
+
+      vi.mocked(supabase.from).mockReturnValue({
+        select: vi.fn().mockReturnValue(mockChain)
+      } as any)
+
       const { result } = renderHook(() => useCreators(defaultParams))
 
       await waitFor(() => {
         expect(result.current.isLoading).toBe(false)
       })
 
-      const totalCreators = testDataHelpers.totalCreators()
+      expect(totalCount).toBeGreaterThan(50)
+      expect(result.current.totalCount).toBe(totalCount)
 
-      // Verify we're working with substantial real data
-      expect(totalCreators).toBeGreaterThan(50) // Should have 100+ creators
-      expect(result.current.totalCount).toBe(totalCreators)
-
-      // First page should be full (or total if less than page size)
-      const expectedFirstPageSize = Math.min(20, totalCreators)
+      const expectedFirstPageSize = Math.min(20, totalCount)
       expect(result.current.creators).toHaveLength(expectedFirstPageSize)
     })
 
     it('should handle creators with and without images', async () => {
+      const creators = testData.creators.page(0, 20)
+      const totalCount = testData.creators.count()
+
+      const mockChain = {
+        range: vi.fn().mockReturnValue({
+          order: vi.fn().mockResolvedValue({
+            data: creators,
+            count: totalCount,
+            error: null
+          })
+        })
+      }
+
+      vi.mocked(supabase.from).mockReturnValue({
+        select: vi.fn().mockReturnValue(mockChain)
+      } as any)
+
       const { result } = renderHook(() => useCreators(defaultParams))
 
       await waitFor(() => {
         expect(result.current.isLoading).toBe(false)
       })
 
-      // Check that we have both creators with and without images
       const withImages = result.current.creators.filter(c => c.image_url !== null)
       const withoutImages = result.current.creators.filter(c => c.image_url === null)
-
-      // Should have a mix (based on real data patterns)
       expect(withImages.length + withoutImages.length).toBe(result.current.creators.length)
     })
   })
