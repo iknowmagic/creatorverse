@@ -1,0 +1,110 @@
+id,name,description,url,image_url,category,created_at,updated_at
+1,PewDiePie,Gaming content creator and entertainer with millions of subscribers worldwide.,https://youtube.com/@pewdiepie,,Streaming & Gaming,2025-06-25 18:04:29.310855+00,2025-06-25 18:04:29.310855+00
+2,Pokimane,Popular gaming streamer and content creator on Twitch and YouTube.,https://twitch.tv/pokimane,,Streaming & Gaming,2025-06-25 18:04:29.310855+00,2025-06-28 05:21:16.184273+00
+3,Ninja,Professional gamer and streamer known for Fortnite content.,https://twitch.tv/ninja,,Streaming & Gaming,2025-06-25 18:04:29.310855+00,2025-06-28 04:31:57.214802+00
+4,Markiplier,Gaming YouTuber known for horror games and charity work. - Test cleanup trigger,https://youtube.com/@markiplier,,Streaming & Gaming,2025-06-25 18:04:29.310855+00,2025-06-28 05:07:14.413948+00
+5,Shroud,Former professional CS:GO player turned variety streamer.,https://twitch.tv/shroud,,Streaming & Gaming,2025-06-25 18:04:29.310855+00,2025-06-25 18:04:29.310855+00
+6,Jacksepticeye,Irish gaming YouTuber known for energetic commentary.,https://youtube.com/@jacksepticeye,,Streaming & Gaming,2025-06-25 18:04:29.310855+00,2025-06-28 04:31:57.214802+00
+7,xQc,Former Overwatch pro player and variety Twitch streamer.,https://twitch.tv/xqc,,Streaming & Gaming,2025-06-25 18:04:29.310855+00,2025-06-25 18:04:29.310855+00
+8,Valkyrae,Gaming content creator and co-owner of 100 Thieves.,https://youtube.com/@valkyrae,,Streaming & Gaming,2025-06-25 18:04:29.310855+00,2025-06-25 18:04:29.310855+00
+9,Dream,Minecraft content creator known for speedruns and challenges.,https://youtube.com/@dream,,Streaming & Gaming,2025-06-25 18:04:29.310855+00,2025-06-25 18:04:29.310855+00
+10,TommyInnit,British Minecraft YouTuber and member of Dream SMP.,https://youtube.com/@tommyinnit,,Streaming & Gaming,2025-06-25 18:04:29.310855+00,2025-06-25 18:04:29.310855+00
+11,Khan Academy,"Free educational content covering math, science, programming, and more.",https://khanacademy.org,,Educational Content,2025-06-25 18:04:29.310855+00,2025-06-25 18:04:29.310855+00
+12,Kurzgesagt,"Animated educational videos about science, technology, and philosophy.",https://youtube.com/@kurzgesagt,,Educational Content,2025-06-25 18:04:29.310855+00,2025-06-28 04:30:51.1507+00
+13,Crash Course,"Educational content covering history, science, literature, and more.",https://youtube.com/@crashcourse,,Educational Content,2025-06-25 18:04:29.310855+00,2025-06-25 18:04:29.310855+00
+14,Veritasium,Science education channel with fascinating experiments and explanations.,https://youtube.com/@veritasium,,Educational Content,2025-06-25 18:04:29.310855+00,2025-06-25 18:04:29.310855+00
+15,TED-Ed,Animated educational videos on a wide range of topics.,https://youtube.com/@teded,,Educational Content,2025-06-25 18:04:29.310855+00,2025-06-25 18:04:29.310855+00
+16,SciShow,Science education and news from Hank Green and team.,https://youtube.com/@scishow,,Educational Content,2025-06-25 18:04:29.310855+00,2025-06-25 18:04:29.310855+00
+17,MinutePhysics,"Physics concepts explained in simple, animated videos.",https://youtube.com/@minutephysics,,Educational Content,2025-06-25 18:04:29.310855+00,2025-06-25 18:04:29.310855+00
+18,CGP Grey,"Educational videos on politics, geography, economics, and more.",https://youtube.com/@cgpgrey,,Educational Content,2025-06-25 18:04:29.310855+00,2025-06-28 04:30:51.1507+00
+19,AsapSCIENCE,Science topics explained through fun animations and experiments.,https://youtube.com/@asapscience,,Educational Content,2025-06-25 18:04:29.310855+00,2025-06-25 18:04:29.310855+00
+20,3Blue1Brown,Mathematical concepts visualized through beautiful animations.,https://youtube.com/@3blue1brown,,Educational Content,2025-06-25 18:04:29.310855+00,2025-06-25 18:04:29.310855+00
+21,Fireship,Fast-paced coding tutorials and web development content.,https://youtube.com/@fireship,,Tech & Coding,2025-06-25 18:04:29.310855+00,2025-06-28 04:30:51.1507+00
+22,Programming with Mosh,Comprehensive programming tutorials and courses.,https://youtube.com/@programmingwithmosh,,Tech & Coding,2025-06-25 18:04:29.310855+00,2025-06-25 18:04:29.310855+00
+23,The Net Ninja,Web development tutorials covering modern frameworks and tools.,https://youtube.com/@netninja,,Tech & Coding,2025-06-25 18:04:29.310855+00,2025-06-25 18:04:29.310855+00
+24,Traversy Media,Web development and programming tutorials for all skill levels.,https://youtube.com/@traversymedia,,Tech & Coding,2025-06-25 18:04:29.310855+00,2025-06-25 18:04:29.310855+00
+25,freeCodeCamp,Free coding bootcamp with comprehensive programming courses.,https://youtube.com/@freecodecamp,,Tech & Coding,2025-06-25 18:04:29.310855+00,2025-06-28 04:30:51.1507+00
+26,Linus Tech Tips,"Technology reviews, build guides, and tech news.",https://youtube.com/@linustechtips,,Tech & Coding,2025-06-25 18:04:29.310855+00,2025-06-28 04:30:51.1507+00
+27,CS Dojo,Programming tutorials and career advice for developers.,https://youtube.com/@csdojo,,Tech & Coding,2025-06-25 18:04:29.310855+00,2025-06-28 04:31:57.214802+00
+28,TechLead,Programming career advice and software engineering insights.,https://youtube.com/@techlead,,Tech & Coding,2025-06-25 18:04:29.310855+00,2025-06-25 18:04:29.310855+00
+29,Marques Brownlee,Technology reviews and analysis of the latest gadgets.,https://youtube.com/@mkbhd,,Tech & Coding,2025-06-25 18:04:29.310855+00,2025-06-25 18:04:29.310855+00
+30,Ben Awad,Full-stack web development tutorials and live coding.,https://youtube.com/@benawad,,Tech & Coding,2025-06-25 18:04:29.310855+00,2025-06-28 04:30:51.1507+00
+31,Dribbble,Platform showcasing creative work from designers around the world.,https://dribbble.com,,Art & Design,2025-06-25 18:04:29.310855+00,2025-06-25 18:04:29.310855+00
+32,Peter McKinnon,Photography and video editing tutorials and inspiration.,https://youtube.com/@petermckinnon,,Art & Design,2025-06-25 18:04:29.310855+00,2025-06-25 18:04:29.310855+00
+33,Proko,Art instruction and drawing tutorials for all skill levels.,https://youtube.com/@proko,,Art & Design,2025-06-25 18:04:29.310855+00,2025-06-25 18:04:29.310855+00
+34,Adobe Creative Cloud,"Official tutorials for Photoshop, Illustrator, and other Creative Suite apps.",https://youtube.com/@adobecreativecloud,,Art & Design,2025-06-25 18:04:29.310855+00,2025-06-25 18:04:29.310855+00
+35,The Art Assignment,Contemporary art exploration and creative challenges.,https://youtube.com/@theartassignment,,Art & Design,2025-06-25 18:04:29.310855+00,2025-06-25 18:04:29.310855+00
+36,Draw with Jazza,"Art tutorials, challenges, and creative content. - Test cleanup trigger",https://youtube.com/@drawwithjazza,,Art & Design,2025-06-25 18:04:29.310855+00,2025-06-28 05:07:14.413948+00
+37,Feng Zhu Design,Concept art and digital painting tutorials.,https://youtube.com/@fengzhudesign,,Art & Design,2025-06-25 18:04:29.310855+00,2025-06-25 18:04:29.310855+00
+38,The Futur,Design business education and creative entrepreneurship.,https://youtube.com/@thefutur,,Art & Design,2025-06-25 18:04:29.310855+00,2025-06-28 04:31:57.214802+00
+39,Blender Guru,3D modeling and animation tutorials using Blender.,https://youtube.com/@blenderguru,,Art & Design,2025-06-25 18:04:29.310855+00,2025-06-25 18:04:29.310855+00
+40,Aaron Blaise,Animation and digital art tutorials from Disney veteran.,https://youtube.com/@aaronblaise,,Art & Design,2025-06-25 18:04:29.310855+00,2025-06-28 04:30:51.1507+00
+41,MrBeast,Viral content creator known for elaborate challenges and philanthropy. - Test cleanup trigger,https://youtube.com/@mrbeast,,Lifestyle & Entertainment,2025-06-25 18:04:29.310855+00,2025-06-28 05:07:14.413948+00
+42,The Try Guys,Comedy group creating entertaining lifestyle and challenge content.,https://youtube.com/@tryguys,,Lifestyle & Entertainment,2025-06-25 18:04:29.310855+00,2025-06-25 18:04:29.310855+00
+43,Emma Chamberlain,Lifestyle vlogger and coffee entrepreneur.,https://youtube.com/@emmachamberlain,,Lifestyle & Entertainment,2025-06-25 18:04:29.310855+00,2025-06-25 18:04:29.310855+00
+44,David Dobrik,Comedy vlogger known for his vlogs and pranks.,https://youtube.com/@daviddobrik,,Lifestyle & Entertainment,2025-06-25 18:04:29.310855+00,2025-06-25 18:04:29.310855+00
+45,James Charles,Beauty guru and makeup artist with millions of followers.,https://youtube.com/@jamescharles,,Lifestyle & Entertainment,2025-06-25 18:04:29.310855+00,2025-06-28 04:30:51.1507+00
+46,Good Mythical Morning,Daily talk show with Rhett and Link featuring comedy and food.,https://youtube.com/@goodmythicalmorning,,Lifestyle & Entertainment,2025-06-25 18:04:29.310855+00,2025-06-25 18:04:29.310855+00
+47,Dude Perfect,Sports entertainment group known for trick shots and challenges.,https://youtube.com/@dudeperfect,,Lifestyle & Entertainment,2025-06-25 18:04:29.310855+00,2025-06-28 05:27:00.315426+00
+48,Michelle Schroeder-Gardner,Personal finance expert and lifestyle blogger.,https://makingsenseofcents.com,,Educational Content,2025-06-25 18:04:29.310855+00,2025-06-25 18:04:29.310855+00
+49,Safiya Nygaard,Beauty and lifestyle content creator with unique experiments.,https://youtube.com/@safiya,,Lifestyle & Entertainment,2025-06-25 18:04:29.310855+00,2025-06-28 04:31:57.214802+00
+50,Shane Dawson,YouTuber known for conspiracy theories and documentary-style content.,https://youtube.com/@shanedawson,,Lifestyle & Entertainment,2025-06-25 18:04:29.310855+00,2025-06-25 18:04:29.310855+00
+51,T-Series,Indian music and film production company.,https://youtube.com/@tseries,,Lifestyle & Entertainment,2025-06-25 18:04:29.310855+00,2025-06-25 18:04:29.310855+00
+52,Justin Bieber,Global pop superstar and recording artist.,https://youtube.com/@justinbieber,,Lifestyle & Entertainment,2025-06-25 18:04:29.310855+00,2025-06-25 18:04:29.310855+00
+53,Taylor Swift,Grammy-winning singer-songwriter and global music icon. - Test cleanup trigger,https://youtube.com/@taylorswift,,Lifestyle & Entertainment,2025-06-25 18:04:29.310855+00,2025-06-28 05:07:14.413948+00
+54,BTS,South Korean boy band and global K-pop phenomenon.,https://youtube.com/@bts,,Lifestyle & Entertainment,2025-06-25 18:04:29.310855+00,2025-06-25 18:04:29.310855+00
+55,Ariana Grande,Pop and R&B singer with multiple Grammy awards.,https://youtube.com/@arianagrande,,Lifestyle & Entertainment,2025-06-25 18:04:29.310855+00,2025-06-25 18:04:29.310855+00
+56,Yoga with Adriene,Free yoga classes and wellness content for all levels.,https://youtube.com/@yogawithadriene,,Lifestyle & Entertainment,2025-06-25 18:04:29.310855+00,2025-06-25 18:04:29.310855+00
+57,Athlean-X,Science-based fitness and workout programs.,https://youtube.com/@athleanx,,Lifestyle & Entertainment,2025-06-25 18:04:29.310855+00,2025-06-25 18:04:29.310855+00
+58,Calisthenic Movement,Bodyweight training and calisthenics tutorials.,https://youtube.com/@calisthenicmovement,,Lifestyle & Entertainment,2025-06-25 18:04:29.310855+00,2025-06-25 18:04:29.310855+00
+59,FitnessBlender,Home workout videos and fitness programs.,https://youtube.com/@fitnessblender,,Lifestyle & Entertainment,2025-06-25 18:04:29.310855+00,2025-06-25 18:04:29.310855+00
+60,Blogilates,Pilates workouts and healthy lifestyle content.,https://youtube.com/@blogilates,,Lifestyle & Entertainment,2025-06-25 18:04:29.310855+00,2025-06-25 18:04:29.310855+00
+61,Bon Appétit,Professional cooking tutorials and food culture content.,https://youtube.com/@bonappetit,,Lifestyle & Entertainment,2025-06-25 18:04:29.310855+00,2025-06-25 18:04:29.310855+00
+62,Binging with Babish,"Recreating foods from movies, TV shows, and pop culture.",https://youtube.com/@bingingwithbabish,,Lifestyle & Entertainment,2025-06-25 18:04:29.310855+00,2025-06-25 18:04:29.310855+00
+63,Gordon Ramsay,Celebrity chef with cooking tutorials and restaurant content.,https://youtube.com/@gordonramsay,,Lifestyle & Entertainment,2025-06-25 18:04:29.310855+00,2025-06-25 18:04:29.310855+00
+64,Tasty,Quick and easy recipe videos and cooking hacks. - Test cleanup trigger,https://youtube.com/@buzzfeedtasty,,Lifestyle & Entertainment,2025-06-25 18:04:29.310855+00,2025-06-28 05:07:14.413948+00
+65,Claire Saffitz,Baking tutorials and gourmet food recreations.,https://youtube.com/@clairesaffitz,,Lifestyle & Entertainment,2025-06-25 18:04:29.310855+00,2025-06-25 18:04:29.310855+00
+66,Mark Wiens,Food and travel adventures around the world.,https://youtube.com/@markwiens,,Lifestyle & Entertainment,2025-06-25 18:04:29.310855+00,2025-06-28 04:30:51.1507+00
+67,Drew Binsky,Travel content creator visiting every country in the world.,https://youtube.com/@drewbinsky,,Lifestyle & Entertainment,2025-06-25 18:04:29.310855+00,2025-06-25 18:04:29.310855+00
+68,Kara and Nate,Couple documenting their travels to 100 countries.,https://youtube.com/@karaandnate,,Lifestyle & Entertainment,2025-06-25 18:04:29.310855+00,2025-06-25 18:04:29.310855+00
+69,FunForLouis,Daily travel vlogs and adventure content.,https://youtube.com/@funforlouis,,Lifestyle & Entertainment,2025-06-25 18:04:29.310855+00,2025-06-28 04:30:51.1507+00
+70,Hey Nadine,Solo female travel content and destination guides.,https://youtube.com/@heynadine,,Lifestyle & Entertainment,2025-06-25 18:04:29.310855+00,2025-06-25 18:04:29.310855+00
+71,Graham Stephan,Real estate investing and personal finance advice.,https://youtube.com/@grahamstephan,,Educational Content,2025-06-25 18:04:29.310855+00,2025-06-28 04:31:57.214802+00
+72,Dave Ramsey,Financial advice and debt-free living strategies. - Test cleanup trigger,https://youtube.com/@daveramsey,,Educational Content,2025-06-25 18:04:29.310855+00,2025-06-28 05:07:14.413948+00
+73,Gary Vaynerchuk,Entrepreneur and business marketing expert.,https://youtube.com/@garyvee,,Educational Content,2025-06-25 18:04:29.310855+00,2025-06-25 18:04:29.310855+00
+74,Andrei Jikh,Stock market investing and financial education.,https://youtube.com/@andreijikh,,Educational Content,2025-06-25 18:04:29.310855+00,2025-06-25 18:04:29.310855+00
+75,Meet Kevin,Real estate and stock market investment strategies. - Test cleanup trigger,https://youtube.com/@meetkevin,,Educational Content,2025-06-25 18:04:29.310855+00,2025-06-28 05:07:14.413948+00
+76,Ryan Higa,Comedy sketches and parody videos.,https://youtube.com/@ryanhiga,,Lifestyle & Entertainment,2025-06-25 18:04:29.310855+00,2025-06-25 18:04:29.310855+00
+77,CollegeHumor,Comedy sketches and funny content.,https://youtube.com/@collegehumor,,Lifestyle & Entertainment,2025-06-25 18:04:29.310855+00,2025-06-25 18:04:29.310855+00
+78,Key & Peele,Comedy duo with hilarious sketches and characters.,https://youtube.com/@keyandpeele,,Lifestyle & Entertainment,2025-06-25 18:04:29.310855+00,2025-06-25 18:04:29.310855+00
+79,Saturday Night Live,Official SNL channel with sketches and highlights. - Test cleanup trigger,https://youtube.com/@snl,,Lifestyle & Entertainment,2025-06-25 18:04:29.310855+00,2025-06-28 05:07:14.413948+00
+80,Smosh,"Comedy sketches, gaming, and entertainment content.",https://youtube.com/@smosh,,Lifestyle & Entertainment,2025-06-25 18:04:29.310855+00,2025-06-25 18:04:29.310855+00
+81,5-Minute Crafts,Quick DIY projects and life hacks.,https://www.youtube.com/@5MinuteCraftsYouTube,,Art & Design,2025-06-25 18:04:29.310855+00,2025-06-30 01:04:17.763+00
+82,Steve Ramsey,Woodworking projects and tutorials for beginners.,https://youtube.com/@steveandramsey,,Art & Design,2025-06-25 18:04:29.310855+00,2025-06-25 18:04:29.310855+00
+83,DIY Perks,Electronic DIY projects and modifications.,https://youtube.com/@diyperks,,Art & Design,2025-06-25 18:04:29.310855+00,2025-06-25 18:04:29.310855+00
+84,Moriah Elizabeth,Craft tutorials and squishy makeovers.,https://youtube.com/@moriahelizabeth,,Art & Design,2025-06-25 18:04:29.310855+00,2025-06-25 18:04:29.310855+00
+85,ZHC,Custom art and craft transformations.,https://youtube.com/@zhc,,Art & Design,2025-06-25 18:04:29.310855+00,2025-06-25 18:04:29.310855+00
+86,Overtime,Basketball content and athlete spotlights.,https://youtube.com/@overtime,,Lifestyle & Entertainment,2025-06-25 18:04:29.310855+00,2025-06-25 18:04:29.310855+00
+87,F2 Freestylers,Football freestyle skills and soccer content.,https://youtube.com/@f2freestylers,,Lifestyle & Entertainment,2025-06-25 18:04:29.310855+00,2025-06-25 18:04:29.310855+00
+88,All Gas No Brakes,Sports journalism and cultural commentary.,https://youtube.com/@allgasnobrakes,,Educational Content,2025-06-25 18:04:29.310855+00,2025-06-28 05:42:56.681098+00
+89,Yes Theory,Adventure challenges and pushing comfort zones.,https://youtube.com/@yestheory,,Lifestyle & Entertainment,2025-06-25 18:04:29.310855+00,2025-06-28 05:23:29.267568+00
+90,Philip DeFranco,News commentary and current events discussion.,https://youtube.com/@philipdefranco,,Educational Content,2025-06-25 18:04:29.310855+00,2025-06-25 18:04:29.310855+00
+91,Vox,Explanatory journalism and news analysis.,https://youtube.com/@vox,,Educational Content,2025-06-25 18:04:29.310855+00,2025-06-25 18:04:29.310855+00
+92,Last Week Tonight,Comedy news show with John Oliver.,https://youtube.com/@lastweektonight,,Educational Content,2025-06-25 18:04:29.310855+00,2025-06-28 04:30:51.1507+00
+93,The Daily Show,Comedy central news satire and political commentary.,https://youtube.com/@thedailyshow,,Educational Content,2025-06-25 18:04:29.310855+00,2025-06-25 18:04:29.310855+00
+94,BBC News,International news coverage and reporting.,https://youtube.com/@bbcnews,,Educational Content,2025-06-25 18:04:29.310855+00,2025-06-25 18:04:29.310855+00
+95,National Geographic,Nature documentaries and wildlife content.,https://youtube.com/@natgeo,,Educational Content,2025-06-25 18:04:29.310855+00,2025-06-25 18:04:29.310855+00
+96,SmarterEveryDay,Science experiments and engineering explanations.,https://youtube.com/@smartereveryday,,Educational Content,2025-06-25 18:04:29.310855+00,2025-06-25 18:04:29.310855+00
+97,The Brain Scoop,Natural history and museum science content.,https://youtube.com/@thebrainscoop,,Educational Content,2025-06-25 18:04:29.310855+00,2025-06-25 18:04:29.310855+00
+98,Deep Look,Ultra-close-up videos of tiny worlds and creatures.,https://youtube.com/@deeplook,,Educational Content,2025-06-25 18:04:29.310855+00,2025-06-25 18:04:29.310855+00
+99,It's Okay to be Smart,Science education with a focus on curiosity and wonder.,https://youtube.com/@itsokaytobesmart,,Educational Content,2025-06-25 18:04:29.310855+00,2025-06-28 04:31:57.214802+00
+100,Corridor Crew,VFX artists react and break down movie effects.,https://youtube.com/@corridorcrew,,Tech & Coding,2025-06-25 18:04:29.310855+00,2025-06-28 04:31:57.214802+00
+101,Primitive Technology,Building tools and shelters using only natural materials.,https://youtube.com/@primitivetechnology,,Art & Design,2025-06-25 18:04:29.310855+00,2025-06-25 18:04:29.310855+00
+102,Cody Ko,Comedy commentary and reaction videos.,https://youtube.com/@codyko,,Lifestyle & Entertainment,2025-06-25 18:04:29.310855+00,2025-06-25 18:04:29.310855+00
+103,Danny Gonzalez,Comedy content and commentary on internet culture.,https://youtube.com/@dannygonzalez,,Lifestyle & Entertainment,2025-06-25 18:04:29.310855+00,2025-06-25 18:04:29.310855+00
+104,Casually Explained,Animated comedy videos explaining various topics.,https://youtube.com/@casuallyexplained,,Lifestyle & Entertainment,2025-06-25 18:04:29.310855+00,2025-06-25 18:04:29.310855+00
+105,Tom Scott,Educational videos about interesting places and concepts.,https://youtube.com/@tomscott,,Educational Content,2025-06-25 18:04:29.310855+00,2025-06-25 18:04:29.310855+00
+106,Half as Interesting,Quick educational videos on fascinating topics.,https://youtube.com/@halfasinteresting,,Educational Content,2025-06-25 18:04:29.310855+00,2025-06-25 18:04:29.310855+00
+107,Wendover Productions,"Educational videos on logistics, geography, and economics.",https://youtube.com/@wendoverproductions,,Educational Content,2025-06-25 18:04:29.310855+00,2025-06-25 18:04:29.310855+00
+108,Numberphile,Mathematics videos featuring interesting numbers and concepts.,https://youtube.com/@numberphile,,Educational Content,2025-06-25 18:04:29.310855+00,2025-06-25 18:04:29.310855+00
+109,Computerphile,Computer science concepts explained by experts.,https://youtube.com/@computerphile,,Tech & Coding,2025-06-25 18:04:29.310855+00,2025-06-25 18:04:29.310855+00

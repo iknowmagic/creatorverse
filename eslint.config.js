@@ -33,12 +33,15 @@ export default [
       // Standard JS style base rules
       ...js.configs.recommended.rules,
 
+      'no-unused-vars': 'warn',
+
       // TypeScript rules
       '@typescript-eslint/no-unused-vars': [
-        'error',
+        'off',
         {
           argsIgnorePattern: '^_',
-          varsIgnorePattern: '^_'
+          varsIgnorePattern: '^_',
+          destructuredArrayIgnorePattern: '^_'
         }
       ],
       '@typescript-eslint/no-explicit-any': 'warn',
@@ -49,13 +52,21 @@ export default [
       ...reactHooks.configs.recommended.rules,
       'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
 
-      // Standard JS style rules (modern)
-      indent: ['error', 2],
-      quotes: ['error', 'single'],
+      // Standard JS style rules (modern) - adjusted for React/TS
+      indent: ['off', 2],
+      quotes: ['warn', 'single'],
       semi: ['error', 'never'],
       'no-extra-semi': 'error',
       'comma-dangle': ['error', 'never'],
-      'space-before-function-paren': ['error', 'always'],
+      // More flexible space-before-function-paren for React/TS
+      'space-before-function-paren': [
+        'error',
+        {
+          anonymous: 'always',
+          named: 'never',
+          asyncArrow: 'always'
+        }
+      ],
       'keyword-spacing': 'error',
       'space-infix-ops': 'error',
       'eol-last': 'error',

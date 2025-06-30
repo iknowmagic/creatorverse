@@ -215,3 +215,5 @@ sketch
 /.react-router/
 /build/
 *repomix*
+diff.txt
+test-output.json
