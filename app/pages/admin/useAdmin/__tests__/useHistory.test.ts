@@ -36,13 +36,28 @@ describe('useHistory Hook', () => {
     })
 
     it('should fetch history data successfully', async () => {
+      // Override MSW to return actual test data
+      const testHistoryData = testDataHelpers.historyData()
+      const totalHistory = testDataHelpers.totalHistory()
+
+      server.use(
+        http.get('*/rest/v1/creator_history', () => {
+          const pageSize = 20
+          const firstPage = testHistoryData.slice(0, pageSize)
+
+          return HttpResponse.json(firstPage, {
+            headers: {
+              'Content-Range': `0-${firstPage.length - 1}/${totalHistory}`
+            }
+          })
+        })
+      )
+
       const { result } = renderHook(() => useHistory(defaultParams))
 
       await waitFor(() => {
         expect(result.current.isLoading).toBe(false)
       })
-
-      const totalHistory = testDataHelpers.totalHistory()
 
       expect(result.current.history).toBeDefined()
       expect(result.current.error).toBe(null)
