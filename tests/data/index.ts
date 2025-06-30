@@ -132,6 +132,10 @@ export function categoriesData(): string[] {
  * Helper functions for test scenarios
  */
 export const testDataHelpers = {
+  // Direct access to raw data
+  creatorsData: () => creatorsData(),
+  historyData: () => historyData(),
+
   // Get creators by category
   creatorsByCategory: (category: string): TestCreator[] => {
     return creatorsData().filter(c => c.category === category)

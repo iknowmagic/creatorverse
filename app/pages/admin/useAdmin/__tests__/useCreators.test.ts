@@ -167,7 +167,9 @@ describe('useCreators Hook', () => {
   describe('Search Filtering with Real Data', () => {
     it('should filter by actual category names', async () => {
       // Get real categories from test data
-      const realCategories = testDataHelpers.creatorsData().map(c => c.category)
+      const realCategories = testDataHelpers
+        .creatorsData()
+        .map((c: { category: string }) => c.category)
       const uniqueCategories = Array.from(new Set(realCategories))
       const testCategory = uniqueCategories[0] // Use first real category
 
@@ -217,7 +219,7 @@ describe('useCreators Hook', () => {
 
     it('should handle multiple search filters with AND logic', async () => {
       const realCategories = Array.from(
-        new Set(testDataHelpers.creatorsData().map(c => c.category))
+        new Set(testDataHelpers.creatorsData().map((c: { category: string }) => c.category))
       )
       const testCategory = realCategories[0]
 

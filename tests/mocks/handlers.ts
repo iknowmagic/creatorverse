@@ -10,8 +10,13 @@ let workingHistory: any[] = []
 // Initialize working data from CSV
 function initializeWorkingData() {
   if (workingCreators.length === 0) {
-    workingCreators = creatorsData().map(creator => ({ ...creator }))
+    // Convert null to undefined for image_url to match Creator interface
+    workingCreators = creatorsData().map(creator => ({
+      ...creator,
+      image_url: creator.image_url ?? undefined
+    }))
     workingHistory = historyData().map(record => ({ ...record }))
+    // eslint-disable-next-line no-console
     console.log(
       `🎭 MSW initialized with ${workingCreators.length} creators and ${workingHistory.length} history records`
     )
@@ -47,8 +52,8 @@ function applySorting<T>(data: T[], orders: Array<{ field: string; ascending: bo
 
   return [...data].sort((a, b) => {
     for (const { field, ascending } of orders) {
-      const aVal = (a as any)[field]
-      const bVal = (b as any)[field]
+      const aVal = (a as Record<string, unknown>)[field]
+      const bVal = (b as Record<string, unknown>)[field]
 
       let comparison = 0
       if (typeof aVal === 'string' && typeof bVal === 'string') {
@@ -130,7 +135,7 @@ export const handlers = [
     })
   }),
 
-  // GET /rest/v1/creators (categories view)
+  // GET /rest/v1/categories - Categories view
   http.get('*/rest/v1/categories', () => {
     const categories = categoriesData().map(category => ({ category }))
     return HttpResponse.json(categories)
@@ -259,13 +264,19 @@ export const handlers = [
   http.post('*/rest/v1/rpc/get_search_words_with_filters', async ({ request }) => {
     initializeWorkingData()
 
-    const { search_term, existing_tags } = await request.json()
+    const body = (await request.json()) as { search_term: string; existing_tags: unknown }
+    const { search_term } = body
 
     if (!search_term || search_term.length < 2) {
       return HttpResponse.json([])
     }
 
-    const suggestions: any[] = []
+    const suggestions: Array<{
+      source_type: string
+      match_words: string
+      highlighted_text: string
+      category: string
+    }> = []
     const searchLower = search_term.toLowerCase()
 
     // Search in names
@@ -312,7 +323,7 @@ export const handlers = [
 
   // RPC call for restore diff
   http.post('*/rest/v1/rpc/get_creator_restore_diff', async ({ request }) => {
-    const { history_record_id } = await request.json()
+    const body = (await request.json()) as { history_record_id: number }
 
     // Mock restore diff - would normally compare current vs historical data
     const mockDiff = [
