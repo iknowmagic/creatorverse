@@ -47,7 +47,7 @@ export function useCreators({
   const fetchCreators = async () => {
     try {
       setIsLoading(true)
-      setError(null) // Clear previous errors
+      setError(null)
 
       const from = pagination.pageIndex * pagination.pageSize
       const to = from + pagination.pageSize - 1
@@ -85,13 +85,15 @@ export function useCreators({
       }
 
       setCreators(data || [])
-      setTotalCount(count || 0)
+      // Always set totalCount from the count, even if data is empty
+      setTotalCount(count ?? 0)
     } catch (err) {
       console.error('Error fetching creators:', err)
       const errorMessage = err instanceof Error ? err.message : 'Failed to fetch creators'
       setError(errorMessage)
-      // Don't reset totalCount on error for empty pages - keep previous value
       setCreators([])
+      // Don't reset totalCount on error - this might be causing the test issue
+      // setTotalCount(0)
     } finally {
       setIsLoading(false)
     }
