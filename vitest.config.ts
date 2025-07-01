@@ -25,10 +25,11 @@ export default defineConfig({
         'vite.config.ts',
         'vitest.config.ts',
         'eslint.config.js',
-        'react-router-config.ts',
+        'react-router.config.ts',
         'creators.ts',
         'vite.config.cosmos.ts',
-        'build/'
+        'build/',
+        'cosmos/'
       ]
     }
   }
