@@ -23,7 +23,12 @@ export default defineConfig({
         'app/root.tsx',
         'app/routes.ts',
         'vite.config.ts',
-        'vitest.config.ts'
+        'vitest.config.ts',
+        'eslint.config.js',
+        'react-router-config.ts',
+        'creators.ts',
+        'vite.config.cosmos.ts',
+        'build/'
       ]
     }
   }
