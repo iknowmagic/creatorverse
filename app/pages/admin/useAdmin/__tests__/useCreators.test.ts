@@ -17,20 +17,14 @@ describe('useCreators Hook', () => {
     searchTags: [] as SearchTag[]
   }
 
-  // Fixed helper function - removed infinite recursion
+  // Updated helper function to handle multiple .ilike() calls properly
   const createMockChain = (data: any, count: number, hasError = false) => {
-    // Create a simple chain that handles multiple .order() calls without infinite recursion
     const mockOrderFn = vi.fn()
+    const mockIlikeFn = vi.fn()
 
     const chainResult = {
       order: mockOrderFn,
-      ilike: vi
-        .fn()
-        .mockResolvedValue(
-          hasError
-            ? { data: null, count: null, error: { message: 'Database error' } }
-            : { data, count, error: null }
-        ),
+      ilike: mockIlikeFn,
       then: (resolve: any) =>
         resolve(
           hasError
@@ -39,8 +33,10 @@ describe('useCreators Hook', () => {
         )
     }
 
-    // Make order return the same chainable object (but not infinitely)
+    // Make order return the same chainable object
     mockOrderFn.mockReturnValue(chainResult)
+    // Make ilike return the same chainable object (for chaining multiple ilike calls)
+    mockIlikeFn.mockReturnValue(chainResult)
 
     return {
       select: vi.fn().mockReturnValue({
@@ -241,7 +237,9 @@ describe('useCreators Hook', () => {
         searchTags: [{ type: 'name', value: 'test', displayText: 'test' }] as SearchTag[]
       }
 
-      const mockCreators = testData.creators.byName('test')
+      // Use the existing page method and filter manually for testing
+      const allCreators = testData.creators.page(0, 1000) // Get all creators
+      const mockCreators = allCreators.filter(c => c.name.toLowerCase().includes('test'))
       const totalCount = mockCreators.length
 
       vi.mocked(supabase.from).mockReturnValue(createMockChain(mockCreators, totalCount) as any)
@@ -298,7 +296,9 @@ describe('useCreators Hook', () => {
         ] as SearchTag[]
       }
 
-      const mockCreators = testData.creators.byDescription('creative')
+      // Use the existing page method and filter manually for testing
+      const allCreators = testData.creators.page(0, 1000) // Get all creators
+      const mockCreators = allCreators.filter(c => c.description.toLowerCase().includes('creative'))
       const totalCount = mockCreators.length
 
       vi.mocked(supabase.from).mockReturnValue(createMockChain(mockCreators, totalCount) as any)
@@ -328,6 +328,7 @@ describe('useCreators Hook', () => {
         ] as SearchTag[]
       }
 
+      // Filter by both category and name
       const mockCreators = testData.creators
         .byCategory(testCategory)
         .filter(c => c.name.toLowerCase().includes('test'))
@@ -348,6 +349,8 @@ describe('useCreators Hook', () => {
       const mockIlike = vi.mocked(supabase.from).mock.results[0].value.select.mock.results[0].value
         .range.mock.results[0].value.order.mock.results[0].value.order.mock.results[0].value.ilike
       expect(mockIlike).toHaveBeenCalledTimes(2)
+      expect(mockIlike).toHaveBeenCalledWith('category', `%${testCategory}%`)
+      expect(mockIlike).toHaveBeenCalledWith('name', '%test%')
     })
 
     it('should return empty results for impossible search', async () => {
