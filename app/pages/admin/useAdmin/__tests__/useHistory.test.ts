@@ -125,8 +125,8 @@ describe('History Operations', () => {
           })
         }
       }
-      return {}
-    } as any)
+      return {} as any
+    })
 
     vi.mocked(supabase.rpc).mockResolvedValue({ data: {}, error: null })
   })
