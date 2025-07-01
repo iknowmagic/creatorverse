@@ -1,12 +1,22 @@
-// app/pages/admin/useAdmin/__tests__/useSearch.test.ts
 import { renderHook, waitFor } from '@testing-library/react'
-import { beforeEach, describe, expect, it } from 'vitest'
-import { resetWorkingData } from '~/../tests/mocks/handlers'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { createSupabaseMock, mockResponses } from '~/../tests/mocks/supabase'
+
+// Mock Supabase
+vi.mock('~/lib/client', () => createSupabaseMock())
+
+import { supabase } from '~/lib/client'
 import { useSearchSuggestions } from '../useSearch'
 
 describe('useSearchSuggestions Hook', () => {
   beforeEach(() => {
-    resetWorkingData()
+    vi.clearAllMocks()
+
+    // Setup default RPC mock
+    vi.mocked(supabase.rpc).mockResolvedValue({
+      data: mockResponses.search('test'),
+      error: null
+    })
   })
 
   describe('Basic Functionality', () => {

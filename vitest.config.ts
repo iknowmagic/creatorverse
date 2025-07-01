@@ -16,6 +16,7 @@ export default defineConfig({
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
       exclude: [
+        '.react-router',
         'node_modules/',
         'tests/setup.ts',
         '**/*.d.ts',

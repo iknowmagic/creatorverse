@@ -47,7 +47,6 @@ function parseCSV<T>(filename: string, transformer: (row: any) => T): T[] {
     skipEmptyLines: true,
     dynamicTyping: true,
     transform: (value, header) => {
-      // Handle null values properly
       if (value === '' || value === 'NULL') return null
       return value
     }
@@ -101,7 +100,7 @@ function transformHistoryRecord(row: any): TestHistoryRecord {
 /**
  * Get all creators from CSV (cached after first load)
  */
-export function creatorsData(): TestCreator[] {
+function loadCreators(): TestCreator[] {
   if (creatorsCache === null) {
     creatorsCache = parseCSV('creators_rows.csv', transformCreator)
     console.log(`📊 Loaded ${creatorsCache.length} creators for testing`)
@@ -112,68 +111,12 @@ export function creatorsData(): TestCreator[] {
 /**
  * Get all history records from CSV (cached after first load)
  */
-export function historyData(): TestHistoryRecord[] {
+function loadHistory(): TestHistoryRecord[] {
   if (historyCache === null) {
     historyCache = parseCSV('creator_history_rows.csv', transformHistoryRecord)
     console.log(`📊 Loaded ${historyCache.length} history records for testing`)
   }
   return historyCache
-}
-
-/**
- * Get unique categories from creators data
- */
-export function categoriesData(): string[] {
-  const creators = creatorsData()
-  return Array.from(new Set(creators.map(c => c.category))).sort()
-}
-
-/**
- * Helper functions for test scenarios
- */
-export const testDataHelpers = {
-  // Direct access to raw data
-  creatorsData: () => creatorsData(),
-  historyData: () => historyData(),
-
-  // Get creators by category
-  creatorsByCategory: (category: string): TestCreator[] => {
-    return creatorsData().filter(c => c.category === category)
-  },
-
-  // Get creators with images
-  creatorsWithImages: (): TestCreator[] => {
-    return creatorsData().filter(c => c.image_url !== null)
-  },
-
-  // Get creators without images
-  creatorsWithoutImages: (): TestCreator[] => {
-    return creatorsData().filter(c => c.image_url === null)
-  },
-
-  // Get history by action type
-  historyByAction: (action: 'create' | 'update' | 'delete'): TestHistoryRecord[] => {
-    return historyData().filter(h => h.action === action)
-  },
-
-  // Get creators for pagination testing (slice by page)
-  creatorsPage: (pageIndex: number, pageSize: number): TestCreator[] => {
-    const start = pageIndex * pageSize
-    const end = start + pageSize
-    return creatorsData().slice(start, end)
-  },
-
-  // Get total count (for pagination total)
-  totalCreators: (): number => creatorsData().length,
-  totalHistory: (): number => historyData().length,
-
-  // Search helpers
-  searchCreators: (
-    term: string,
-    field: keyof Pick<TestCreator, 'name' | 'description' | 'category'>
-  ): TestCreator[] => {
-    return creatorsData().filter(c => c[field].toLowerCase().includes(term.toLowerCase()))
-  }
 }
 
 /**
@@ -183,3 +126,64 @@ export function resetTestDataCache(): void {
   creatorsCache = null
   historyCache = null
 }
+
+// ==============================================================================
+// SINGLE CONSISTENT API - Everything under testData
+// ==============================================================================
+
+export const testData = {
+  // Raw data access
+  creators: {
+    all: (): TestCreator[] => loadCreators(),
+    count: (): number => loadCreators().length,
+    page: (pageIndex: number, pageSize: number): TestCreator[] => {
+      const start = pageIndex * pageSize
+      const end = start + pageSize
+      return loadCreators().slice(start, end)
+    },
+    byCategory: (category: string): TestCreator[] => {
+      return loadCreators().filter(c => c.category === category)
+    },
+    withImages: (): TestCreator[] => {
+      return loadCreators().filter(c => c.image_url !== null)
+    },
+    withoutImages: (): TestCreator[] => {
+      return loadCreators().filter(c => c.image_url === null)
+    },
+    search: (
+      term: string,
+      field: keyof Pick<TestCreator, 'name' | 'description' | 'category'>
+    ): TestCreator[] => {
+      return loadCreators().filter(c => c[field].toLowerCase().includes(term.toLowerCase()))
+    }
+  },
+
+  history: {
+    all: (): TestHistoryRecord[] => loadHistory(),
+    count: (): number => loadHistory().length,
+    page: (pageIndex: number, pageSize: number): TestHistoryRecord[] => {
+      const start = pageIndex * pageSize
+      const end = start + pageSize
+      return loadHistory().slice(start, end)
+    },
+    byAction: (action: 'create' | 'update' | 'delete'): TestHistoryRecord[] => {
+      return loadHistory().filter(h => h.action === action)
+    }
+  },
+
+  categories: {
+    all: (): string[] => {
+      const creators = loadCreators()
+      return Array.from(new Set(creators.map(c => c.category))).sort()
+    },
+    count: (): number => {
+      return testData.categories.all().length
+    }
+  }
+}
+
+// Backward compatibility exports (if needed)
+export const testDataHelpers = testData
+export const creatorsData = testData.creators.all
+export const historyData = testData.history.all
+export const categoriesData = testData.categories.all
